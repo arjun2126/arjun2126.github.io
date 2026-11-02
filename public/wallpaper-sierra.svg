@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Alpine ridges at sunset in deep violet and amber">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0.2" y2="1">
+      <stop offset="0" stop-color="#120f2b"/>
+      <stop offset="0.34" stop-color="#2b1d4f"/>
+      <stop offset="0.6" stop-color="#5b2f63"/>
+      <stop offset="0.78" stop-color="#a75068"/>
+      <stop offset="0.92" stop-color="#e08a62"/>
+      <stop offset="1" stop-color="#f3b077"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.71" cy="0.62" r="0.58">
+      <stop offset="0" stop-color="#ffd9a3" stop-opacity="0.95"/>
+      <stop offset="0.22" stop-color="#ffab74" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#c25c7a" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#3a2350" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ridgeFar" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#7d5d93"/>
+      <stop offset="0.55" stop-color="#543c72"/>
+      <stop offset="1" stop-color="#33274f"/>
+    </linearGradient>
+    <linearGradient id="ridgeMid" x1="0.1" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#4a3466"/>
+      <stop offset="0.6" stop-color="#2b2148"/>
+      <stop offset="1" stop-color="#1a1633"/>
+    </linearGradient>
+    <linearGradient id="ridgeNear" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#241c3d"/>
+      <stop offset="0.55" stop-color="#151228"/>
+      <stop offset="1" stop-color="#0b0a17"/>
+    </linearGradient>
+    <linearGradient id="snow" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#f6e6ea" stop-opacity="0.92"/>
+      <stop offset="0.6" stop-color="#d7bcd2" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#a98bb6" stop-opacity="0.12"/>
+    </linearGradient>
+    <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7a276" stop-opacity="0"/>
+      <stop offset="0.7" stop-color="#f0a279" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#1a1430" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <rect width="1600" height="1000" fill="url(#sun)"/>
+
+  <g fill="#ffffff">
+    <circle cx="180" cy="92" r="1.3" opacity="0.55"/>
+    <circle cx="262" cy="150" r="1" opacity="0.4"/>
+    <circle cx="344" cy="70" r="1.2" opacity="0.5"/>
+    <circle cx="420" cy="120" r="0.9" opacity="0.35"/>
+    <circle cx="512" cy="58" r="1.4" opacity="0.45"/>
+    <circle cx="596" cy="104" r="0.8" opacity="0.3"/>
+    <circle cx="690" cy="60" r="1.1" opacity="0.42"/>
+    <circle cx="744" cy="132" r="0.9" opacity="0.3"/>
+    <circle cx="842" cy="48" r="1.2" opacity="0.4"/>
+    <circle cx="930" cy="96" r="0.8" opacity="0.28"/>
+    <circle cx="1042" cy="58" r="1" opacity="0.34"/>
+    <circle cx="1130" cy="112" r="0.9" opacity="0.26"/>
+    <circle cx="1218" cy="44" r="1.1" opacity="0.32"/>
+    <circle cx="1372" cy="86" r="0.8" opacity="0.24"/>
+    <circle cx="1456" cy="132" r="1" opacity="0.22"/>
+  </g>
+
+  <path d="M0 566 118 498l84 34 92-72 96 58 74-28 108 66 92-44 86 40 104-62 78 44 96-30 112 58 88-38 116 52 110-42v240H0Z" fill="url(#ridgeFar)" opacity="0.55" filter="url(#soft)"/>
+
+  <path d="M0 640 96 566l74 26 62-96 58 64 82-34 70 82 88-36 94 58 74-92 66 70 84-26 78 54 96-40 82 58 104-52 74 36 96-64 54 60 78-34v276H0Z" fill="url(#ridgeFar)"/>
+
+  <path d="M96 592 158 470l34 54 24-30 36 72 40-38 30 54Z" fill="url(#snow)" opacity="0.5"/>
+  <path d="M600 618 654 486l40 58 26-26 34 68 32-28 28 52Z" fill="url(#snow)" opacity="0.38"/>
+  <path d="M1180 590 1244 462l38 66 26-34 42 78 34-30 30 56Z" fill="url(#snow)" opacity="0.34"/>
+
+  <path d="M0 742 72 668l64 22 58-112 56 86 66-30 74 96 82-40 88 70 68-94 70 74 82-32 86 62 78-88 72 74 88-30 82 62 96-70 76 58 92-32 78 60v168H0Z" fill="url(#ridgeMid)"/>
+
+  <path d="M194 578 250 448l40 62 30-24 44 92 36-34 32 60Z" fill="url(#snow)" opacity="0.62"/>
+  <path d="M600 656 664 506l44 78 28-30 44 86 36-32 30 62Z" fill="url(#snow)" opacity="0.5"/>
+  <path d="M1050 622 1112 470l42 76 30-32 48 92 38-34 32 60Z" fill="url(#snow)" opacity="0.46"/>
+  <path d="M1320 640 1378 500l40 70 26-28 40 82 34-30 28 58Z" fill="url(#snow)" opacity="0.4"/>
+
+  <rect y="610" width="1600" height="210" fill="url(#haze)"/>
+
+  <path d="M0 852 84 780l72 34 66-96 58 74 74-26 68 88 90-36 84 62 76-84 68 68 88-28 80 64 82-72 74 62 92-26 76 54 94-64 74 52 92-28 82 56v96H0Z" fill="url(#ridgeMid)" opacity="0.92"/>
+
+  <path d="M0 920 96 846l80 30 62-72 70 66 82-22 72 70 86-38 90 56 74-78 66 64 92-24 78 58 84-64 74 56 96-22 78 48 96-58 72 46 94-20 84 50v92H0Z" fill="url(#ridgeNear)"/>
+
+  <g opacity="0.55">
+    <path d="M60 1000 210 780l60 96 34-40 92 164Z" fill="#0a0916"/>
+    <path d="M360 1000 520 796l52 84 30-34 86 154Z" fill="#080714" opacity="0.85"/>
+    <path d="M1240 1000 1380 812l46 72 30-28 84 144Z" fill="#080714" opacity="0.9"/>
+  </g>
+
+  <path d="M0 962 120 906l96 28 72-46 92 48 88-24 94 42 96-50 84 40 96-26 90 46 94-42 84 38 102-30 92 34 92-44 74 34v102H0Z" fill="#06060e"/>
+</svg>

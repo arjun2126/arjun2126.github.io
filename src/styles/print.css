@@ -1,0 +1,162 @@
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    overflow: visible !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .resume-content,
+  .resume-content * {
+    visibility: visible;
+  }
+
+  .window,
+  .window__body,
+  .window-layer,
+  .desktop,
+  .desktop-stage {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .window::after,
+  .window__bar,
+  .resume-header__actions,
+  .resume-rail__links,
+  .resume-rail__note,
+  .resume-footer,
+  .resume-section .text-button,
+  .m-header,
+  .m-tabbar,
+  .m-footer,
+  .skip-link,
+  .lightbox {
+    display: none !important;
+  }
+
+  .resume-content {
+    position: absolute !important;
+    inset: 0 auto auto 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 10pt;
+  }
+
+  .resume-header {
+    padding: 0 0 12pt;
+    border-color: #bbb;
+  }
+
+  .resume-header__copy h1 {
+    font-size: 34pt;
+    margin-top: 2pt;
+  }
+
+  .resume-header__copy > p {
+    max-width: none;
+    font-size: 9pt;
+    color: #444;
+  }
+
+  .resume-body {
+    display: grid;
+    grid-template-columns: 55mm minmax(0, 1fr);
+    gap: 8mm;
+    padding-top: 8pt;
+  }
+
+  .resume-rail {
+    position: static;
+    padding: 4mm;
+    border-color: #ccc;
+    background: #f7f5ef !important;
+  }
+
+  .resume-rail h2 {
+    font-size: 16pt;
+  }
+
+  .resume-section {
+    padding-bottom: 6mm;
+    margin-bottom: 5mm;
+    border-color: #ddd;
+    break-inside: avoid;
+  }
+
+  .resume-section__head h2 {
+    font-size: 15pt;
+  }
+
+  .resume-main p,
+  .resume-work__tagline,
+  .resume-work__evidence,
+  .resume-section .source-note {
+    font-size: 8.5pt;
+    color: #444 !important;
+  }
+
+  .resume-lead {
+    font-size: 10pt !important;
+  }
+
+  .resume-work {
+    padding: 5pt 0;
+  }
+
+  .resume-work__arrow {
+    display: none;
+  }
+
+  .capability-grid {
+    border-color: #ccc;
+    background: #ccc;
+  }
+
+  .capability {
+    background: #faf9f5 !important;
+    break-inside: avoid;
+  }
+
+  .resume-scope {
+    background: #f5f2e9 !important;
+    border-left-color: #333;
+  }
+
+  .resume-principles {
+    break-inside: avoid;
+  }
+
+  .resume-contact__links {
+    display: none;
+  }
+
+  .resume-content .status-pill {
+    background: transparent !important;
+    border: 0.5pt solid #999;
+    color: #333 !important;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}

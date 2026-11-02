@@ -1,0 +1,40 @@
+# Private attachments, local authoring state, and unreviewed uploads
+.cloud-attachments/
+.freebuff/
+/content-studio/
+/public/content-studio/
+docs/source-images/
+
+# Dependencies, builds, and test output
+node_modules/
+dist/
+coverage/
+test-results/
+playwright-report/
+blob-report/
+*.tsbuildinfo
+.vite/
+.vite-temp/
+.cache/
+.npm/
+*.log
+
+# Environment files and local credentials (never needed by this static site)
+.env
+.env.*
+.npmrc
+*.pem
+*.key
+
+# Local backups, editor state, and operating-system metadata
+backups/
+*.bak
+*.backup
+*.orig
+*~
+*.swp
+*.swo
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

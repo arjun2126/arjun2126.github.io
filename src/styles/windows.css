@@ -1,0 +1,286 @@
+/* macOS-inspired dark glass windows. */
+
+.window {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 13px;
+  background: rgba(16, 17, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 42px 90px rgba(1, 2, 12, 0.55),
+    0 12px 28px rgba(2, 3, 14, 0.35),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(28px) saturate(1.2);
+  -webkit-backdrop-filter: blur(28px) saturate(1.2);
+  outline: none;
+  opacity: 0;
+  animation: window-arrive 0.36s var(--ease-out) forwards;
+  transition:
+    left 0.3s var(--ease-soft),
+    top 0.3s var(--ease-soft),
+    width 0.3s var(--ease-soft),
+    height 0.3s var(--ease-soft),
+    opacity 0.2s ease,
+    transform 0.22s var(--ease-soft),
+    box-shadow 0.25s ease,
+    visibility 0s linear 0s;
+  will-change: opacity, transform;
+}
+
+.window.is-active {
+  box-shadow:
+    0 54px 110px rgba(1, 2, 12, 0.62),
+    0 16px 36px rgba(2, 3, 14, 0.42),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.22);
+}
+
+.window:not(.is-active) {
+  filter: saturate(0.9) brightness(0.94);
+}
+
+.window.is-dragging {
+  transition: box-shadow 0.2s ease;
+  will-change: left, top;
+}
+
+.window.is-dragging .window__bar {
+  cursor: grabbing;
+}
+
+.window.is-maximized {
+  left: 8px !important;
+  top: 8px !important;
+  width: calc(100% - 16px) !important;
+  height: calc(100% - 16px) !important;
+  border-radius: 12px;
+}
+
+.window.is-minimized {
+  opacity: 0;
+  transform: translateY(54px) scale(0.9);
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.22s var(--ease-soft),
+    visibility 0s linear 0.22s;
+}
+
+.window:focus-visible {
+  outline: 2px solid rgba(10, 132, 255, 0.8);
+  outline-offset: 2px;
+}
+
+.window__bar {
+  position: relative;
+  flex: 0 0 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  background:
+    linear-gradient(180deg, rgba(44, 40, 66, 0.94) 0%, rgba(28, 26, 44, 0.94) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  user-select: none;
+  cursor: default;
+  touch-action: none;
+}
+
+.window--plain .window__bar {
+  flex-basis: 34px;
+  height: 34px;
+  padding: 0 12px;
+  background: rgba(38, 33, 58, 0.72);
+}
+
+.window.is-active .window__bar {
+  background:
+    linear-gradient(180deg, rgba(52, 47, 78, 0.96) 0%, rgba(32, 29, 51, 0.96) 100%);
+}
+
+.window--plain .window__bar {
+  background: linear-gradient(180deg, rgba(41, 36, 62, 0.88) 0%, rgba(26, 24, 42, 0.86) 100%);
+}
+
+.traffic {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+}
+
+.traffic__button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  color: rgba(20, 15, 10, 0);
+  transition: color 0.12s ease, filter 0.12s ease;
+}
+
+.traffic__button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0.5px rgba(20, 20, 10, 0.28);
+}
+
+.traffic__button svg {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.traffic:hover .traffic__button svg,
+.traffic__button:focus-visible svg {
+  opacity: 0.75;
+}
+
+.traffic__button--close::before {
+  background: linear-gradient(180deg, #ff6a5e 0%, #ec4a3f 100%);
+}
+
+.traffic__button--minimize::before {
+  background: linear-gradient(180deg, #ffc94a 0%, #f0a71e 100%);
+}
+
+.traffic__button--maximize::before {
+  background: linear-gradient(180deg, #4ad06a 0%, #23ac47 100%);
+}
+
+.traffic__button:hover {
+  filter: brightness(1.12);
+}
+
+.traffic__button:focus-visible {
+  outline: 2px solid #4aa8ff;
+  outline-offset: 2px;
+}
+
+.window__title-group {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  padding-left: 4px;
+}
+
+.window__title {
+  min-width: 0;
+  color: #f2f4fb;
+  font-size: 11.6px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.window__subtitle {
+  color: rgba(231, 236, 250, 0.48);
+  font-size: 8.8px;
+  font-weight: 450;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.window__plain-spacer {
+  flex: 1;
+}
+
+.window__bar-end {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 16px;
+}
+
+.window__bar-mark {
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--font-display);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.window__body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #0e1020;
+}
+
+.window--plain .window__body {
+  background: #0d0f1c;
+}
+
+.window__body > * {
+  height: 100%;
+}
+
+.window--project .window__body,
+.window--resume .window__body,
+.window--skills .window__body,
+.window--about .window__body,
+.window--contact .window__body,
+.window--notfound .window__body {
+  overflow-y: auto;
+  background: var(--paper);
+}
+
+.window ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.window ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.window ::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.window {
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+  scrollbar-width: thin;
+}
+
+@keyframes window-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.988);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .window {
+    animation: none;
+    opacity: 1;
+    transition: none;
+  }
+}
