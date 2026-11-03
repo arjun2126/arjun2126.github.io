@@ -2,6 +2,7 @@
 
 Public site: <https://arjun2126.github.io/>. Deployment status and evidence are recorded in
 [docs/PROGRESS.md](docs/PROGRESS.md).
+[Initial launch verification report](docs/LAUNCH_REPORT.md).
 
 **Owner updates:** [Content Studio upload → review → save → validate → PR → deploy](docs/CONTENT_UPDATES.md).
 Run `npm run dev` for local editing and `npm run publish:prepare` to validate a reviewed update.

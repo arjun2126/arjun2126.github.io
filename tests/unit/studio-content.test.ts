@@ -38,12 +38,16 @@ describe('Content Studio publication validation', () => {
     const original = (await import('../../src/content/professional')).professional;
     const content = draft();
     content.career.experience = original.employment.map((role) => ({ id: role.id, title: role.title, period: role.period, org: `${role.employer} · ${role.location}`, body: 'Updated reviewed summary' }));
+    content.skills = [{ id: 'salesforce', label: 'Reviewed group', items: ['Updated fixture skill'] }];
     vi.resetModules();
     vi.doMock('../../src/content/generated', () => ({ generatedDraft: content }));
     const updated = (await import('../../src/content/professional')).professional;
     expect(updated.employment[0].summary).toBe('Updated reviewed summary');
     expect(updated.employment[0].responsibilities).toEqual(original.employment[0].responsibilities);
     expect(updated.employment[0].technologies).toEqual(original.employment[0].technologies);
+    const profileModule = await import('../../src/content/profile');
+    expect(profileModule.resumeCapabilities).toEqual([{ label: 'Reviewed group', items: ['Updated fixture skill'] }]);
+    expect(profileModule.skillGroups[0].skills[0].name).toBe('Updated fixture skill');
     vi.doUnmock('../../src/content/generated');
     vi.resetModules();
   });

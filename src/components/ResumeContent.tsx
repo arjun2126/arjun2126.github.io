@@ -62,7 +62,7 @@ export function ResumeContent({ mode = 'window' }: { mode?: 'window' | 'document
           <dl className="resume-facts">
             <div>
               <dt>Current</dt>
-              <dd>Business Systems Developer &amp; Administrator</dd>
+              <dd>{professional.employment.find((role) => role.current)?.title || professional.employment[0]?.title || 'See experience'}</dd>
             </div>
             <div>
               <dt>Location</dt>
