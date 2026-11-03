@@ -9,7 +9,8 @@ def git(*args):
     return subprocess.check_output(["git", *args])
 
 
-paths = git("diff", "--cached", "--name-only", "--diff-filter=ACMR", "-z").decode().split("\0")
+tree_mode = "--tree" in sys.argv
+paths = (git("ls-tree", "-r", "--name-only", "-z", "HEAD") if tree_mode else git("diff", "--cached", "--name-only", "--diff-filter=ACMR", "-z")).decode().split("\0")
 paths = [p for p in paths if p]
 if not paths:
     sys.exit("No staged changes to audit")
@@ -39,7 +40,7 @@ for name in paths:
         or path.suffix in {".tsbuildinfo", ".pem", ".key", ".log", ".bak", ".backup"}
     ):
         findings.append(f"Forbidden staged artifact: {name}")
-    data = git("show", f":{name}")
+    data = git("show", f"HEAD:{name}" if tree_mode else f":{name}")
     if b"\0" in data:
         continue  # Images need a separate visual/OCR pass.
     try:
@@ -51,10 +52,42 @@ for name in paths:
             if re.search(pattern, line):
                 findings.append(f"{label}: {name}:{number}")
 
-generated = git("show", ":src/content/studio.generated.json")
 import json
-if json.loads(generated).get("content") is not None:
+import hashlib
+revision = "HEAD:" if tree_mode else ":"
+generated = git("show", revision + "src/content/studio.generated.json")
+approved = json.loads(git("show", revision + "publication-approved.json"))
+if hashlib.sha256(generated).hexdigest() != approved["files"].get("src/content/studio.generated.json"):
     findings.append("Generated Content Studio content requires a fresh publication review")
+
+if "--history" in sys.argv:
+    # Scan every historical tracked blob, including files deleted from HEAD.
+    revisions = git("rev-list", "--all").decode().splitlines()
+    seen = set()
+    for commit in revisions:
+        for entry in git("ls-tree", "-r", "-z", commit).split(b"\0"):
+            if not entry:
+                continue
+            meta, name_bytes = entry.split(b"\t", 1)
+            oid = meta.split()[2].decode()
+            if oid in seen:
+                continue
+            seen.add(oid)
+            name = name_bytes.decode()
+            if forbidden_parts.intersection(pathlib.PurePosixPath(name).parts) or name.startswith(("content-studio/", ".cloud-attachments/")):
+                findings.append(f"Forbidden historical path: {name} in {commit[:12]}")
+            data = git("cat-file", "blob", oid)
+            if b"\0" in data:
+                continue
+            try:
+                text = data.decode("utf-8")
+            except UnicodeDecodeError:
+                continue
+            for label, pattern in patterns.items():
+                for number, line in enumerate(text.splitlines(), 1):
+                    if re.search(pattern, line):
+                        findings.append(f"historical {label}: {name}:{number} ({commit[:12]})")
+    print(f"History reviewed: {len(revisions)} commits, {len(seen)} unique blobs.")
 
 print(f"Reviewed {len(paths)} staged paths; images require separate visual/OCR review.")
 if findings:

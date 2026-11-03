@@ -7,7 +7,7 @@ import { projects } from '../src/content/projects';
 const dist = path.resolve('dist');
 const origin = (process.env.SITE_URL ?? 'https://arjun2126.github.io').replace(/\/+$/, '');
 const routes = ['/', '/projects/', '/recruiter/', '/salesforce/', '/ai/', '/experience/',
-  '/northgate-live/', '/resume/', '/skills/', '/about/', '/contact/',
+  '/northgate-live/', '/walkthrough/', '/resume/', '/skills/', '/about/', '/contact/',
   ...projects.map((project) => `/projects/${project.slug}/`)];
 
 for (const route of routes) {

@@ -28,6 +28,7 @@ import { AIView } from './os/AIView';
 import { ContentStudio } from './os/ContentStudio';
 import { ExperienceView } from './os/ExperienceView';
 import { NorthgateLive } from './os/NorthgateLive';
+import { Walkthrough } from './os/Walkthrough';
 import { SalesforceView } from './os/SalesforceView';
 import { LogoMark } from './Logo';
 import { OsMark, Portrait } from './os/parts';
@@ -372,6 +373,7 @@ export function MobileExperience({ route }: { route: Route }) {
         {route.app === 'experience' ? <ExperienceView tone="light" /> : null}
         {route.app === 'salesforce' ? <SalesforceView tone="light" /> : null}
         {route.app === 'live' ? <NorthgateLive tone="light" /> : null}
+        {route.app === 'walkthrough' ? <Walkthrough /> : null}
         {route.app === 'content' ? <ContentStudio /> : null}
       </div>
     );

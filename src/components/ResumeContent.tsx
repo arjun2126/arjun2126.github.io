@@ -23,6 +23,7 @@ export function ResumeContent({ mode = 'window' }: { mode?: 'window' | 'document
           </p>
         </div>
         <div className="resume-header__actions">
+          {profile.resumePdf ? <a className="button button--small" href={profile.resumePdf} download="arjunos-resume.pdf">{profile.resumePdfLabel}</a> : null}
           <div className="segmented" role="group" aria-label="Résumé detail level">
             <button
               type="button"

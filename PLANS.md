@@ -1,5 +1,13 @@
 # ArjunOS delivery plan
 
+## Current launch authorization — 3 November 2026
+
+The owner's launch request supersedes historical local-only/deployment prohibitions below.
+Publish only audited, previously approved content through a validated/reviewed PR, preserve main
+history and the original workspace, deploy through Actions, and verify the live website.
+Owner portrait, PDF, Vantage captures, email and video remain separately approval-gated.
+See docs/CONTENT_UPDATES.md and docs/PROGRESS.md for the current workflow and evidence.
+
 ## Requirements and acceptance
 - Reference-driven macOS desktop: mountain wallpaper, translucent menu bar, dark glass windows, floating Dock, blue accent.
 - Three-window composition: main ArjunOS window with sidebar, Recruiter Mode, Salesforce Workspace.

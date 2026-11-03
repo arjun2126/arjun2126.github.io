@@ -6,10 +6,13 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "check": "tsc -b",
-    "build": "tsc -b && vite build && tsx scripts/prerender.ts && tsx scripts/verify-static.ts",
+    "build": "tsx scripts/validate-publication.ts && tsc -b && vite build && tsx scripts/prerender.ts && tsx scripts/verify-static.ts && tsx scripts/validate-publication.ts --dist",
+    "content:validate": "tsx scripts/validate-publication.ts",
+    "publish:prepare": "tsx scripts/prepare-publication.ts",
     "preview": "vite preview --host 127.0.0.1",
     "images": "node scripts/optimize-images.mjs",
     "test": "vitest run",
+    "test:studio": "tsx scripts/test-studio-workflow.ts",
     "test:e2e": "npm run build && playwright test"
   },
   "dependencies": {

@@ -5,6 +5,7 @@ import path from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createServer, type ViteDevServer } from 'vite';
 import { contentStudioPlugin } from '../../server/content-studio-plugin';
+import sharp from 'sharp';
 
 describe('Content Studio API integration', () => {
   let root: string;
@@ -14,6 +15,7 @@ describe('Content Studio API integration', () => {
     profile: { name: 'Test profile', headline: 'Test', summary: 'Fixture only', photo: '', github: '', linkedin: '', x: '', contactNote: '' },
     career: { experience: [], education: [], certifications: [], achievements: [] },
     skills: [], projects: [], media: [], sources: [],
+    resume: { pdf: '', label: '' }, walkthrough: { url: '', title: '', summary: '' },
   };
 
   beforeAll(async () => {
@@ -106,5 +108,23 @@ describe('Content Studio API integration', () => {
     expect((await call('GET', 'state')).status).toBe(200);
     expect((await call('GET', 'state', { Origin: 'http://evil.test' })).status).toBe(403);
     expect((await call('GET', 'state', { Host: `localhost:${port + 1}` })).status).toBe(403);
+  });
+
+  it('validates all uploads before modifying saved content or approved media', async () => {
+    const image = await sharp({ create: { width: 20, height: 20, channels: 3, background: '#789abc' } }).png().toBuffer();
+    const valid = structuredClone(draft);
+    valid.profile.photo = `data:image/png;base64,${image.toString('base64')}`;
+    const saved = await call('POST', 'save', { Origin: `http://127.0.0.1:${port}` }, valid);
+    expect(saved.status).toBe(200);
+    const currentPath = path.join(root, 'src/content/studio.generated.json');
+    const before = await readFile(currentPath);
+    const names = await readdir(path.join(root, 'public/media'));
+    const bytes = await Promise.all(names.map((name) => readFile(path.join(root, 'public/media', name))));
+    const invalid = structuredClone(valid);
+    invalid.resume.pdf = 'data:application/pdf;base64,bm90IGEgcGRm';
+    expect((await call('POST', 'save', { Origin: `http://127.0.0.1:${port}` }, invalid)).status).toBe(500);
+    expect(await readFile(currentPath)).toEqual(before);
+    expect(await readdir(path.join(root, 'public/media'))).toEqual(names);
+    expect(await Promise.all(names.map((name) => readFile(path.join(root, 'public/media', name))))).toEqual(bytes);
   });
 });

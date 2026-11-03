@@ -62,7 +62,7 @@ export const competencies: Competency[] = [
 export const hero = {
   eyebrow: 'Independent software portfolio',
   greeting: "Hi, I'm",
-  headline: 'Salesforce Developer · Software Engineering · AI Automation',
+  headline: generatedDraft?.profile.headline || 'Salesforce Developer · Software Engineering · AI Automation',
   intro:
     'I build and run Salesforce systems, analytics and native apps — with Apex and Lightning work when declarative tools run out. Every independent project below is documented in public.',
   primaryAction: { label: 'Explore the work', href: '/projects/' },
@@ -85,18 +85,7 @@ export const recruiterTabs: RecruiterTab[] = [
 const savedProfile = generatedDraft?.profile;
 const savedCareer = generatedDraft?.career;
 
-const siteExperience = savedCareer?.experience.length
-  ? savedCareer.experience.map((entry, index) => ({
-      id: `studio-role-${index}`,
-      employer: entry.org,
-      title: entry.title,
-      period: entry.period,
-      location: '',
-      summary: entry.body,
-      responsibilities: [] as string[],
-      technologies: [] as string[],
-    }))
-  : professional.employment;
+const siteExperience = professional.employment;
 
 export const recruiter = {
   name: savedProfile?.name || professional.name,
@@ -105,7 +94,10 @@ export const recruiter = {
   location: professional.location,
   availability: professional.availability,
   linkedin: professional.linkedin,
-  details: [
+  details: savedCareer ? [
+    ...professional.employment.map((role) => `${role.title} · ${role.employer} · ${role.period}`),
+    `${professional.certifications.length} reviewed certifications.`,
+  ] : [
     'Business Systems Developer & Administrator at SWR, Waterloo Region (April 2025 – present).',
     'Three years at Uttara Infotech Solutions as a Junior Software Engineer & CRM Analyst.',
     'Four Salesforce certifications, including Administrator, Platform Developer I and Agentforce Specialist.',

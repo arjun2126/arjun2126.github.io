@@ -28,13 +28,21 @@ export const profile = {
    */
   photo: (saved?.photo ?? '') as string,
   photoAlt: 'Portrait of Arjun Subramanya',
+  /**
+   * The owner-approved, web-safe PDF résumé. Empty until a reviewed file is
+   * uploaded through Content Studio; the site then offers a download action and
+   * otherwise falls back to the printable web résumé.
+   */
+  resumePdf: (generatedDraft?.resume?.pdf ?? '') as string,
+  resumePdfLabel:
+    generatedDraft?.resume?.label?.trim() || 'Résumé — Arjun Subramanya (PDF)',
   linkedin: saved?.linkedin || 'https://www.linkedin.com/in/arjunsubra',
   location: 'Whitby, Ontario, Canada',
   availability: 'Open to Salesforce developer, administrator, and business-systems roles across Canada.',
   title: 'Salesforce developer & administrator',
   disciplines: 'Salesforce · business systems · analytics',
   headline: saved?.headline || 'Business systems, built to hold up.',
-  intro:
+  intro: saved?.summary ||
     'I build and run Salesforce systems — Flow automation, custom data models, permissions and reporting — and write the Apex and Lightning components when declarative tools run out. I also work in Python, SQL and Swift.',
   shortIntro:
     'Salesforce systems, analytics and native apps — built end to end, with the sources attached.',
@@ -55,7 +63,9 @@ export const profile = {
       body: 'Fictional data, mock integrations and future features are labelled as such. A portfolio should make the boundary easy to see.',
     },
   ],
-  resumeNote:
+  resumeNote: generatedDraft?.resume.pdf
+    ? 'Owner-approved professional experience and credentials, plus a reviewed downloadable résumé PDF. Private contact details and credential IDs are excluded.'
+    :
     'Employment, education and certification names come from an owner-approved professional handoff reviewed on 2 November 2026. Credential IDs, phone, street address, work-authorization details and total-years figures are deliberately excluded. A redacted, web-safe résumé PDF is still pending approval.',
   contactIntro:
     'I am based in Whitby, Ontario and open to Salesforce developer, administrator and business-systems roles across Canada. GitHub and LinkedIn are the verified public routes.',
@@ -82,7 +92,7 @@ export const profile = {
   ],
 };
 
-export const skillGroups: SkillGroup[] = [
+const approvedSkillGroups: SkillGroup[] = [
   {
     id: 'salesforce',
     label: 'Salesforce platform',
@@ -289,6 +299,17 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
 ];
+
+export const skillGroups: SkillGroup[] = generatedDraft ? generatedDraft.skills.map((group) => {
+  const original = approvedSkillGroups.find((entry) => entry.id === group.id);
+  return {
+    id: group.id, label: group.label, short: original?.short ?? group.label,
+    description: original?.description ?? 'Owner-reviewed capabilities.',
+    skills: group.items.filter(Boolean).map((name) => original?.skills.find((skill) => skill.name === name) ?? {
+      name, projects: [], note: 'Owner-reviewed skill; project evidence has not been linked.',
+    }),
+  };
+}) : approvedSkillGroups;
 
 export const allSkills = skillGroups.flatMap((group) =>
   group.skills.map((skill) => ({ ...skill, group: group.label, groupId: group.id })),

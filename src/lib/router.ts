@@ -5,6 +5,7 @@ export type AppRoute =
   | 'ai'
   | 'experience'
   | 'live'
+  | 'walkthrough'
   | 'resume'
   | 'skills'
   | 'about'
@@ -24,6 +25,7 @@ const appPaths: Record<AppRoute, string> = {
   ai: '/ai/',
   experience: '/experience/',
   live: '/northgate-live/',
+  walkthrough: '/walkthrough/',
   resume: '/resume/',
   skills: '/skills/',
   about: '/about/',
@@ -38,6 +40,7 @@ export const appTitles: Record<AppRoute, string> = {
   ai: 'AI Engineering',
   experience: 'Experience',
   live: 'Northgate Live',
+  walkthrough: 'Walkthrough',
   resume: 'Résumé',
   skills: 'Skills',
   about: 'About',

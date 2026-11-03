@@ -54,6 +54,7 @@ export function ProjectArticle({
             ))}
           </div>
           <div className="project-hero__actions">
+            {project.link ? <a className="button button--quiet" href={project.link} target="_blank" rel="noopener noreferrer">{project.linkLabel}</a> : null}
             <a
               className="button button--primary"
               href={project.repo}

@@ -1,16 +1,28 @@
-import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import sharp from 'sharp';
 import type { Plugin } from 'vite';
-import { validateContentDraft, type StudioDraft, type StudioMediaItem } from '../src/lib/studioContent';
+import {
+  MAX_PDF_BYTES,
+  validateContentDraft,
+  type StudioDraft,
+  type StudioMediaItem,
+} from '../src/lib/studioContent';
 import { allowsLocalStudioRequest } from './local-access';
 
-const MAX_BODY_BYTES = 16 * 1024 * 1024;
+const MAX_BODY_BYTES = 24 * 1024 * 1024;
 const HISTORY_LIMIT = 20;
 const CONTENT_DIR = 'content-studio';
 const HISTORY_DIR = path.join(CONTENT_DIR, 'history');
-const PUBLIC_DIR = path.join('public', 'content-studio');
+/**
+ * Published media lives in a normal, reviewable project directory. Drafts and
+ * history stay in the ignored `content-studio/` folder, so saving never stages
+ * unreviewed content by itself.
+ */
+const MEDIA_DIR = path.join('public', 'media');
+const MEDIA_URL_PREFIX = '/media/';
 const GENERATED_FILE = path.join('src', 'content', 'studio.generated.json');
 
 function sendJson(res: ServerResponse, status: number, payload: unknown) {
@@ -27,7 +39,7 @@ function readBody(req: IncomingMessage): Promise<string> {
     req.on('data', (chunk: Buffer) => {
       size += chunk.length;
       if (size > MAX_BODY_BYTES) {
-        reject(new Error('The draft is larger than 16 MB. Reduce the image sizes.'));
+        reject(new Error('The draft is larger than 24 MB. Reduce the image or PDF sizes.'));
         req.destroy();
         return;
       }
@@ -49,6 +61,10 @@ function fields(value: unknown, keys: string[]): boolean {
   return isRecord(value) && keys.every((key) => typeof value[key] === 'string');
 }
 
+function optionalFields(value: unknown, keys: string[]): boolean {
+  return isRecord(value) && keys.every((key) => value[key] === undefined || typeof value[key] === 'string');
+}
+
 function isDraft(value: unknown): value is StudioDraft {
   if (!isRecord(value) || !isRecord(value.career)) return false;
   const career = value.career;
@@ -59,8 +75,11 @@ function isDraft(value: unknown): value is StudioDraft {
     Array.isArray(value.skills) && value.skills.every((group) =>
       isRecord(group) && fields(group, ['id', 'label']) && strings(group.items)) &&
     Array.isArray(value.projects) && value.projects.every((project) =>
-      isRecord(project) && fields(project, ['slug', 'tagline', 'summary']) && strings(project.stack)) &&
+      isRecord(project) && fields(project, ['slug', 'tagline', 'summary']) && strings(project.stack) &&
+      optionalFields(project, ['name', 'repo', 'link', 'linkLabel'])) &&
     Array.isArray(value.media) && value.media.every((item) => fields(item, ['id', 'projectSlug', 'caption', 'src', 'name'])) &&
+    fields(value.resume, ['pdf', 'label']) &&
+    fields(value.walkthrough, ['url', 'title', 'summary']) &&
     Array.isArray(value.sources) && value.sources.every((source) => fields(source, ['name', 'kind', 'importedAt', 'note']))
   );
 }
@@ -71,19 +90,40 @@ function safeName(value: string): string {
 
 async function saveImageDataUrl(
   dataUrl: string,
-  destination: string,
   maxSize: number,
-): Promise<boolean> {
+): Promise<Buffer> {
   const match = /^data:image\/(png|jpe?g|webp);base64,([a-zA-Z0-9+/=\s]+)$/.exec(dataUrl);
-  if (!match) return false;
+  if (!match) throw new Error('Unsupported image format.');
   const buffer = Buffer.from(match[2], 'base64');
   if (buffer.length > 12 * 1024 * 1024) throw new Error('An image is larger than 12 MB.');
-  await sharp(buffer)
+  return sharp(buffer, { limitInputPixels: 40_000_000 })
     .rotate()
     .resize({ width: maxSize, height: maxSize, fit: 'inside', withoutEnlargement: true })
     .webp({ quality: 84, effort: 4 })
-    .toFile(destination);
-  return true;
+    .toBuffer();
+}
+
+function readPdfDataUrl(dataUrl: string): Buffer {
+  const match = /^data:application\/pdf;base64,([a-zA-Z0-9+/=\s]+)$/.exec(dataUrl);
+  if (!match) throw new Error('Unsupported PDF upload.');
+  const buffer = Buffer.from(match[1], 'base64');
+  if (buffer.length > MAX_PDF_BYTES) {
+    throw new Error(`The résumé PDF is larger than ${Math.round(MAX_PDF_BYTES / 1_000_000)} MB.`);
+  }
+  if (buffer.subarray(0, 5).toString('latin1') !== '%PDF-') {
+    throw new Error('That file is not a valid PDF.');
+  }
+  return buffer;
+}
+
+function assetName(prefix: string, buffer: Buffer, extension: string): string {
+  return `${prefix}-${createHash('sha256').update(buffer).digest('hex').slice(0, 24)}.${extension}`;
+}
+
+async function atomicJson(file: string, value: unknown) {
+  const temporary = `${file}.tmp`;
+  await writeFile(temporary, `${JSON.stringify(value, null, 2)}\n`);
+  await rename(temporary, file);
 }
 
 async function trimHistory(historyDir: string) {
@@ -101,8 +141,9 @@ export function contentStudioPlugin(): Plugin {
     configureServer(server) {
       const contentDir = path.join(server.config.root, CONTENT_DIR);
       const historyDir = path.join(server.config.root, HISTORY_DIR);
-      const publicDir = path.join(server.config.root, PUBLIC_DIR);
+      const mediaDir = path.join(server.config.root, MEDIA_DIR);
       const generatedFile = path.join(server.config.root, GENERATED_FILE);
+      let saving = false;
       server.middlewares.use('/__arjunos/content/save', (req, res, next) => {
         if (req.method !== 'POST') {
           next();
@@ -114,6 +155,11 @@ export function contentStudioPlugin(): Plugin {
           return;
         }
 
+        if (saving) {
+          sendJson(res, 409, { ok: false, errors: ['A save is already in progress. Try again after it finishes.'] });
+          return;
+        }
+        saving = true;
         void (async () => {
           try {
             const raw = await readBody(req);
@@ -128,45 +174,66 @@ export function contentStudioPlugin(): Plugin {
               return;
             }
 
-            await mkdir(historyDir, { recursive: true });
-            await mkdir(publicDir, { recursive: true });
-
             const content = structuredClone(draft);
+            const assets = new Map<string, Buffer>();
+            const previous = JSON.parse(await readFile(generatedFile, 'utf8').catch(() => '{"content":null}')) as { content: StudioDraft | null };
 
             if (content.profile.photo.startsWith('data:image/')) {
-              const saved = await saveImageDataUrl(
-                content.profile.photo,
-                path.join(publicDir, 'portrait.webp'),
-                1400,
-              );
-              content.profile.photo = saved ? '/content-studio/portrait.webp' : '';
-            } else if (!content.profile.photo.startsWith('/content-studio/')) {
-              content.profile.photo = '';
+              const buffer = await saveImageDataUrl(content.profile.photo, 1400);
+              const filename = assetName('portrait', buffer, 'webp');
+              assets.set(filename, buffer);
+              content.profile.photo = `${MEDIA_URL_PREFIX}${filename}`;
             }
 
             const media: StudioMediaItem[] = [];
             for (const item of content.media) {
               if (item.src.startsWith('data:image/')) {
-                const filename = `media-${safeName(item.id)}.webp`;
-                const saved = await saveImageDataUrl(
-                  item.src,
-                  path.join(publicDir, filename),
-                  1800,
-                );
-                if (saved) media.push({ ...item, src: `/content-studio/${filename}` });
-              } else if (item.src.startsWith('/content-studio/')) {
+                const buffer = await saveImageDataUrl(item.src, 1800);
+                const filename = assetName(`media-${safeName(item.id)}`, buffer, 'webp');
+                assets.set(filename, buffer);
+                media.push({ ...item, src: `${MEDIA_URL_PREFIX}${filename}` });
+              } else if (/^\/media\/[\w.-]+$/.test(item.src)) {
                 media.push(item);
               }
             }
             content.media = media;
 
+            if (content.resume.pdf.startsWith('data:application/pdf;base64,')) {
+              const buffer = readPdfDataUrl(content.resume.pdf);
+              const filename = assetName('resume', buffer, 'pdf');
+              assets.set(filename, buffer);
+              content.resume.pdf = `${MEDIA_URL_PREFIX}${filename}`;
+            }
+
+            const references = (value: StudioDraft | null) => value ? [value.profile.photo, value.resume?.pdf, ...value.media.map((item) => item.src)].filter((src): src is string => Boolean(src)) : [];
+            for (const ref of references(content)) {
+              if (!assets.has(path.basename(ref))) await readFile(path.join(mediaDir, path.basename(ref)));
+            }
+            // Decode/validate every asset before any filesystem mutation. Content-addressed
+            // filenames never overwrite approved bytes; the generated JSON is the commit point.
+            await mkdir(historyDir, { recursive: true });
+            await mkdir(mediaDir, { recursive: true });
+            for (const [filename, buffer] of assets) {
+              await writeFile(path.join(mediaDir, filename), buffer, { flag: 'wx' }).catch((error: NodeJS.ErrnoException) => {
+                if (error.code !== 'EEXIST') throw error;
+              });
+            }
+
             const updatedAt = new Date().toISOString();
             const historyName = `${updatedAt.replace(/[:.]/g, '-')}.json`;
             const generated = { version: 1, updatedAt, content };
 
-            await writeFile(path.join(contentDir, 'current.json'), JSON.stringify(generated, null, 2));
-            await writeFile(path.join(historyDir, historyName), JSON.stringify(generated, null, 2));
-            await writeFile(generatedFile, `${JSON.stringify(generated, null, 2)}\n`);
+            await atomicJson(path.join(historyDir, historyName), generated);
+            await atomicJson(path.join(contentDir, 'current.json'), generated);
+            await atomicJson(generatedFile, generated);
+            // Retain removed/replaced managed assets outside public instead of deleting them.
+            const retired = path.join(contentDir, 'retired');
+            const active = new Set(references(content));
+            for (const ref of new Set(references(previous.content))) {
+              if (active.has(ref) || !/^\/media\/[\w.-]+\.(webp|pdf)$/.test(ref)) continue;
+              await mkdir(retired, { recursive: true });
+              await rename(path.join(mediaDir, path.basename(ref)), path.join(retired, `${historyName}-${path.basename(ref)}`)).catch(() => undefined);
+            }
             const historyCount = await trimHistory(historyDir);
 
             sendJson(res, 200, {
@@ -174,11 +241,15 @@ export function contentStudioPlugin(): Plugin {
               updatedAt,
               historyCount,
               photo: content.profile.photo,
+              resumePdf: content.resume.pdf,
               mediaCount: content.media.length,
+              content,
             });
           } catch (error) {
             const message = error instanceof Error ? error.message : 'The save failed.';
             sendJson(res, 500, { ok: false, errors: [message] });
+          } finally {
+            saving = false;
           }
         })();
       });

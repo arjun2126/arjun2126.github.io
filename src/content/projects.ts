@@ -47,6 +47,9 @@ export interface Project {
   repo: string;
   repoRevision: string;
   repoNote: string;
+  /** Optional owner-supplied live/demo link, separate from the source repository. */
+  link?: string;
+  linkLabel?: string;
   accent: string;
   accentSoft: string;
   cover: Cover;
@@ -77,7 +80,17 @@ export const projects: Project[] = baseProjects.map((project) => {
   const merged: Project = {
     ...project,
     ...(copy
-      ? { tagline: copy.tagline, summary: copy.summary, stack: copy.stack, seoDescription: copy.summary }
+      ? {
+          ...(copy.name?.trim() ? { name: copy.name.trim() } : {}),
+          tagline: copy.tagline,
+          summary: copy.summary,
+          stack: copy.stack,
+          seoDescription: copy.summary,
+          ...(copy.repo?.trim() ? { repo: copy.repo.trim() } : {}),
+          ...(copy.link?.trim()
+            ? { link: copy.link.trim(), linkLabel: copy.linkLabel?.trim() || 'Open live project' }
+            : {}),
+        }
       : {}),
   };
   if (media.length) {

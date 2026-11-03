@@ -1,5 +1,15 @@
 # Verified sources
 
+## Launch verification — 3 November 2026
+
+Read-only Git fetch and authenticated GitHub API confirmed repository identity, unchanged remote
+main history, existing legacy Pages settings and a github-pages environment restricted to main.
+Independent re-review confirmed all 46 existing public files remain byte-identical to the audited
+preparation commit; no new owner asset is included, and generated content remains null. The owner's
+launch request authorizes publication of the previously approved curated professional content,
+not new personal assets or contact details. Historical authorization statements below describe
+the earlier preparation milestone, not the current launch authorization.
+
 Project content was reviewed from public material on **1–2 November 2026**. Repository READMEs and documentation are the authority for project claims. Approved employment, education, certification names, city-level location and availability come from the owner-approved 2 November handoff below. Private contact details and credential IDs remain excluded.
 
 ## Profile

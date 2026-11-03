@@ -14,6 +14,7 @@ import { NotFoundContent } from './NotFoundContent';
 import { ProjectArticle } from './ProjectArticle';
 import { ResumeContent } from './ResumeContent';
 import { SkillsExplorer } from './SkillsExplorer';
+import { Walkthrough } from './os/Walkthrough';
 
 const subtitles: Partial<Record<WindowState['kind'], string>> = {
   recruiter: 'A streamlined view for hiring managers',
@@ -42,6 +43,7 @@ export function windowTitle(win: WindowState): string {
   if (win.kind === 'ai') return 'AI Engineering';
   if (win.kind === 'experience') return 'Experience';
   if (win.kind === 'live') return 'Northgate Live';
+  if (win.kind === 'walkthrough') return 'Walkthrough';
   if (win.kind === 'content') return 'Content Studio';
   return 'Not found';
 }
@@ -72,6 +74,8 @@ export function WindowContent({ win, route }: { win: WindowState; route: Route }
       return <ExperienceView />;
     case 'live':
       return <NorthgateLive />;
+    case 'walkthrough':
+      return <Walkthrough />;
     case 'content':
       return <ContentStudio />;
     case 'resume':

@@ -8,6 +8,8 @@
  * no title or dates were approved for publication.
  */
 
+import { generatedDraft } from './generated';
+
 export interface EmploymentEntry {
   id: string;
   employer: string;
@@ -20,7 +22,7 @@ export interface EmploymentEntry {
   current?: boolean;
 }
 
-export const professional = {
+const approvedProfessional = {
   name: 'Arjun Subramanya',
   headline:
     'Salesforce developer and administrator building business systems, analytics, and AI-assisted workflows.',
@@ -95,6 +97,33 @@ export const professional = {
   ],
   note:
     'Employment, education and certification names are drawn from the approved handoff. Credential IDs, total-years figures and unverified technical claims are not published.',
+};
+
+const draft = generatedDraft;
+export const professional = {
+  ...approvedProfessional,
+  ...(draft ? {
+    name: draft.profile.name,
+    headline: draft.profile.headline,
+    shortPitch: draft.profile.summary,
+    github: draft.profile.github,
+    linkedin: draft.profile.linkedin,
+    employment: draft.career.experience.map((entry, index): EmploymentEntry => {
+      const original = approvedProfessional.employment.find((role) => entry.id ? role.id === entry.id :
+        role.title === entry.title && `${role.employer} · ${role.location}` === entry.org);
+      return original ? { ...original, title: entry.title, period: entry.period, summary: entry.body,
+        ...(entry.org !== `${original.employer} · ${original.location}` ? { employer: entry.org, location: '' } : {}),
+      } : {
+        id: `studio-${index}`, title: entry.title, employer: entry.org,
+        period: entry.period, location: '', summary: entry.body, responsibilities: [], technologies: [],
+      };
+    }),
+    education: draft.career.education.filter(Boolean).map((line) => {
+      const original = approvedProfessional.education.find((entry) => `${entry.credential} — ${entry.institution}` === line);
+      return original ?? { credential: line, institution: '', location: '', focus: '', dates: '' };
+    }),
+    certifications: draft.career.certifications.filter(Boolean),
+  } : {}),
 };
 
 export const aiPositioning = {

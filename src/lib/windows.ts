@@ -12,6 +12,7 @@ export type WindowKind =
   | 'ai'
   | 'experience'
   | 'live'
+  | 'walkthrough'
   | 'content'
   | 'notfound';
 
@@ -160,6 +161,7 @@ export function createWindowRect(
     case 'ai':
     case 'experience':
     case 'live':
+    case 'walkthrough':
     case 'content':
       return focusedRect(stage, docWidths[kind] ?? 900);
     case 'notfound':

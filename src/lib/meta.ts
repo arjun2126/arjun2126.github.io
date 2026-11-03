@@ -58,6 +58,8 @@ export function metaForRoute(route: Route): PageMeta {
           description:
             'Explore the published Northgate Motors Salesforce Experience Cloud buyer site. Verified framing status, genuine captures, inventory and 3D Studio routes.',
         };
+      case 'walkthrough':
+        return { title: 'Walkthrough — ArjunOS', description: 'A genuine recorded walkthrough of ArjunOS, when supplied by the owner.' };
       case 'resume':
         return {
           title: 'Résumé — Arjun Subramanya',

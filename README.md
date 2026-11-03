@@ -1,5 +1,12 @@
 # ArjunOS
 
+Public site: <https://arjun2126.github.io/>. Deployment status and evidence are recorded in
+[docs/PROGRESS.md](docs/PROGRESS.md).
+
+**Owner updates:** [Content Studio upload → review → save → validate → PR → deploy](docs/CONTENT_UPDATES.md).
+Run `npm run dev` for local editing and `npm run publish:prepare` to validate a reviewed update.
+No script automatically commits or pushes content. [Pages workflow](docs/GITHUB_PAGES.md).
+
 An interactive, macOS-inspired portfolio for Arjun Subramanya. The desktop presents three layered applications — a main ArjunOS window, Recruiter Mode, and a Salesforce Workspace — alongside eight public repositories, a recruiter-friendly standalone view, an AI engineering showcase, a verified Northgate live-site fallback, and a local-only Content Studio.
 
 Built with React 19, TypeScript, Vite, and CSS. No production backend, authentication, database, paid service, or external font CDN.

@@ -1,5 +1,25 @@
 # Persistent progress
 
+## Active launch milestone — 3 November 2026
+
+The owner's new launch authorization supersedes historical no-push/no-deployment gates below.
+Verified clean preparation branch at f80483b; origin/main remained 84ef0fa after fetch.
+Repository is public; authenticated GitHub account matches the owner. Pages was already legacy
+branch publishing. All work is confined to the separate preparation clone.
+
+Launch implementation: local portrait/gallery/PDF persistence; project titles/links; hosted-video
+integration; reviewed-hash publication gate; Node 22 Actions PR checks and main-only deployment.
+Existing public assets and curated professional facts remain unchanged; generated seed is empty.
+TypeScript, 78 baseline unit/API tests and 30 browser journeys passed. Isolated real-browser
+image upload/save/refresh/restart/build/static-assets roundtrip passed without changing originals.
+Independent review identified quota handling, partial media overwrites and cross-view content
+consistency issues; these were corrected. Re-review approved initial publication with no blocker:
+all 46 public files byte-identical, empty seed, TypeScript/static/privacy checks passing.
+Latest unit/API suite: 87 passing tests across 8 files. Latest browser suite: 30/30, no retries.
+The isolated workflow also passed a 5.9 MB synthetic PDF upload/save/restart/build/download test.
+All fixture data was removed, and the approved seed/manifest remained unchanged.
+Publication/live verification are not yet complete. Current owner workflow: CONTENT_UPDATES.md.
+
 ## Current state
 
 ArjunOS is a reference-driven macOS-style portfolio with approved professional content, a working local Content Studio, a licensed photographic wallpaper, a verified Northgate live-site fallback, and 20 static route documents. The desktop composes three windows, a Dock and a translucent menu bar; Recruiter Mode also has a standalone URL. The final 2 November polish pass is complete and validated; the genuine portrait remains the only missing input in the homepage hero.

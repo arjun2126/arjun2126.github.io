@@ -63,6 +63,7 @@ export function MenuBar({
       label: 'ArjunOS',
       items: [
         { label: 'About this portfolio', href: '/about/' },
+        { label: 'Walkthrough', href: '/walkthrough/' },
         { label: 'Recruiter Mode', href: '/recruiter/' },
         { label: 'separator', separator: true },
         { label: 'GitHub profile', href: profile.github, external: true },

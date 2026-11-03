@@ -2599,6 +2599,10 @@
 
 /* ---------- Content Studio ---------- */
 
+.os-walkthrough { padding: 24px; overflow-wrap: anywhere; }
+.os-walkthrough section { margin: 24px 0; }
+.os-walkthrough__player { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 12px; background: #111; }
+
 .os-studio {
   display: flex;
   flex-direction: column;

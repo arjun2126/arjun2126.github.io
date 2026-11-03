@@ -8,6 +8,7 @@
  */
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import {
   extraProjects,
   featuredProjects,
@@ -28,6 +29,8 @@ import {
   salesforceTabs,
 } from '../src/content/expertise';
 import { northgateLive, northgateLiveHome } from '../src/content/northgateLive';
+import { walkthrough } from '../src/content/walkthrough';
+import { generatedDraft } from '../src/content/generated';
 import { metaForRoute } from '../src/lib/meta';
 import type { AppRoute, Route } from '../src/lib/router';
 
@@ -36,6 +39,8 @@ const dist = path.join(root, 'dist');
 const siteUrl = (process.env.SITE_URL ?? 'https://arjun2126.github.io').replace(/\/+$/, '');
 const reviewed = '2 November 2026';
 const buildDate = new Date().toISOString().slice(0, 10);
+const commit = process.env.GITHUB_SHA || execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8', cwd: root }).trim();
+await writeFile(path.join(dist, 'deployment.json'), `${JSON.stringify({ commit, site: siteUrl })}\n`);
 
 const template = await readFile(path.join(dist, 'index.html'), 'utf8');
 const staticCss = await readFile(path.join(root, 'scripts', 'static-fallback.css'), 'utf8');
@@ -126,7 +131,7 @@ ${header()}
   <section class="st-hero">
     <p class="st-kicker">Independent software portfolio</p>
     <h1>Hi, I’m <em>Arjun Subramanya.</em></h1>
-    <p class="st-page-tagline">Salesforce Developer | Software Engineering | AI Automation</p>
+    <p class="st-page-tagline">${escapeHtml(generatedDraft?.profile.headline || 'Salesforce Developer | Software Engineering | AI Automation')}</p>
     <p class="st-lede">I build Salesforce applications, native Apple experiences and AI-assisted engineering workflows — documented in public repositories, including what is still in progress.</p>
     <div class="st-actions">
       <a class="st-button st-button--primary" href="/projects/">Explore the desktop</a>
@@ -256,6 +261,7 @@ ${header()}
     <p class="st-lede">Approved professional experience, education and certifications alongside independent project work. Private contact details and credential IDs remain excluded.</p>
     <div class="st-actions">
       <a class="st-button st-button--primary" href="${escapeHtml(profile.github)}" rel="noopener noreferrer">GitHub profile</a>
+      ${profile.resumePdf ? `<a class="st-button" href="${escapeHtml(profile.resumePdf)}" download="arjunos-resume.pdf">${escapeHtml(profile.resumePdfLabel)}</a>` : ''}
       <a class="st-button" href="/contact/">Contact routes</a>
     </div>
   </div>
@@ -307,7 +313,7 @@ ${header()}
           <div class="st-skill-row">${group.skills
             .map(
               (skill) =>
-                `<a href="/projects/${skill.projects[0]}/">${escapeHtml(skill.name)}</a>`,
+                skill.projects[0] ? `<a href="/projects/${skill.projects[0]}/">${escapeHtml(skill.name)}</a>` : `<span>${escapeHtml(skill.name)}</span>`,
             )
             .join('')}</div>
         </div>`,
@@ -590,6 +596,12 @@ const appRoute = (app: AppRoute, routePath: string): Route => ({
 
 const pages: Page[] = [
   {
+    route: appRoute('walkthrough', '/walkthrough/'),
+    output: 'walkthrough/index.html',
+    html: `${header()}<main id="st-main" class="st-main"><h1>${escapeHtml(walkthrough.title)}</h1><p>${escapeHtml(walkthrough.summary)}</p>${walkthrough.supplied ? `<a href="${escapeHtml(walkthrough.externalUrl)}">Open approved recording</a>` : '<p>Recording not yet supplied. No simulated demonstration is shown.</p>'}${footer()}</main>`,
+    schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: 'Walkthrough — ArjunOS' },
+  },
+  {
     route: homeRoute,
     output: 'index.html',
     html: homePage(),
@@ -830,6 +842,7 @@ const protectedRoutes = [
   '/ai/',
   '/experience/',
   '/northgate-live/',
+  '/walkthrough/',
   '/resume/',
   '/skills/',
   '/about/',

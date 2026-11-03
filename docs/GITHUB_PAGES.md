@@ -1,56 +1,29 @@
-# GitHub repository and Pages preparation
+# GitHub Pages deployment
 
-## Current authorization
+The 3 November 2026 owner launch request supersedes the previous local-only authorization.
+Only previously approved portfolio content is authorized. No new portrait, PDF, email or private
+document is included. The original development workspace stays unchanged.
 
-Local preparation and a local commit only. Do not push, merge, enable Pages,
-deploy, buy a domain, or publish without a new owner authorization.
+- Repository: https://github.com/arjun2126/arjun2126.github.io
+- Website: https://arjun2126.github.io/
+- Preserve `main` history: audited branch → reviewed PR → passing checks → merge. Never force-push.
+- Pages source: **GitHub Actions** in Settings → Pages → Build and deployment.
+- `.github/workflows/pages.yml` validates PRs and builds/deploys approved merges to `main`.
+  Manual dispatch on `main` cannot bypass verification.
+- Node 22; `npm ci`; historical/tree privacy scan; TypeScript; unit/API tests; isolated upload test;
+  production build/static verification; Chromium browser/accessibility tests, retries disabled.
+- `SITE_URL=https://arjun2126.github.io`; Vite base `/`; only `dist/` uploaded through
+  `actions/upload-pages-artifact@v3`, then `actions/deploy-pages@v4` with `configure-pages@v5`.
+- Default read-only contents permission; deployment alone gets Pages write and OIDC permissions.
+  The `github-pages` environment permits `main`, with serialized deployments.
+- Twenty public directory-index routes, custom root `404.html`, sitemap, canonicals and `.nojekyll`.
+  Unknown URLs must return a real HTTP 404. No SPA redirect is needed.
+- Public assets/content require hashes in `publication-approved.json`. Ignored drafts and backups
+  cannot silently enter a production build. Studio's local server plugin is not deployed.
 
-The preparation branch descends from the remote's existing `main` README commit
-`84ef0fa39e98e4564d08a3081b6a647d784096a2`. Never replace that history or force-push.
+See [CONTENT_UPDATES.md](CONTENT_UPDATES.md) for uploads and publication decisions, and
+[PROGRESS.md](PROGRESS.md) for verified evidence. Configuration alone is not deployment success.
 
-## Static hosting contract
-
-- Repository: <https://github.com/arjun2126/arjun2126.github.io>.
-- Approved production origin: `https://arjun2126.github.io` (user site, no repository subpath).
-- Vite `base` is explicitly `/`.
-- `npm run build` defaults `SITE_URL` to that public origin for canonical URLs,
-  Open Graph URLs and sitemap generation. An explicit `SITE_URL` may override it
-  for a separately approved host; it is public build metadata, not a secret.
-- Only `dist/` is a hosting artifact. Source files, conversation imports,
-  authoring backups, test reports and environment files must never be uploaded.
-- Nineteen public directory-index routes plus `404.html` are prerendered;
-  `404/index.html` is an additional identical copy. Local links/assets, metadata,
-  sitemap and `.nojekyll` are verified during every build.
-- GitHub Pages uses root `404.html` for unknown URLs. Do not add SPA redirects:
-  direct routes already have their own static HTML documents.
-- Content Studio has no production save endpoint. Its client is gated to
-  loopback hosts. Uploaded assets and generated JSON require a new privacy review
-  before intentional staging; `.gitignore` alone cannot prevent content publication.
-
-## Future activation — NOT performed
-
-After separate approval, use GitHub Actions as the Pages source, not branch
-publishing. A future deployment workflow should be **manual (`workflow_dispatch`)
-only**, require a protected `github-pages` environment reviewer, build/test with
-Node 22 and `npm ci`, install Chromium with Playwright, and upload **only `dist/`**
-using the official Pages artifact action. Give `pages: write` and `id-token: write`
-only to the deployment job, and serialize deployments with a Pages concurrency
-group. Do not add push-triggered deployment.
-
-No deploy workflow is included in this commit: merely pushing this branch must
-not execute a repository-provided deployment. Existing remote Pages settings were
-not changed or activated and must be checked by the owner before any first push.
-
-## Reproduce local validation
-
-```bash
-npm ci
-npm run check
-npm test
-npm run build
-CI=1 npm run test:e2e -- --retries=0
-```
-
-For explicit no-retry runs use `CI=1 npx playwright test --retries=0` after building;
-the `test:e2e` script also builds. Git ignore probes and the full reviewed file
-manifest are recorded in `REPOSITORY_PREPARATION.md` and `FIRST_COMMIT_FILES.txt`.
+If API configuration is denied, an administrator must select **GitHub Actions** as the Pages source,
+enable Actions if disabled and allow `main` to deploy to `github-pages`. No paid host, domain,
+database or authentication service is required.

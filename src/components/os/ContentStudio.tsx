@@ -7,6 +7,7 @@ import {
   FileText,
   ImagePlus,
   Lock,
+  Play,
   RotateCcw,
   Save,
   ShieldCheck,
@@ -17,7 +18,11 @@ import { useEffect, useRef, useState } from 'react';
 import { profile, skillGroups } from '../../content/profile';
 import { projects } from '../../content/projects';
 import { professional } from '../../content/professional';
+import { savedDraft } from '../../content/generated';
 import {
+  MAX_IMAGE_BYTES,
+  MAX_PDF_BYTES,
+  classifyVideoUrl,
   validateContentDraft,
   type StudioCareerEntry as CareerEntry,
   type StudioDraft as Draft,
@@ -25,12 +30,12 @@ import {
 } from '../../lib/studioContent';
 import { isLocalEnvironment } from '../../lib/local';
 
-type Section = 'profile' | 'career' | 'skills' | 'projects' | 'media' | 'resume';
+type Section = 'profile' | 'career' | 'skills' | 'projects' | 'media' | 'resume' | 'walkthrough';
 
 const STORAGE_KEY = 'arjunos.content-studio.v1';
-const MAX_IMAGE_BYTES = 8_000_000;
 
 function defaultDraft(): Draft {
+  if (savedDraft) return structuredClone(savedDraft);
   return {
     profile: {
       name: professional.name,
@@ -44,6 +49,7 @@ function defaultDraft(): Draft {
     },
     career: {
       experience: professional.employment.map((entry) => ({
+        id: entry.id,
         period: entry.period,
         title: entry.title,
         org: `${entry.employer} · ${entry.location}`,
@@ -62,11 +68,17 @@ function defaultDraft(): Draft {
     })),
     projects: projects.map((project) => ({
       slug: project.slug,
+      name: project.name,
       tagline: project.tagline,
       summary: project.summary,
       stack: project.stack,
+      repo: project.repo,
+      link: project.link ?? '',
+      linkLabel: project.linkLabel ?? '',
     })),
     media: [],
+    resume: { pdf: profile.resumePdf, label: profile.resumePdf ? profile.resumePdfLabel : '' },
+    walkthrough: { url: '', title: '', summary: '' },
     sources: [],
   };
 }
@@ -82,8 +94,15 @@ function loadDraft(): Draft {
       profile: { ...base.profile, ...parsed.profile },
       career: { ...base.career, ...parsed.career },
       skills: parsed.skills?.length ? parsed.skills : base.skills,
-      projects: parsed.projects?.length ? parsed.projects : base.projects,
+      projects: parsed.projects?.length
+        ? base.projects.map((project) => {
+            const saved = parsed.projects?.find((entry) => entry.slug === project.slug);
+            return saved ? { ...project, ...saved } : project;
+          })
+        : base.projects,
       media: parsed.media ?? base.media,
+      resume: { ...base.resume, ...parsed.resume },
+      walkthrough: { ...base.walkthrough, ...parsed.walkthrough },
       sources: parsed.sources ?? base.sources,
     };
   } catch {
@@ -193,12 +212,17 @@ export function ContentStudio() {
   const [historyCount, setHistoryCount] = useState(0);
   const photoInput = useRef<HTMLInputElement>(null);
   const mediaInput = useRef<HTMLInputElement>(null);
+  const pdfInput = useRef<HTMLInputElement>(null);
   const local = isLocalEnvironment();
 
   useEffect(() => {
     if (!local) return;
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
-    setStatus(`Saved locally · ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`);
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
+      setStatus(`Saved locally · ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`);
+    } catch {
+      setStatus('Browser storage is full. Draft remains in memory; choose Save to project before closing or refreshing.');
+    }
   }, [draft, local]);
 
   if (!local) {
@@ -244,7 +268,11 @@ export function ContentStudio() {
       ),
     }));
 
-  const updateProject = (slug: string, field: 'tagline' | 'summary' | 'stack', value: string) =>
+  const updateProject = (
+    slug: string,
+    field: 'name' | 'tagline' | 'summary' | 'stack' | 'repo' | 'link' | 'linkLabel',
+    value: string,
+  ) =>
     setDraft((current) => ({
       ...current,
       projects: current.projects.map((project) =>
@@ -293,6 +321,41 @@ export function ContentStudio() {
       setDraft((current) => ({ ...current, media: [...current.media, ...next] }));
       setStatus(`${next.length} image${next.length === 1 ? '' : 's'} added to the local draft.`);
     }
+  };
+
+  const onResumePdf = async (file: File | undefined) => {
+    if (!file) return;
+    setImportError('');
+    if (!/\.pdf$/i.test(file.name) || (file.type && file.type !== 'application/pdf')) {
+      setStatus('The downloadable résumé must be a PDF file.');
+      return;
+    }
+    if (file.size > MAX_PDF_BYTES) {
+      setStatus(
+        `That PDF is larger than ${Math.round(MAX_PDF_BYTES / 1_000_000)} MB; export a smaller, web-safe PDF.`,
+      );
+      return;
+    }
+    const buffer = new Uint8Array(await file.arrayBuffer());
+    const header = String.fromCharCode(...buffer.slice(0, 5));
+    if (header !== '%PDF-') {
+      setStatus('That file does not contain a valid PDF header.');
+      return;
+    }
+    let binary = '';
+    const chunkSize = 0x8000;
+    for (let offset = 0; offset < buffer.length; offset += chunkSize) {
+      binary += String.fromCharCode(...buffer.subarray(offset, offset + chunkSize));
+    }
+    setDraft((current) => ({
+      ...current,
+      resume: {
+        ...current.resume,
+        pdf: `data:application/pdf;base64,${window.btoa(binary)}`,
+        label: current.resume.label || 'Résumé — Arjun Subramanya (PDF)',
+      },
+    }));
+    setStatus('PDF added to the draft. Review it for private details, then save to project.');
   };
 
   const onResume = async (file: File | undefined) => {
@@ -394,18 +457,27 @@ export function ContentStudio() {
         updatedAt?: string;
         historyCount?: number;
         photo?: string;
+        resumePdf?: string;
         mediaCount?: number;
+        content?: Draft;
       };
       if (!response.ok || !result.ok) {
         throw new Error(result.errors?.join(' ') || 'The local save failed.');
       }
       setHistoryCount(result.historyCount ?? 0);
       setSavedAt(result.updatedAt ?? new Date().toISOString());
-      if (result.photo) {
+      if (result.photo !== undefined) {
         setDraft((current) => ({ ...current, profile: { ...current.profile, photo: result.photo! } }));
       }
+      if (result.resumePdf !== undefined) {
+        setDraft((current) => ({
+          ...current,
+          resume: { ...current.resume, pdf: result.resumePdf! },
+        }));
+      }
+      if (result.content) setDraft(result.content);
       setStatus(
-        `Saved to project${result.mediaCount ? ` with ${result.mediaCount} image${result.mediaCount === 1 ? '' : 's'}` : ''}. Run npm run build, then reload the site.`,
+        `Saved to project${result.mediaCount ? ` with ${result.mediaCount} image${result.mediaCount === 1 ? '' : 's'}` : ''}. Review the diff, then run npm run publish:prepare.`,
       );
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'The local save failed.');
@@ -428,9 +500,10 @@ export function ContentStudio() {
     { id: 'profile', label: 'Professional Profile', hint: 'Name, headline, bio, photo' },
     { id: 'career', label: 'Career', hint: 'Experience, education, awards' },
     { id: 'skills', label: 'Skills', hint: 'Grouped capabilities' },
-    { id: 'projects', label: 'Projects', hint: 'Copy, stack, links' },
+    { id: 'projects', label: 'Projects', hint: 'Titles, copy, stack, links' },
     { id: 'media', label: 'Media', hint: 'Screenshots and ordering' },
-    { id: 'resume', label: 'Résumé', hint: 'Import and review' },
+    { id: 'resume', label: 'Résumé', hint: 'PDF download and import' },
+    { id: 'walkthrough', label: 'Walkthrough', hint: 'Hosted video URL' },
   ];
 
   const conflicts = pending
@@ -453,9 +526,10 @@ export function ContentStudio() {
           </p>
           <h1>Content Studio</h1>
           <p className="os-studio__intro">
-            Edit professional information, upload the real photograph and project screenshots, and
-            import DOCX or Markdown. Changes stay local; saving writes validated content and backups
-            into this project so the next build uses them.
+            Edit professional information, upload the real photograph, project screenshots and an
+            approved résumé PDF, configure the hosted walkthrough, and import DOCX or Markdown.
+            Changes stay local; saving writes validated content and media into this project so the
+            next build, commit and deployment use them.
           </p>
         </div>
         <div className="os-studio__actions">
@@ -580,6 +654,11 @@ export function ContentStudio() {
                     A portrait is only published after you approve it. Until then the site shows an
                     explicit placeholder, never a generated likeness.
                   </p>
+                  <p className="os-studio__hint">
+                    {draft.profile.photo.startsWith('/media/')
+                      ? `Saved as ${draft.profile.photo} · commit it with the content change to publish.`
+                      : 'Uploading keeps the image in this draft until you choose Save to project.'}
+                  </p>
                   {draft.profile.photo ? (
                     <button
                       type="button"
@@ -598,12 +677,12 @@ export function ContentStudio() {
             <div className="os-studio__form">
               <h2>Career</h2>
               <p className="os-studio__hint">
-                Only add employment, education or certifications you can verify. The published site
-                currently asserts none of these.
+                Only add employment, education or certifications you can verify. Review all changes
+                against your approved professional record before publication.
               </p>
               {draft.career.experience.map((entry, index) => (
-                <fieldset key={`${entry.title}-${index}`} className="os-studio__fieldset">
-                  <legend>Project experience {index + 1}</legend>
+                <fieldset key={index} className="os-studio__fieldset">
+                  <legend>Professional experience {index + 1}</legend>
                   <div className="os-studio__grid">
                     <label>
                       Period
@@ -647,7 +726,7 @@ export function ContentStudio() {
                     ...current,
                     career: {
                       ...current.career,
-                      experience: [...current.career.experience, { ...blankCareer }],
+                      experience: [...current.career.experience, { ...blankCareer, id: crypto.randomUUID() }],
                     },
                   }))
                 }
@@ -751,6 +830,14 @@ export function ContentStudio() {
                 .map((project) => (
                   <div key={project.slug} className="os-studio__stack">
                     <label>
+                      Title
+                      <input
+                        value={project.name ?? ''}
+                        placeholder={project.name}
+                        onChange={(event) => updateProject(project.slug, 'name', event.target.value)}
+                      />
+                    </label>
+                    <label>
                       Tagline
                       <input
                         value={project.tagline}
@@ -772,9 +859,34 @@ export function ContentStudio() {
                         onChange={(event) => updateProject(project.slug, 'stack', event.target.value)}
                       />
                     </label>
+                    <div className="os-studio__grid">
+                      <label>
+                        Source repository URL
+                        <input
+                          value={project.repo ?? ''}
+                          onChange={(event) => updateProject(project.slug, 'repo', event.target.value)}
+                        />
+                      </label>
+                      <label>
+                        Live project URL (optional)
+                        <input
+                          value={project.link ?? ''}
+                          placeholder="https://"
+                          onChange={(event) => updateProject(project.slug, 'link', event.target.value)}
+                        />
+                      </label>
+                      <label>
+                        Live link label
+                        <input
+                          value={project.linkLabel ?? ''}
+                          placeholder="Open live project"
+                          onChange={(event) => updateProject(project.slug, 'linkLabel', event.target.value)}
+                        />
+                      </label>
+                    </div>
                     <p className="os-studio__hint">
-                      Repository URL and revision come from the verified source register and cannot be
-                      edited here.
+                      Only publish links you have verified. The source revision and repository notes stay
+                      with the reviewed source register.
                     </p>
                   </div>
                 ))}
@@ -785,8 +897,9 @@ export function ContentStudio() {
             <div className="os-studio__form">
               <h2>Media</h2>
               <p className="os-studio__hint">
-                Screenshots and diagrams stay in this browser draft. Export the JSON to hand approved
-                media to the build step; nothing is uploaded.
+                Upload genuine screenshots, edit captions and order them. The first image becomes the
+                cover; existing verified gallery evidence is preserved. Save to project writes optimized
+                WebP files to public/media/. Review these files before committing.
               </p>
               <div className="os-studio__grid">
                 <label>
@@ -890,6 +1003,30 @@ export function ContentStudio() {
             <div className="os-studio__form">
               <h2>Résumé</h2>
               <p className="os-studio__hint">
+                Upload only an approved, web-safe PDF. Remove phone, street address, credential IDs and
+                other private details first. Uploading does not approve or publish a document.
+              </p>
+              <label className="os-studio__upload">
+                Upload downloadable résumé PDF (maximum 6 MB)
+                <input ref={pdfInput} type="file" accept="application/pdf,.pdf"
+                  aria-label="Upload downloadable résumé PDF"
+                  onChange={(event) => void onResumePdf(event.target.files?.[0])} />
+              </label>
+              <label>
+                PDF download label
+                <input value={draft.resume.label} onChange={(event) => setDraft((current) => ({
+                  ...current, resume: { ...current.resume, label: event.target.value },
+                }))} />
+              </label>
+              {draft.resume.pdf ? (
+                <div className="os-studio__actions">
+                  <a className="os-button" href={draft.resume.pdf} download="arjunos-resume.pdf">Download draft PDF for review</a>
+                  <button className="os-button" type="button" onClick={() => setDraft((current) => ({
+                    ...current, resume: { ...current.resume, pdf: '' },
+                  }))}>Remove PDF</button>
+                </div>
+              ) : <p>No PDF supplied. The existing web résumé remains available.</p>}
+              <p className="os-studio__hint">
                 Import DOCX, Markdown, text or JSON. DOCX text is extracted in this browser; only
                 reviewed fields are applied and every import is recorded with its source.
               </p>
@@ -985,6 +1122,22 @@ export function ContentStudio() {
                   </ul>
                 )}
               </div>
+            </div>
+          ) : null}
+          {section === 'walkthrough' ? (
+            <div className="os-studio__form">
+              <h2>Walkthrough</h2>
+              <p className="os-studio__hint">Add only an approved recording of genuine applications. Leave empty until supplied. YouTube, Vimeo, Loom and direct HTTPS MP4/WebM URLs are supported.</p>
+              {(['url', 'title', 'summary'] as const).map((field) => (
+                <label key={field}>
+                  {field === 'url' ? 'Hosted video URL' : field === 'title' ? 'Video title' : 'Video summary'}
+                  <input value={draft.walkthrough[field]} onChange={(event) => setDraft((current) => ({
+                    ...current, walkthrough: { ...current.walkthrough, [field]: event.target.value },
+                  }))} />
+                </label>
+              ))}
+              <p><Play size={16} aria-hidden="true" /> {draft.walkthrough.url ? `Player: ${classifyVideoUrl(draft.walkthrough.url).provider}` : 'No recording supplied. An honest placeholder will remain.'}</p>
+              <a className="os-button" href="/walkthrough/" target="_blank" rel="noopener noreferrer">Preview walkthrough</a>
             </div>
           ) : null}
         </div>
