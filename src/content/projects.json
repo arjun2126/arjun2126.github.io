@@ -1,0 +1,668 @@
+{
+  "projects": [
+    {
+      "slug": "northgate-motors",
+      "name": "Northgate Motors",
+      "mark": "N",
+      "category": "Salesforce",
+      "tags": ["Salesforce", "Apple", "Analytics", "Backend"],
+      "featured": true,
+      "status": "Independent demo",
+      "statusTone": "demo",
+      "tagline": "A fictional dealership, built end to end on Salesforce.",
+      "summary": "A six-page Experience Cloud buyer site with a WebGL concept-car studio, backed by the sales, finance and service operations behind a working dealership.",
+      "seoDescription": "Northgate Motors is a fictional Salesforce Experience Cloud dealership demo: a six-page buyer site, WebGL concept studio, Owner Portal and sales operations.",
+      "repo": "https://github.com/arjun2126/northgate-motors-demo/tree/release/buyer-3-1",
+      "repoRevision": "release/buyer-3-1",
+      "repoNote": "Public repository reviewed at release/buyer-3-1 on 1 November 2026.",
+      "accent": "#9d4b23",
+      "accentSoft": "#f1e2d3",
+      "cover": {
+        "kind": "image",
+        "src": "/projects/northgate-motors-demo/home.webp",
+        "srcSmall": "/projects/northgate-motors-demo/home-800.webp",
+        "alt": "Northgate Motors buyer home page with an orange coupé and the headline “Drive something worth arriving in.”",
+        "caption": "Buyer home page from the public repository."
+      },
+      "hero": {
+        "src": "/projects/northgate-motors-demo/vehicle-detail.webp",
+        "srcSmall": "/projects/northgate-motors-demo/vehicle-detail-800.webp",
+        "alt": "A Northgate Motors vehicle listing for a 2022 Cascadia EX with a large car photograph and specification panel.",
+        "caption": "A deep-linkable vehicle listing with specifications, availability and inquiry actions."
+      },
+      "stack": ["Salesforce Platform", "Experience Cloud", "Lightning Web Components", "Apex", "Three.js", "Node 22"],
+      "highlights": [
+        {
+          "title": "One component, six routes",
+          "body": "ngBuyerSite renders home, inventory, vehicle details, the 3D studio, about and contact through explicit page modes. The route comes from Experience Builder, not URL guessing."
+        },
+        {
+          "title": "Guest-safe by construction",
+          "body": "The public catalogue is served through a purpose-built Apex DTO. Guests receive no native object permissions and no record IDs beyond the public data transfer object."
+        },
+        {
+          "title": "A real 3D studio",
+          "body": "A pinned Three.js build and a licensed glTF concept car support three paint finishes, orbit and zoom controls, plus a poster fallback on low-capability devices."
+        },
+        {
+          "title": "Operations behind the storefront",
+          "body": "Lead intake, queue routing, quotes, financing, delivery, service cases and an authenticated Owner Portal sit behind the public buyer experience."
+        }
+      ],
+      "evidence": [
+        {
+          "value": "80 / 80",
+          "label": "Buyer contracts passing",
+          "detail": "Node 22 VM and static LWC contracts, recorded in the repository's verification table."
+        },
+        {
+          "value": "6 / 6",
+          "label": "Public routes verified",
+          "detail": "Each live route uses the same component with the correct page mode."
+        },
+        {
+          "value": "WebGL",
+          "label": "3D Studio checked",
+          "detail": "Hardware WebGL canvas, drag and zoom, and paint selection were verified in the demo org."
+        },
+        {
+          "value": "Guarded",
+          "label": "Portal isolation",
+          "detail": "All Owner Portal routes redirect anonymous visitors to login."
+        }
+      ],
+      "evidenceNote": "These results are quoted from the repository's own verification record. They describe the demo org, not a production deployment, and were not re-run for this portfolio.",
+      "limitations": [
+        "Everything is fictional: vehicles, prices, photographs, people and locations are synthetic or illustrative. Nothing is an offer, reservation or availability claim.",
+        "This is not a licensed Automotive Cloud, CPQ, Field Service or Loyalty install. Those are documented seams and simulations, not managed-package features.",
+        "The Apex Concept is a concept car, not inventory. Finishes are visual only, and the Priority List is interest rather than allocation.",
+        "Screen-reader output, Safari/WebKit, real iOS and Android devices, and a full authenticated Owner Portal walk-through in the latest cycle remain unverified."
+      ],
+      "gallery": [
+        {
+          "src": "/projects/northgate-motors-demo/inventory.webp",
+          "thumb": "/projects/northgate-motors-demo/inventory-800.webp",
+          "alt": "Northgate Motors inventory page with six dependent filters and a three-column listing grid.",
+          "caption": "Inventory: six dependent filters, deep-linkable vehicle details and paginated listings."
+        },
+        {
+          "src": "/projects/northgate-motors-demo/vehicle-detail.webp",
+          "alt": "A Northgate vehicle detail page with a large vehicle photograph and specification panel.",
+          "caption": "Vehicle detail: record colour, condition and list price with a clear ownership path."
+        },
+        {
+          "src": "/projects/northgate-motors-demo/studio-3d.webp",
+          "alt": "The Apex Concept 3D studio with a red concept car and paint finish controls.",
+          "caption": "3D Studio: the Apex Concept with illustrative Carmine, Pearl and Graphite finishes."
+        },
+        {
+          "src": "/projects/northgate-motors-demo/about.webp",
+          "alt": "The Northgate Motors about page, an editorial layout in cream and black.",
+          "caption": "About: the fictional dealership’s story, kept separate from product claims."
+        },
+        {
+          "src": "/projects/northgate-motors-demo/contact.webp",
+          "alt": "The Northgate Motors contact page with an inquiry form.",
+          "caption": "Contact: inquiry intake with a synthetic email rule and queue routing."
+        },
+        {
+          "src": "/projects/northgate-motors-demo/mobile-home.webp",
+          "alt": "The Northgate Motors home page at a 390-pixel mobile width.",
+          "caption": "Buyer home at 390 px. Captured from the same demo org.",
+          "tall": true
+        },
+        {
+          "src": "/projects/northgate-motors-demo/mobile-inventory.webp",
+          "alt": "The Northgate Motors inventory page at a 390-pixel mobile width.",
+          "caption": "Inventory at 390 px, including the stacked filter controls.",
+          "tall": true
+        },
+        {
+          "src": "/projects/northgate-motors-demo/mobile-studio.webp",
+          "alt": "The Northgate Motors 3D studio at a 390-pixel mobile width.",
+          "caption": "3D Studio at 390 px, with the touch-friendly viewer.",
+          "tall": true
+        }
+      ],
+      "galleryNote": "Genuine screenshots from the public repository's docs/screenshots folder. All data visible is fictional demo data.",
+      "seoImage": "/og/arjunos-cover.png"
+    },
+    {
+      "slug": "vantage",
+      "name": "Vantage",
+      "mark": "V",
+      "category": "Apple",
+      "tags": ["Apple"],
+      "featured": true,
+      "status": "Personal project",
+      "statusTone": "personal",
+      "tagline": "Tennis scoring, tournaments and stats across iPhone and Apple Watch.",
+      "summary": "A native iOS, watchOS and widget app for playing and tracking tennis: live scoring, knockout and round-robin tournaments, Glicko-2 ratings, Watch workouts and Live Activities.",
+      "seoDescription": "Vantage is a native iOS, watchOS and widget tennis app with live scoring, tournaments, Glicko-2 ratings, Watch workouts and Live Activities.",
+      "repo": "https://github.com/arjun2126/TennisScore",
+      "repoRevision": "main",
+      "repoNote": "Public repository (TennisScore) reviewed on main. The app is branded Vantage in its README.",
+      "accent": "#2e5f43",
+      "accentSoft": "#e3eccb",
+      "cover": {
+        "kind": "typographic",
+        "alt": "Typographic Vantage cover with a tennis score motif. No app screenshot is available.",
+        "caption": "Typographic cover. The repository publishes no app screenshots."
+      },
+      "stack": ["Swift", "iOS", "watchOS", "WidgetKit", "ActivityKit", "HealthKit", "Glicko-2"],
+      "highlights": [
+        {
+          "title": "A complete scoring engine",
+          "body": "Sets, games and points with deuce, tie-breaks and configurable set lengths — the same match state can be scored on the phone or the Watch."
+        },
+        {
+          "title": "Tournaments and leagues",
+          "body": "Single-elimination knockout brackets, seeded or shuffled draws, round-robin standings and scheduled fixtures that launch directly into the live scorer."
+        },
+        {
+          "title": "Built for the wrist",
+          "body": "The Watch companion mirrors phone-started matches, can score independently, and drives a HealthKit workout while the match is live."
+        },
+        {
+          "title": "Attention to the edges",
+          "body": "Glicko-2 ratings, career head-to-head stats, Home Screen and Lock Screen widgets, and a Live Activity for the match in progress."
+        }
+      ],
+      "evidence": [
+        {
+          "value": "3",
+          "label": "App targets",
+          "detail": "The iOS app, watchOS companion and Widget extension share published player models."
+        },
+        {
+          "value": "5",
+          "label": "Top-level tabs",
+          "detail": "Score, Rivals, Tournaments, Stats and More, with Events and Creator tools inside More."
+        },
+        {
+          "value": "2",
+          "label": "Platforms",
+          "detail": "iOS 26.5+ and watchOS 26.5+, built with Xcode 26.6 and Swift concurrency."
+        },
+        {
+          "value": "Glicko-2",
+          "label": "Rating engine",
+          "detail": "A RatingsEngine supplies player ratings alongside head-to-head statistics."
+        }
+      ],
+      "evidenceNote": "These details come from the repository README and its documented feature list. No test counts or App Store status are claimed.",
+      "limitations": [
+        "The tournament bracket UI works but is due for a clarity pass: round labels, per-match status and overall tournament progress are not clearly surfaced in the current rendering.",
+        "The repository publishes no screenshots. This portfolio uses a deliberately typographic cover and does not present it as an app capture.",
+        "The README documents a personal project. It does not claim App Store availability, production users or measured performance."
+      ],
+      "gallery": [],
+      "galleryNote": "No screenshots are published in the source repository, so no app imagery is shown here.",
+      "seoImage": "/og/arjunos-cover.png"
+    },
+    {
+      "slug": "nova-grants",
+      "name": "Nova Grants",
+      "mark": "N",
+      "category": "Salesforce",
+      "tags": ["Salesforce"],
+      "featured": true,
+      "status": "Independent demo",
+      "statusTone": "demo",
+      "tagline": "Grant intake, claim adjudication and funding oversight in Salesforce.",
+      "summary": "An independent, fictional Salesforce demonstration of the grant lifecycle: applicant intake, eligibility review, verified claims, reimbursement and executive reporting.",
+      "seoDescription": "Nova Grants is a fictional Salesforce grant-management demo with five-object data modelling, gated claim adjudication, funding safeguards and executive reporting.",
+      "repo": "https://github.com/arjun2126/nova-scotia-grants-salesforce",
+      "repoRevision": "main",
+      "repoNote": "Public repository reviewed on main. The README identifies the demo as independent and fictional.",
+      "accent": "#1f5b8f",
+      "accentSoft": "#dfe8f1",
+      "cover": {
+        "kind": "image",
+        "src": "/projects/nova-scotia-grants-salesforce/dashboard.webp",
+        "srcSmall": "/projects/nova-scotia-grants-salesforce/dashboard-800.webp",
+        "alt": "Nova Grants executive dashboard with four Salesforce charts covering applications, claims, disbursements and capacity.",
+        "caption": "Executive dashboard from the demo org."
+      },
+      "hero": {
+        "src": "/projects/nova-scotia-grants-salesforce/dashboard.webp",
+        "srcSmall": "/projects/nova-scotia-grants-salesforce/dashboard-800.webp",
+        "alt": "Nova Grants executive dashboard with four charts.",
+        "caption": "The coordinator view of the executive dashboard: applications, claims, disbursements and program capacity."
+      },
+      "stack": ["Salesforce", "Apex", "Flow", "Custom objects", "Permission sets", "Reports & dashboards", "Metadata API"],
+      "highlights": [
+        {
+          "title": "A five-object business model",
+          "body": "Program, Application, Claim, Disbursement and Impact Metric sit around the standard Account, with claims and disbursements inheriting application access."
+        },
+        {
+          "title": "A real authorization gate",
+          "body": "Adjudication requires a custom permission and actual Claim Edit access, not a System Administrator profile alone. Claims, applications and programs are locked during processing."
+        },
+        {
+          "title": "Financial logic with guardrails",
+          "body": "Reimbursement is invoice amount × program percentage, rounded half-up and capped at the remaining approved amount. Unique payment references and repeat checks protect ordinary idempotency."
+        },
+        {
+          "title": "A mock ledger, labelled as one",
+          "body": "A Queueable integration tracks Pending, Retrying, Failed and Synced states. No live general ledger is connected and no money is transferred."
+        }
+      ],
+      "evidence": [
+        {
+          "value": "41 / 41",
+          "label": "Deployed tests passing",
+          "detail": "Deployed automated regression, with 92% org-wide coverage including KPI rollup tests."
+        },
+        {
+          "value": "156",
+          "label": "Components validated",
+          "detail": "Standalone Metadata API validation without deployment; 34 test methods passed."
+        },
+        {
+          "value": "$100",
+          "label": "UAT reimbursement",
+          "detail": "A $200 invoice at 50% produced one $100 disbursement, a Synced state and an idempotent repeat."
+        },
+        {
+          "value": "4 + 4",
+          "label": "Reports and dashboard charts",
+          "detail": "The owner verified all four reports and four charts, including coordinator folder access."
+        }
+      ],
+      "evidenceNote": "Results and UAT details are quoted from the repository's verified-status table. Browser evidence does not establish that both personas independently completed adjudication. Records are fictional.",
+      "limitations": [
+        "Not an official Invest Nova Scotia or government implementation. Program parameters and records are fictional, and no money moves.",
+        "Agentforce is not implemented. A future-enhancement list is documented but not presented as completed functionality.",
+        "Direct application overcommitment and parallel-load behavior remain documented limitations in the architecture notes.",
+        "The advisement not to reset or re-adjudicate CLM-0006 for a presentation reflects the demo's recorded state, not a production workflow."
+      ],
+      "gallery": [
+        {
+          "src": "/projects/nova-scotia-grants-salesforce/claim.webp",
+          "thumb": "/projects/nova-scotia-grants-salesforce/claim-800.webp",
+          "alt": "The Adjudicate Claim confirmation dialog listing the safeguards required before processing.",
+          "caption": "Adjudicate Claim: the safeguards are surfaced before the reviewer proceeds."
+        },
+        {
+          "src": "/projects/nova-scotia-grants-salesforce/ledger.webp",
+          "thumb": "/projects/nova-scotia-grants-salesforce/ledger-800.webp",
+          "alt": "A Disbursement record showing Synced GL status, payment reference and external mock transaction ID.",
+          "caption": "A synced disbursement ledger entry with separate payment and mock-transaction references."
+        },
+        {
+          "src": "/projects/nova-scotia-grants-salesforce/application.webp",
+          "thumb": "/projects/nova-scotia-grants-salesforce/application-800.webp",
+          "alt": "A Salesforce Program Application form showing review and funding fields.",
+          "caption": "The standard Program Application form; production-style intake is handled by the New Grant Application Screen Flow."
+        },
+        {
+          "src": "/projects/nova-scotia-grants-salesforce/programs.webp",
+          "thumb": "/projects/nova-scotia-grants-salesforce/programs-800.webp",
+          "alt": "A Salesforce Programs list view with four fictional programs and capacity utilization.",
+          "caption": "Programs list with capacity utilization calculated from approved application commitments."
+        }
+      ],
+      "galleryNote": "Genuine screenshots from the public repository. Two images were cropped to remove an unrelated demo-account email bar; no product UI was altered. All records are fictional.",
+      "seoImage": "/og/arjunos-cover.png"
+    },
+    {
+      "slug": "care-operations-analytics",
+      "name": "Care Operations Analytics",
+      "mark": "C",
+      "category": "Analytics",
+      "tags": ["Analytics", "Backend"],
+      "featured": true,
+      "status": "Personal project",
+      "statusTone": "personal",
+      "tagline": "A funding, operations and risk command center for a fictional care provider.",
+      "summary": "A Python analytics pipeline and dashboard built on synthetic Canadian care data — from data-quality checks and a PostgreSQL-ready star schema to Streamlit, Power BI and Tableau views.",
+      "seoDescription": "Care Operations Analytics is a synthetic-data Python project: 53 quality checks, a PostgreSQL-ready star schema, Streamlit, Power BI and Tableau dashboards and a claims-review risk model.",
+      "repo": "https://github.com/arjun2126/care-operations-analytics",
+      "repoRevision": "main",
+      "repoNote": "Public repository reviewed on main. All data and dashboards are explicitly synthetic.",
+      "accent": "#1f7466",
+      "accentSoft": "#dcebe5",
+      "cover": {
+        "kind": "image",
+        "src": "/projects/care-operations-analytics/powerbi-overview.webp",
+        "srcSmall": "/projects/care-operations-analytics/powerbi-overview-800.webp",
+        "alt": "The Care Portfolio Analytics Power BI dashboard with visit and completed-hour KPIs and service-type charts.",
+        "caption": "Care Portfolio Analytics in Power BI."
+      },
+      "hero": {
+        "src": "/projects/care-operations-analytics/powerbi-overview.webp",
+        "srcSmall": "/projects/care-operations-analytics/powerbi-overview-800.webp",
+        "alt": "Power BI care portfolio dashboard with KPIs, a monthly trend and a service-type comparison.",
+        "caption": "Three reporting surfaces share one synthetic dataset. This is the Power BI care portfolio view."
+      },
+      "stack": ["Python", "pandas", "scikit-learn", "SQL", "PostgreSQL", "Streamlit", "Plotly", "Power BI", "Tableau"],
+      "highlights": [
+        {
+          "title": "Synthetic by design",
+          "body": "The dataset covers 300 clients, 110 workers, 6 funders, 7,500+ service visits, 7,257 claims and 300 reconciliation exceptions, all generated for demonstration."
+        },
+        {
+          "title": "Validation before visualization",
+          "body": "A 53-check data-quality layer separates valid records from invalid ones with audit logging, then produces processed CSV files for analysis."
+        },
+        {
+          "title": "Risk triage, not decisions",
+          "body": "A logistic-regression score prioritizes claims for manual review. It is explicitly a triage aid and must not be used to approve, deny or determine care."
+        },
+        {
+          "title": "Three ways to see the work",
+          "body": "A CSV-first Streamlit app needs no database; the same project also ships PostgreSQL-ready schemas and Power BI and Tableau dashboards."
+        }
+      ],
+      "evidence": [
+        {
+          "value": "53",
+          "label": "Data-quality checks",
+          "detail": "Reusable checks with invalid-record separation and audit logging."
+        },
+        {
+          "value": "7,257",
+          "label": "Synthetic claims",
+          "detail": "Across 7,500+ service visits, 300 clients, 110 workers and 6 funders."
+        },
+        {
+          "value": "0.675",
+          "label": "Risk-model ROC-AUC",
+          "detail": "Precision 0.632, recall 0.299 and F1 0.406 on the test set; modest by design on synthetic data."
+        },
+        {
+          "value": "3",
+          "label": "Reporting surfaces",
+          "detail": "Streamlit, a Power BI workbook and a Tableau executive dashboard."
+        }
+      ],
+      "evidenceNote": "Counts and model metrics are quoted from the project README and model documentation. They describe a synthetic dataset and are not business outcomes.",
+      "limitations": [
+        "Every record is fictional and generated for portfolio demonstration. No real personal, healthcare, client, employee or company data is used.",
+        "The risk model is an interpretable prioritization aid, not an automated decision system. Its metrics are modest and reflect the limits of synthetic data.",
+        "Warehouse migration, dbt, Airflow/Prefect orchestration, role-based access, observability and production calibration are future work, not completed features.",
+        "No hosted deployment, authentication or live data connection is included."
+      ],
+      "gallery": [
+        {
+          "src": "/projects/care-operations-analytics/executive-overview.webp",
+          "thumb": "/projects/care-operations-analytics/executive-overview-800.webp",
+          "alt": "Streamlit Executive Overview page with KPI cards and monthly trend charts.",
+          "caption": "Streamlit Executive Overview: KPIs, monthly trends and a prioritized executive summary."
+        },
+        {
+          "src": "/projects/care-operations-analytics/funding-health.webp",
+          "thumb": "/projects/care-operations-analytics/funding-health-800.webp",
+          "alt": "Streamlit Funding Health page with allocation charts and a client-funder allocation table.",
+          "caption": "Funding Health: allocation against approved spend, with at-risk thresholds."
+        },
+        {
+          "src": "/projects/care-operations-analytics/operations.webp",
+          "thumb": "/projects/care-operations-analytics/operations-800.webp",
+          "alt": "Streamlit Operations page showing worker capacity, documentation delays and visit status.",
+          "caption": "Operations: worker capacity, documentation delays and visit status."
+        },
+        {
+          "src": "/projects/care-operations-analytics/exceptions.webp",
+          "thumb": "/projects/care-operations-analytics/exceptions-800.webp",
+          "alt": "Streamlit Exceptions and Risk page with aging exceptions and a risk-scored claims table.",
+          "caption": "Exceptions & Risk: aging exceptions and the claims-review queue."
+        },
+        {
+          "src": "/projects/care-operations-analytics/tableau-pulse.webp",
+          "thumb": "/projects/care-operations-analytics/tableau-pulse-800.webp",
+          "alt": "Tableau authoring window showing the Care Operations Executive Pulse dashboard.",
+          "caption": "Tableau Executive Pulse, shown in the authoring view."
+        }
+      ],
+      "galleryNote": "Genuine dashboard captures from the public repository. All figures come from synthetic data.",
+      "seoImage": "/og/arjunos-cover.png"
+    },
+    {
+      "slug": "gotcare-ledger",
+      "name": "Gotcare Care Ledger",
+      "mark": "GL",
+      "category": "Salesforce",
+      "tags": ["Salesforce"],
+      "featured": false,
+      "status": "Prototype",
+      "statusTone": "prototype",
+      "tagline": "A Salesforce funding ledger with auditable claim approvals.",
+      "summary": "A prototype for person-directed care funding: care plans, allocations, claims and ledger entries, with atomic Apex approvals and a crossing-threshold balance alert.",
+      "seoDescription": "Gotcare Care Ledger is a Salesforce prototype for person-directed care funding with atomic Apex claim approvals, ledger entries and a low-balance Flow.",
+      "repo": "https://github.com/arjun2126/Gotcare-Ledger",
+      "repoRevision": "main",
+      "repoNote": "Public repository reviewed on main. The project describes itself as a scratch-org prototype.",
+      "accent": "#2c5f48",
+      "accentSoft": "#e4e9d9",
+      "cover": { "kind": "typographic", "alt": "Typographic cover for the Gotcare Care Ledger.", "caption": "Typographic cover. No screenshots are published." },
+      "stack": ["Salesforce", "Apex", "Lightning Web Components", "Flow", "Reports & dashboards"],
+      "highlights": [
+        {
+          "title": "Atomic approval path",
+          "body": "approveClaim validates the claim, checks available funding, updates the allocation and plan, and inserts a ledger entry in one AuraEnabled transaction."
+        },
+        {
+          "title": "A lean data model",
+          "body": "Care Plan → Funding Allocation → Care Claim / Ledger Entry, without an Opportunity or Quote dependency."
+        },
+        {
+          "title": "A deliberate alert",
+          "body": "A record-triggered Flow emails only when a funding allocation crosses below 50% remaining, not on every edit while it stays below."
+        }
+      ],
+      "evidence": [
+        {
+          "value": "4",
+          "label": "Custom objects",
+          "detail": "Care Plan, Funding Allocation, Care Claim and Ledger Entry."
+        },
+        {
+          "value": "Atomic",
+          "label": "Claim approval",
+          "detail": "All DML happens inside one Apex call, so a partial failure rolls back the approval."
+        },
+        {
+          "value": "Crossing-only",
+          "label": "Low-balance alert",
+          "detail": "The Flow fires once when remaining allocation crosses below 50%."
+        }
+      ],
+      "evidenceNote": "Behaviour is described from the public repository documentation. No test counts or deployment receipts are claimed.",
+      "limitations": [
+        "Scratch-org prototype: the org URL is ephemeral and must be recreated from the deployment instructions.",
+        "The low-balance email requires org-wide sender verification, deliverability settings and profile access; it is not a zero-configuration feature.",
+        "Amount meters are updated by the approval path; manual numeric edits are not automatically recomputed.",
+        "No screenshots are published, so this portfolio does not display any."
+      ],
+      "gallery": [],
+      "galleryNote": "No screenshots are published in the source repository.",
+      "seoImage": "/og/arjunos-cover.png"
+    },
+    {
+      "slug": "revops-platform",
+      "name": "Configurable RevOps Platform",
+      "mark": "RR",
+      "category": "Salesforce",
+      "tags": ["Salesforce"],
+      "featured": false,
+      "status": "In progress",
+      "statusTone": "prototype",
+      "tagline": "Deal-desk discount intake with metadata-driven pricing rules.",
+      "summary": "A Salesforce prototype for a configurable enterprise RevOps review flow: discount intake, metadata-driven pricing and approval rules, and a queue-owned Deal Review record.",
+      "seoDescription": "A Salesforce RevOps prototype for deal-desk discount intake with metadata-driven pricing and approval rules. Flows are staged and inactive; the project is in progress.",
+      "repo": "https://github.com/arjun2126/salesforce-revops-demo",
+      "repoRevision": "main",
+      "repoNote": "Public repository reviewed on main. The README records five pending browser Flow interviews.",
+      "accent": "#6b4d32",
+      "accentSoft": "#efe5d8",
+      "cover": { "kind": "typographic", "alt": "Typographic cover for the Configurable RevOps Platform.", "caption": "Typographic cover. No screenshots are published." },
+      "stack": ["Salesforce", "Screen Flow", "Custom Metadata", "Permission sets", "Validation rules"],
+      "highlights": [
+        {
+          "title": "Rules as configuration",
+          "body": "Custom Metadata types carry industry pricing and approval rules, so the review flow can resolve the best applicable cap without Apex."
+        },
+        {
+          "title": "Duplicate-aware intake",
+          "body": "The Flow checks for an open Deal Review on the opportunity and updates it rather than creating another record."
+        },
+        {
+          "title": "Staged honestly",
+          "body": "Three Flow definitions ship Draft and inactive by design. Five browser Flow interviews are still pending in the README's test plan."
+        }
+      ],
+      "evidence": [
+        {
+          "value": "3",
+          "label": "Custom Metadata types",
+          "detail": "Industry mapping, pricing rules and approval rules."
+        },
+        {
+          "value": "5",
+          "label": "Validation rules",
+          "detail": "Range, early-status approval, required approval fields and reviewer ≠ owner checks."
+        },
+        {
+          "value": "Draft",
+          "label": "Flow state",
+          "detail": "All three Flow definitions are inactive and staged for manual UI verification."
+        }
+      ],
+      "evidenceNote": "The repository documents a work-in-progress prototype. This portfolio does not present the Flow interviews as completed.",
+      "limitations": [
+        "Five UI Flow interviews remain pending in the repository's own test plan. The flows are Draft and inactive.",
+        "The Lightning record page is staged but not deployed; report and dashboard folders require manual Setup work.",
+        "No OTHER approval rule exists, so above-cap OTHER cases take a fault path rather than a clean routing path.",
+        "No screenshots are published, so no product imagery is shown."
+      ],
+      "gallery": [],
+      "galleryNote": "No screenshots are published in the source repository.",
+      "seoImage": "/og/arjunos-cover.png"
+    },
+    {
+      "slug": "tennis-lesson-planner",
+      "name": "Tennis Lesson Planner API",
+      "mark": "TL",
+      "category": "Backend",
+      "tags": ["Backend"],
+      "featured": false,
+      "status": "Personal project",
+      "statusTone": "personal",
+      "tagline": "A small FastAPI service that turns player goals into structured lesson plans.",
+      "summary": "Rule-based lesson-plan generation backed by FastAPI, Pydantic validation, SQLite storage and automated API tests; container-ready with Docker.",
+      "seoDescription": "Tennis Lesson Planner API: a Python FastAPI service with Pydantic validation, rule-based lesson templates, SQLite storage, automated tests and Docker.",
+      "repo": "https://github.com/arjun2126/ai-engineering-journey",
+      "repoRevision": "main",
+      "repoNote": "Public repository (ai-engineering-journey) reviewed on main. The project's own README title is Tennis Lesson Planner API.",
+      "accent": "#675225",
+      "accentSoft": "#f2ead3",
+      "cover": { "kind": "typographic", "alt": "Typographic cover for the Tennis Lesson Planner API.", "caption": "Typographic cover. No screenshots are published." },
+      "stack": ["Python", "FastAPI", "Pydantic", "SQLite", "Docker", "pytest"],
+      "highlights": [
+        {
+          "title": "A small, complete surface",
+          "body": "Health, template, create, list and fetch endpoints cover a full lesson-plan loop, with generated OpenAPI docs at /docs."
+        },
+        {
+          "title": "Rules before models",
+          "body": "Built-in templates for beginner, intermediate and advanced players generate plans without requiring an LLM or external service."
+        },
+        {
+          "title": "Local and repeatable",
+          "body": "SQLite storage, pytest tests and a Docker image with a persistent volume make the service easy to run and verify."
+        }
+      ],
+      "evidence": [
+        {
+          "value": "5",
+          "label": "API endpoints",
+          "detail": "Health, template, create, list and fetch routes."
+        },
+        {
+          "value": "3",
+          "label": "Skill-level templates",
+          "detail": "Beginner, intermediate and advanced lesson-plan starting points."
+        },
+        {
+          "value": "SQLite",
+          "label": "Persistence",
+          "detail": "Saved plans survive restarts; the Docker setup mounts a data volume."
+        }
+      ],
+      "evidenceNote": "Details come from the public README and its documented API table. The rule generator is not presented as AI or LLM-powered.",
+      "limitations": [
+        "Lesson plans are rule-based and template-driven, not generated by an LLM.",
+        "There is no authentication, user account model or production database; the project runs locally on SQLite.",
+        "LLM generation, structured-output validation, evaluations and PostgreSQL migration are listed as next steps, not completed features.",
+        "No screenshots are published."
+      ],
+      "gallery": [],
+      "galleryNote": "No screenshots are published in the source repository.",
+      "seoImage": "/og/arjunos-cover.png"
+    },
+    {
+      "slug": "job-search-ops",
+      "name": "Agentic Job Search Workflow",
+      "mark": "JS",
+      "category": "Backend",
+      "tags": ["Backend"],
+      "featured": false,
+      "status": "Personal project",
+      "statusTone": "personal",
+      "tagline": "A privacy-first, local-only CLI for disciplined job search operations.",
+      "summary": "Lane coverage, local posting verification, document-quality audits and CSV tracking — with dry-run defaults, explicit confirmation and dated backups before any write.",
+      "seoDescription": "A privacy-first Python CLI for local job-search operations: lane coverage, posting verification, document audits and CSV tracking with dry-run defaults and backups.",
+      "repo": "https://github.com/arjun2126/agentic-job-search-workflow",
+      "repoRevision": "main",
+      "repoNote": "Public repository reviewed on main. The name is broader than the tool: it is deliberately not an auto-apply agent.",
+      "accent": "#4c4a63",
+      "accentSoft": "#e7e5ec",
+      "cover": { "kind": "typographic", "alt": "Typographic cover for the Agentic Job Search Workflow CLI.", "caption": "Typographic cover. No screenshots are published." },
+      "stack": ["Python", "Typer", "pytest", "YAML", "CSV"],
+      "highlights": [
+        {
+          "title": "Local by default",
+          "body": "No network calls, scraping, browser automation or email sending. The tool operates only on local files and fictional sample data."
+        },
+        {
+          "title": "Writes need consent",
+          "body": "Every write path previews first; persisting requires --no-dry-run --confirm and produces a dated backup before the original is replaced."
+        },
+        {
+          "title": "Operations, not applications",
+          "body": "Lanes validate discovery coverage; verify checks posting links; docs audits visible artifacts; tracker manages a CSV application history."
+        }
+      ],
+      "evidence": [
+        {
+          "value": "0",
+          "label": "Network calls",
+          "detail": "The tool is explicitly local-only, with no scraping or sending."
+        },
+        {
+          "value": "Dry-run",
+          "label": "Default write mode",
+          "detail": "Persistence needs both --no-dry-run and --confirm, with dated backups."
+        },
+        {
+          "value": "6",
+          "label": "CLI command groups",
+          "detail": "Lanes, verify, docs, tracker, reports and safety."
+        }
+      ],
+      "evidenceNote": "Behaviour is quoted from the public README and safety documentation. No usage metrics, time savings or outcomes are claimed.",
+      "limitations": [
+        "Despite the repository name, it does not auto-apply or submit anything. It is an operations CLI, not an autonomous agent.",
+        "All examples use fictional sample data; real trackers and resumes must stay in git-ignored local paths.",
+        "Lane-yield summaries, DOCX extraction and shell completion are roadmap items, not completed functionality.",
+        "No screenshots are published."
+      ],
+      "gallery": [],
+      "galleryNote": "No screenshots are published in the source repository.",
+      "seoImage": "/og/arjunos-cover.png"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "northgate-motors-demo": {
+    "branch": "release/buyer-3-1",
+    "readme": "docs/sources/northgate-motors-demo.md",
+    "images": [
+      "public/projects/northgate-motors-demo/about-1440.jpg",
+      "public/projects/northgate-motors-demo/about-390.jpg",
+      "public/projects/northgate-motors-demo/contact-1440.jpg",
+      "public/projects/northgate-motors-demo/contact-390.jpg",
+      "public/projects/northgate-motors-demo/home-1440.jpg",
+      "public/projects/northgate-motors-demo/home-390.jpg",
+      "public/projects/northgate-motors-demo/inventory-1440.jpg",
+      "public/projects/northgate-motors-demo/inventory-390.jpg",
+      "public/projects/northgate-motors-demo/studio-3d-1440.jpg",
+      "public/projects/northgate-motors-demo/studio-3d-390.jpg"
+    ]
+  },
+  "TennisScore": {
+    "branch": "main",
+    "readme": "docs/sources/TennisScore.md",
+    "images": []
+  },
+  "nova-scotia-grants-salesforce": {
+    "branch": "main",
+    "readme": "docs/sources/nova-scotia-grants-salesforce.md",
+    "images": [
+      "public/projects/nova-scotia-grants-salesforce/claim-processing.png",
+      "public/projects/nova-scotia-grants-salesforce/executive-dashboard.png",
+      "public/projects/nova-scotia-grants-salesforce/financial-reports.png",
+      "public/projects/nova-scotia-grants-salesforce/grant-application-flow.png",
+      "public/projects/nova-scotia-grants-salesforce/nova-grants-app.png"
+    ]
+  },
+  "care-operations-analytics": {
+    "branch": "main",
+    "readme": "docs/sources/care-operations-analytics.md",
+    "images": [
+      "public/projects/care-operations-analytics/care-portfolio-analytics-dashboard-overview.png",
+      "public/projects/care-operations-analytics/care-portfolio-analytics-service-delivery-comparison.png",
+      "public/projects/care-operations-analytics/care-portfolio-analytics-service-type-filtered.png",
+      "public/projects/care-operations-analytics/exceptions-risk.png",
+      "public/projects/care-operations-analytics/executive-overview.png",
+      "public/projects/care-operations-analytics/fixed-exceptions-risk.png",
+      "public/projects/care-operations-analytics/fixed-executive-overview.png",
+      "public/projects/care-operations-analytics/fixed-funding-health.png",
+      "public/projects/care-operations-analytics/fixed-home.png",
+      "public/projects/care-operations-analytics/fixed-operations.png"
+    ]
+  },
+  "Gotcare-Ledger": {
+    "branch": "main",
+    "readme": "docs/sources/Gotcare-Ledger.md",
+    "images": []
+  },
+  "salesforce-revops-demo": {
+    "branch": "main",
+    "readme": "docs/sources/salesforce-revops-demo.md",
+    "images": []
+  },
+  "ai-engineering-journey": {
+    "branch": "main",
+    "readme": "docs/sources/ai-engineering-journey.md",
+    "images": []
+  },
+  "agentic-job-search-workflow": {
+    "branch": "main",
+    "readme": "docs/sources/agentic-job-search-workflow.md",
+    "images": []
+  }
+}

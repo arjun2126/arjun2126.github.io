@@ -1,0 +1,80 @@
+/* Desktop shell: wallpaper, stage, empty state. The menu bar, dock and window
+   chrome live in os.css and windows.css. */
+
+.desktop {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #0b0a16;
+  isolation: isolate;
+}
+
+.desktop .os-wallpaper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.desktop-stage {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.window-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.window-layer > * {
+  pointer-events: auto;
+}
+
+.desktop-empty {
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: #f4f6fc;
+  text-align: center;
+}
+
+.desktop-empty__mark {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  font-family: var(--font-display);
+  font-size: 36px;
+  color: #f4f6fc;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.desktop-empty p {
+  font-family: var(--font-display);
+  font-size: 30px;
+  color: rgba(247, 248, 255, 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desktop * {
+    scroll-behavior: auto;
+  }
+}
