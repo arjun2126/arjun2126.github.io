@@ -315,7 +315,9 @@ export const allSkills = skillGroups.flatMap((group) =>
   group.skills.map((skill) => ({ ...skill, group: group.label, groupId: group.id })),
 );
 
-export const resumeCapabilities = [
+export const resumeCapabilities = generatedDraft
+  ? generatedDraft.skills.map((group) => ({ label: group.label, items: group.items.filter(Boolean) }))
+  : [
   {
     label: 'Salesforce',
     items: ['Flow Builder', 'Apex & LWC', 'Custom objects', 'Permissions & reporting'],

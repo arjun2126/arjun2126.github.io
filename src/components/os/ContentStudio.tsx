@@ -1160,8 +1160,8 @@ export function ContentStudio() {
           className="os-text-button"
           onClick={() => {
             if (window.confirm('Reset the local draft to the published content?')) {
-              setDraft(defaultDraft());
-              setStatus('Reset to published content.');
+              window.localStorage.removeItem(STORAGE_KEY);
+              window.location.reload();
             }
           }}
         >

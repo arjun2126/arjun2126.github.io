@@ -62,6 +62,11 @@ try {
   for (const route of ['/', '/recruiter/', '/resume/']) {
     await page.goto(base + route);
     await page.locator('body[data-surface]').waitFor();
+    // Audit final rendered colors, not the transient opacity of window arrival animations.
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+      await Promise.all(document.getAnimations().map((animation) => animation.finished.catch(() => undefined)));
+    });
     const scan = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
     const serious = scan.violations.filter((issue) => ['serious', 'critical'].includes(issue.impact || ''));
     assert.deepEqual(serious, [], `Accessibility: ${route}`);

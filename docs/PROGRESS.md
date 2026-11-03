@@ -18,7 +18,14 @@ all 46 public files byte-identical, empty seed, TypeScript/static/privacy checks
 Latest unit/API suite: 87 passing tests across 8 files. Latest browser suite: 30/30, no retries.
 The isolated workflow also passed a 5.9 MB synthetic PDF upload/save/restart/build/download test.
 All fixture data was removed, and the approved seed/manifest remained unchanged.
-Publication/live verification are not yet complete. Current owner workflow: CONTENT_UPDATES.md.
+Initial publication is complete: PR #1 merged after CI passed; main deployment run 41675516523
+succeeded at commit `12524d6fb8ca463e3e10e9d78839450ff4fc5d8d`. Direct HTTPS verification passed
+20 desktop/mobile routes, 46 asset hashes, canonicals/sitemap, custom 404, absent private APIs,
+and settled-state accessibility checks. Eight public repository links and five Northgate routes
+returned 200. No Salesforce framing settings changed. Evidence: LAUNCH_REPORT.md.
+Reviewed follow-up synchronizes résumé capabilities/current title and fixes Reset draft's stale
+module-level preview. Local full harness passed again; this follow-up must pass its own PR gate.
+Current owner workflow: CONTENT_UPDATES.md. Historical limitations/gates below describe prior work.
 
 ## Current state
 
