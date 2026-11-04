@@ -115,6 +115,26 @@ export function ProjectArticle({
             <span className="figure-source">Typographic cover, not a product capture</span>
           </figcaption>
         </figure>
+      ) : project.cover.kind === 'image' && project.cover.src ? (
+        <figure className="project-hero-image">
+          <div className="project-hero-image__frame">
+            <img
+              src={project.cover.src}
+              srcSet={
+                project.cover.srcSmall
+                  ? `${project.cover.srcSmall} 800w, ${project.cover.src} 1600w`
+                  : undefined
+              }
+              sizes="(max-width: 900px) calc(100vw - 40px), 860px"
+              alt={project.cover.alt}
+              decoding="async"
+            />
+          </div>
+          <figcaption>
+            <span>{project.cover.caption}</span>
+            <span className="figure-source">Screenshot supplied by Arjun</span>
+          </figcaption>
+        </figure>
       ) : null}
 
       {project.slug === 'northgate-motors' ? (

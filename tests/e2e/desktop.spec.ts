@@ -31,7 +31,7 @@ test.describe('ArjunOS desktop', () => {
       page.getByRole('heading', { level: 1, name: "Hi, I'm Arjun Subramanya." }),
     ).toBeVisible();
     await expect(page.locator('.os-hero__headline')).toHaveText(
-      'Salesforce Developer · Software Engineering · AI Automation',
+      'Salesforce developer and administrator building systems that operations teams rely on.',
     );
     await expect(page.locator('.os-competency')).toHaveCount(4);
     await expect(page.locator('.os-competency').nth(0)).toHaveAttribute('href', '/salesforce/');
@@ -240,7 +240,9 @@ test.describe('project case studies', () => {
     await page.goto('/projects/care-operations-analytics/');
     await expect(page).toHaveTitle('Care Operations Analytics — Arjun Subramanya');
     await expect(page.getByRole('dialog', { name: 'Care Operations Analytics' })).toBeVisible();
-    expect(await page.locator('meta[name="description"]').getAttribute('content')).toContain('Care');
+    expect(await page.locator('meta[name="description"]').getAttribute('content')).toContain(
+      'Canadian care data',
+    );
 
     await page.goto('/projects/not-a-project/');
     await expect(page.getByRole('heading', { name: 'That window doesn’t exist.' })).toBeVisible();
@@ -380,6 +382,74 @@ test.describe('content studio', () => {
     const reloaded = page.getByRole('dialog', { name: 'Content Studio' });
     await expect(reloaded.getByLabel('Name')).toHaveValue('Arjun Subramanya');
     await expect(reloaded.getByRole('img', { name: 'Draft profile' })).toBeVisible();
+  });
+});
+
+test.describe('layout and owner media regressions', () => {
+  test('AI and Experience windows scroll to their final content', async ({ page }) => {
+    await page.goto('/ai/');
+    const ai = page.getByRole('dialog', { name: 'AI Engineering' });
+    await ai.locator('.window__body').hover();
+    for (let i = 0; i < 6; i += 1) await page.mouse.wheel(0, 600);
+    await page.waitForTimeout(400);
+    await expect(ai.getByRole('link', { name: 'How this portfolio was built' })).toBeInViewport();
+
+    await page.goto('/experience/');
+    const experience = page.getByRole('dialog', { name: 'Experience' });
+    await experience.locator('.window__body').hover();
+    for (let i = 0; i < 10; i += 1) await page.mouse.wheel(0, 600);
+    await page.waitForTimeout(400);
+    await expect(experience.getByRole('link', { name: 'Open the résumé' })).toBeInViewport();
+  });
+
+  test('a maximized window leaves the Dock unobstructed', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Maximize ArjunOS' }).click();
+    await page.waitForTimeout(500);
+    const win = await page.locator('.window[data-window="projects"]').boundingBox();
+    const dock = await page.locator('.os-dock').boundingBox();
+    expect(win).not.toBeNull();
+    expect(dock).not.toBeNull();
+    if (!win || !dock) return;
+    expect(win.y + win.height).toBeLessThanOrEqual(dock.y);
+  });
+
+  test('the maximized Salesforce workspace uses the available width', async ({ page }) => {
+    await page.goto('/salesforce/');
+    const sf = page.getByRole('dialog', { name: 'Salesforce Workspace' });
+    await page.getByRole('button', { name: 'Maximize Salesforce Workspace' }).click();
+    await page.waitForTimeout(400);
+    const tabSize = await sf
+      .locator('.os-sf__tab')
+      .first()
+      .evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+    expect(tabSize).toBeGreaterThanOrEqual(11);
+    const columnCount = await sf
+      .locator('.os-sf__content')
+      .evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(' ').length);
+    expect(columnCount).toBeGreaterThanOrEqual(2);
+    const content = await sf.locator('.os-sf__content').boundingBox();
+    expect(content?.width ?? 0).toBeGreaterThan(1000);
+  });
+
+  test('Vantage uses the supplied captures and the portrait appears in profile views', async ({ page }) => {
+    await page.goto('/projects/vantage/');
+    const vantage = page.getByRole('dialog', { name: 'Vantage' });
+    await expect(vantage.locator('.project-hero-image img')).toHaveAttribute(
+      'alt',
+      /Live match scoring on iPhone/,
+    );
+    await expect(vantage.locator('.gallery__item')).toHaveCount(16);
+    await expect(vantage.getByText('Screenshots supplied from the app by Arjun.')).toBeVisible();
+
+    await page.goto('/about/');
+    const about = page.getByRole('dialog', { name: 'About' });
+    await expect(about.getByRole('img', { name: 'Portrait of Arjun Subramanya' })).toBeVisible();
+
+    await page.goto('/resume/');
+    const resume = page.getByRole('dialog', { name: 'Résumé' });
+    await expect(resume.getByRole('img', { name: 'Portrait of Arjun Subramanya' })).toBeVisible();
+    await expect(resume.locator('a[download]')).toHaveCount(0);
   });
 });
 

@@ -817,6 +817,26 @@
   font-size: 35px;
 }
 
+.about-portrait--photo {
+  padding: 0 0 14px;
+}
+
+.about-portrait--photo::before {
+  display: none;
+}
+
+.about-portrait--photo .os-portrait--card {
+  width: 100%;
+  height: auto;
+  flex: 1;
+  min-height: 0;
+  border-radius: 0;
+}
+
+.about-portrait--photo .os-portrait__image {
+  object-position: center 18%;
+}
+
 .about-portrait__foot {
   display: flex;
   flex-direction: column;

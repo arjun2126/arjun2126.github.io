@@ -7,7 +7,7 @@ export interface PageMeta {
 }
 
 const baseDescription =
-  'Arjun Subramanya’s portfolio: Salesforce development, native Apple apps and AI-assisted engineering, documented in public repositories.';
+  'Arjun Subramanya is a Salesforce developer and administrator in Whitby, Ontario, building business systems, analytics and native Apple apps.';
 
 export function metaForRoute(route: Route): PageMeta {
   if (route.kind === 'project') {

@@ -5,12 +5,17 @@
       "name": "Northgate Motors",
       "mark": "N",
       "category": "Salesforce",
-      "tags": ["Salesforce", "Apple", "Analytics", "Backend"],
+      "tags": [
+        "Salesforce",
+        "Apple",
+        "Analytics",
+        "Backend"
+      ],
       "featured": true,
       "status": "Independent demo",
       "statusTone": "demo",
       "tagline": "A fictional dealership, built end to end on Salesforce.",
-      "summary": "A six-page Experience Cloud buyer site with a WebGL concept-car studio, backed by the sales, finance and service operations behind a working dealership.",
+      "summary": "A six-page Experience Cloud buyer site with a WebGL concept-car studio, backed by the sales, finance and service operations of a fictional dealership.",
       "seoDescription": "Northgate Motors is a fictional Salesforce Experience Cloud dealership demo: a six-page buyer site, WebGL concept studio, Owner Portal and sales operations.",
       "repo": "https://github.com/arjun2126/northgate-motors-demo/tree/release/buyer-3-1",
       "repoRevision": "release/buyer-3-1",
@@ -30,7 +35,14 @@
         "alt": "A Northgate Motors vehicle listing for a 2022 Cascadia EX with a large car photograph and specification panel.",
         "caption": "A deep-linkable vehicle listing with specifications, availability and inquiry actions."
       },
-      "stack": ["Salesforce Platform", "Experience Cloud", "Lightning Web Components", "Apex", "Three.js", "Node 22"],
+      "stack": [
+        "Salesforce Platform",
+        "Experience Cloud",
+        "Lightning Web Components",
+        "Apex",
+        "Three.js",
+        "Node 22"
+      ],
       "highlights": [
         {
           "title": "One component, six routes",
@@ -132,12 +144,14 @@
       "name": "Vantage",
       "mark": "V",
       "category": "Apple",
-      "tags": ["Apple"],
+      "tags": [
+        "Apple"
+      ],
       "featured": true,
       "status": "Personal project",
       "statusTone": "personal",
-      "tagline": "Tennis scoring, tournaments and stats across iPhone and Apple Watch.",
-      "summary": "A native iOS, watchOS and widget app for playing and tracking tennis: live scoring, knockout and round-robin tournaments, Glicko-2 ratings, Watch workouts and Live Activities.",
+      "tagline": "Tennis scoring, tournaments and stats for iPhone and Apple Watch.",
+      "summary": "A native iOS and watchOS app for playing and tracking tennis, with live scoring, knockout and round-robin tournaments, Glicko-2 ratings, Watch workouts and Live Activities.",
       "seoDescription": "Vantage is a native iOS, watchOS and widget tennis app with live scoring, tournaments, Glicko-2 ratings, Watch workouts and Live Activities.",
       "repo": "https://github.com/arjun2126/TennisScore",
       "repoRevision": "main",
@@ -145,11 +159,20 @@
       "accent": "#2e5f43",
       "accentSoft": "#e3eccb",
       "cover": {
-        "kind": "typographic",
-        "alt": "Typographic Vantage cover with a tennis score motif. No app screenshot is available.",
-        "caption": "Typographic cover. The repository publishes no app screenshots."
+        "kind": "image",
+        "src": "/media/media-3af05e71-495f-4d39-9741-35eefea0a4b9-e568719f04787c06b21fb69e.webp",
+        "alt": "Live tennis match scoring on iPhone with games, points, a running timer and point controls.",
+        "caption": "Live match scoring on iPhone."
       },
-      "stack": ["Swift", "iOS", "watchOS", "WidgetKit", "ActivityKit", "HealthKit", "Glicko-2"],
+      "stack": [
+        "Swift",
+        "iOS",
+        "watchOS",
+        "WidgetKit",
+        "ActivityKit",
+        "HealthKit",
+        "Glicko-2"
+      ],
       "highlights": [
         {
           "title": "A complete scoring engine",
@@ -193,11 +216,11 @@
       "evidenceNote": "These details come from the repository README and its documented feature list. No test counts or App Store status are claimed.",
       "limitations": [
         "The tournament bracket UI works but is due for a clarity pass: round labels, per-match status and overall tournament progress are not clearly surfaced in the current rendering.",
-        "The repository publishes no screenshots. This portfolio uses a deliberately typographic cover and does not present it as an app capture.",
+        "Screenshots are supplied from the app; the public repository does not include a screenshot set.",
         "The README documents a personal project. It does not claim App Store availability, production users or measured performance."
       ],
       "gallery": [],
-      "galleryNote": "No screenshots are published in the source repository, so no app imagery is shown here.",
+      "galleryNote": "Screenshots supplied from the app by Arjun.",
       "seoImage": "/og/arjunos-cover.png"
     },
     {
@@ -205,7 +228,9 @@
       "name": "Nova Grants",
       "mark": "N",
       "category": "Salesforce",
-      "tags": ["Salesforce"],
+      "tags": [
+        "Salesforce"
+      ],
       "featured": true,
       "status": "Independent demo",
       "statusTone": "demo",
@@ -230,7 +255,15 @@
         "alt": "Nova Grants executive dashboard with four charts.",
         "caption": "The coordinator view of the executive dashboard: applications, claims, disbursements and program capacity."
       },
-      "stack": ["Salesforce", "Apex", "Flow", "Custom objects", "Permission sets", "Reports & dashboards", "Metadata API"],
+      "stack": [
+        "Salesforce",
+        "Apex",
+        "Flow",
+        "Custom objects",
+        "Permission sets",
+        "Reports & dashboards",
+        "Metadata API"
+      ],
       "highlights": [
         {
           "title": "A five-object business model",
@@ -312,12 +345,15 @@
       "name": "Care Operations Analytics",
       "mark": "C",
       "category": "Analytics",
-      "tags": ["Analytics", "Backend"],
+      "tags": [
+        "Analytics",
+        "Backend"
+      ],
       "featured": true,
       "status": "Personal project",
       "statusTone": "personal",
-      "tagline": "A funding, operations and risk command center for a fictional care provider.",
-      "summary": "A Python analytics pipeline and dashboard built on synthetic Canadian care data — from data-quality checks and a PostgreSQL-ready star schema to Streamlit, Power BI and Tableau views.",
+      "tagline": "A funding, operations and risk dashboard for a fictional care provider.",
+      "summary": "A Python analytics pipeline and dashboard built on synthetic Canadian care data, from data-quality checks and a PostgreSQL-ready schema to Streamlit, Power BI and Tableau views.",
       "seoDescription": "Care Operations Analytics is a synthetic-data Python project: 53 quality checks, a PostgreSQL-ready star schema, Streamlit, Power BI and Tableau dashboards and a claims-review risk model.",
       "repo": "https://github.com/arjun2126/care-operations-analytics",
       "repoRevision": "main",
@@ -337,7 +373,17 @@
         "alt": "Power BI care portfolio dashboard with KPIs, a monthly trend and a service-type comparison.",
         "caption": "Three reporting surfaces share one synthetic dataset. This is the Power BI care portfolio view."
       },
-      "stack": ["Python", "pandas", "scikit-learn", "SQL", "PostgreSQL", "Streamlit", "Plotly", "Power BI", "Tableau"],
+      "stack": [
+        "Python",
+        "pandas",
+        "scikit-learn",
+        "SQL",
+        "PostgreSQL",
+        "Streamlit",
+        "Plotly",
+        "Power BI",
+        "Tableau"
+      ],
       "highlights": [
         {
           "title": "Synthetic by design",
@@ -425,20 +471,32 @@
       "name": "Gotcare Care Ledger",
       "mark": "GL",
       "category": "Salesforce",
-      "tags": ["Salesforce"],
+      "tags": [
+        "Salesforce"
+      ],
       "featured": false,
       "status": "Prototype",
       "statusTone": "prototype",
       "tagline": "A Salesforce funding ledger with auditable claim approvals.",
-      "summary": "A prototype for person-directed care funding: care plans, allocations, claims and ledger entries, with atomic Apex approvals and a crossing-threshold balance alert.",
+      "summary": "A prototype for person-directed care funding: care plans, allocations, claims and ledger entries, with atomic Apex approvals and a balance alert that fires when funding crosses a threshold.",
       "seoDescription": "Gotcare Care Ledger is a Salesforce prototype for person-directed care funding with atomic Apex claim approvals, ledger entries and a low-balance Flow.",
       "repo": "https://github.com/arjun2126/Gotcare-Ledger",
       "repoRevision": "main",
       "repoNote": "Public repository reviewed on main. The project describes itself as a scratch-org prototype.",
       "accent": "#2c5f48",
       "accentSoft": "#e4e9d9",
-      "cover": { "kind": "typographic", "alt": "Typographic cover for the Gotcare Care Ledger.", "caption": "Typographic cover. No screenshots are published." },
-      "stack": ["Salesforce", "Apex", "Lightning Web Components", "Flow", "Reports & dashboards"],
+      "cover": {
+        "kind": "typographic",
+        "alt": "Typographic cover for the Gotcare Care Ledger.",
+        "caption": "Typographic cover. No screenshots are published."
+      },
+      "stack": [
+        "Salesforce",
+        "Apex",
+        "Lightning Web Components",
+        "Flow",
+        "Reports & dashboards"
+      ],
       "highlights": [
         {
           "title": "Atomic approval path",
@@ -486,20 +544,32 @@
       "name": "Configurable RevOps Platform",
       "mark": "RR",
       "category": "Salesforce",
-      "tags": ["Salesforce"],
+      "tags": [
+        "Salesforce"
+      ],
       "featured": false,
       "status": "In progress",
       "statusTone": "prototype",
       "tagline": "Deal-desk discount intake with metadata-driven pricing rules.",
-      "summary": "A Salesforce prototype for a configurable enterprise RevOps review flow: discount intake, metadata-driven pricing and approval rules, and a queue-owned Deal Review record.",
+      "summary": "A Salesforce prototype for a configurable enterprise deal desk: discount intake, metadata-driven pricing and approval rules, and a queue-owned Deal Review record.",
       "seoDescription": "A Salesforce RevOps prototype for deal-desk discount intake with metadata-driven pricing and approval rules. Flows are staged and inactive; the project is in progress.",
       "repo": "https://github.com/arjun2126/salesforce-revops-demo",
       "repoRevision": "main",
       "repoNote": "Public repository reviewed on main. The README records five pending browser Flow interviews.",
       "accent": "#6b4d32",
       "accentSoft": "#efe5d8",
-      "cover": { "kind": "typographic", "alt": "Typographic cover for the Configurable RevOps Platform.", "caption": "Typographic cover. No screenshots are published." },
-      "stack": ["Salesforce", "Screen Flow", "Custom Metadata", "Permission sets", "Validation rules"],
+      "cover": {
+        "kind": "typographic",
+        "alt": "Typographic cover for the Configurable RevOps Platform.",
+        "caption": "Typographic cover. No screenshots are published."
+      },
+      "stack": [
+        "Salesforce",
+        "Screen Flow",
+        "Custom Metadata",
+        "Permission sets",
+        "Validation rules"
+      ],
       "highlights": [
         {
           "title": "Rules as configuration",
@@ -547,20 +617,33 @@
       "name": "Tennis Lesson Planner API",
       "mark": "TL",
       "category": "Backend",
-      "tags": ["Backend"],
+      "tags": [
+        "Backend"
+      ],
       "featured": false,
       "status": "Personal project",
       "statusTone": "personal",
       "tagline": "A small FastAPI service that turns player goals into structured lesson plans.",
-      "summary": "Rule-based lesson-plan generation backed by FastAPI, Pydantic validation, SQLite storage and automated API tests; container-ready with Docker.",
+      "summary": "Rule-based lesson-plan generation with FastAPI, Pydantic validation, SQLite storage and automated API tests, ready to run with Docker.",
       "seoDescription": "Tennis Lesson Planner API: a Python FastAPI service with Pydantic validation, rule-based lesson templates, SQLite storage, automated tests and Docker.",
       "repo": "https://github.com/arjun2126/ai-engineering-journey",
       "repoRevision": "main",
       "repoNote": "Public repository (ai-engineering-journey) reviewed on main. The project's own README title is Tennis Lesson Planner API.",
       "accent": "#675225",
       "accentSoft": "#f2ead3",
-      "cover": { "kind": "typographic", "alt": "Typographic cover for the Tennis Lesson Planner API.", "caption": "Typographic cover. No screenshots are published." },
-      "stack": ["Python", "FastAPI", "Pydantic", "SQLite", "Docker", "pytest"],
+      "cover": {
+        "kind": "typographic",
+        "alt": "Typographic cover for the Tennis Lesson Planner API.",
+        "caption": "Typographic cover. No screenshots are published."
+      },
+      "stack": [
+        "Python",
+        "FastAPI",
+        "Pydantic",
+        "SQLite",
+        "Docker",
+        "pytest"
+      ],
       "highlights": [
         {
           "title": "A small, complete surface",
@@ -608,20 +691,32 @@
       "name": "Agentic Job Search Workflow",
       "mark": "JS",
       "category": "Backend",
-      "tags": ["Backend"],
+      "tags": [
+        "Backend"
+      ],
       "featured": false,
       "status": "Personal project",
       "statusTone": "personal",
-      "tagline": "A privacy-first, local-only CLI for disciplined job search operations.",
-      "summary": "Lane coverage, local posting verification, document-quality audits and CSV tracking — with dry-run defaults, explicit confirmation and dated backups before any write.",
+      "tagline": "A privacy-first, local-only CLI for a disciplined job search.",
+      "summary": "Lane coverage, local posting checks, document-quality audits and CSV tracking, with dry-run defaults, explicit confirmation and dated backups before any write.",
       "seoDescription": "A privacy-first Python CLI for local job-search operations: lane coverage, posting verification, document audits and CSV tracking with dry-run defaults and backups.",
       "repo": "https://github.com/arjun2126/agentic-job-search-workflow",
       "repoRevision": "main",
       "repoNote": "Public repository reviewed on main. The name is broader than the tool: it is deliberately not an auto-apply agent.",
       "accent": "#4c4a63",
       "accentSoft": "#e7e5ec",
-      "cover": { "kind": "typographic", "alt": "Typographic cover for the Agentic Job Search Workflow CLI.", "caption": "Typographic cover. No screenshots are published." },
-      "stack": ["Python", "Typer", "pytest", "YAML", "CSV"],
+      "cover": {
+        "kind": "typographic",
+        "alt": "Typographic cover for the Agentic Job Search Workflow CLI.",
+        "caption": "Typographic cover. No screenshots are published."
+      },
+      "stack": [
+        "Python",
+        "Typer",
+        "pytest",
+        "YAML",
+        "CSV"
+      ],
       "highlights": [
         {
           "title": "Local by default",

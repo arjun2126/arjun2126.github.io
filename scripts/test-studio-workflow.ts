@@ -41,6 +41,7 @@ try {
   pdf.write('%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Count 0/Kids[]>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF');
   await studio.getByLabel('Upload downloadable résumé PDF', { exact: true }).setInputFiles({ name: 'synthetic.pdf', mimeType: 'application/pdf', buffer: pdf });
   await studio.getByRole('link', { name: 'Download draft PDF for review' }).waitFor();
+  const baselineMedia = JSON.parse(await readFile(path.join(fixture, 'src/content/studio.generated.json'), 'utf8')).content?.media?.length ?? 0;
   await studio.getByRole('button', { name: /^Media/ }).click();
   await studio.getByLabel('Upload project images').setInputFiles({ name: 'synthetic-project.png', mimeType: 'image/png', buffer: png });
   await studio.getByRole('textbox', { name: 'Caption for synthetic-project.png' }).waitFor();
@@ -52,10 +53,15 @@ try {
   assert.equal(saved.content.profile.name, 'Synthetic workflow fixture');
   assert.match(saved.content.profile.photo, /^\/media\/portrait-[a-f0-9]+\.webp$/);
   await readFile(path.join(fixture, `public${saved.content.profile.photo}`));
-  assert.equal(saved.content.media.length, 1);
+  // Existing owner media is preserved; exactly one synthetic upload is appended.
+  assert.equal(saved.content.media.length, baselineMedia + 1);
+  const uploaded = saved.content.media.find((item: { name: string }) => item.name === 'synthetic-project.png');
+  assert(uploaded, 'The synthetic upload was not saved');
+  assert.equal(saved.content.media.filter((item: { src: string }) => item.src === uploaded.src).length, 1);
+  assert.equal(new Set(saved.content.media.map((item: { src: string }) => item.src)).size, saved.content.media.length);
   assert.match(saved.content.resume.pdf, /^\/media\/resume-[a-f0-9]+\.pdf$/);
   assert.deepEqual(await readFile(path.join(fixture, `public${saved.content.resume.pdf}`)), pdf);
-  await readFile(path.join(fixture, `public${saved.content.media[0].src}`));
+  await readFile(path.join(fixture, `public${uploaded.src}`));
   await page.reload();
   await studio.getByRole('button', { name: 'Professional Profile', exact: false }).click();
   assert.equal(await studio.getByLabel('Name', { exact: true }).inputValue(), 'Synthetic workflow fixture');
@@ -82,7 +88,7 @@ try {
   const portrait = built.locator(`img[src="${saved.content.profile.photo}"]`).first();
   await portrait.waitFor();
   assert(await portrait.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0));
-  assert.equal((await built.request.get(`http://127.0.0.1:${address.port}${saved.content.media[0].src}`)).status(), 200);
+  assert.equal((await built.request.get(`http://127.0.0.1:${address.port}${uploaded.src}`)).status(), 200);
   await built.goto(`http://127.0.0.1:${address.port}/resume/`);
   await built.getByRole('link', { name: 'Résumé — Arjun Subramanya (PDF)' }).waitFor();
   assert.deepEqual(await (await built.request.get(`http://127.0.0.1:${address.port}${saved.content.resume.pdf}`)).body(), pdf);

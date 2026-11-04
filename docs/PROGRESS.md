@@ -127,3 +127,60 @@ configured for local build metadata, not activated hosting.
   validation and static résumé observations were addressed and tests rerun.
 - Full candidate manifest and preparation record are in `FIRST_COMMIT_FILES.txt`
   and `REPOSITORY_PREPARATION.md` (relative to this document).
+
+## Reconciliation and 4 November release preparation
+
+- **Workspaces.** `ArjunOS-github-preparation` is the release source on branch
+  `release/arjunos-2026-11` (from `323e6a2`). `Resume Website` is preserved as the donor and
+  backup; it was not overwritten, and no new repository was initialised.
+- **Backups.** `../ArjunOS-backups/2026-11-04/` holds `gitws-public-media/`,
+  `gitws-content-studio/`, `gitws-studio.generated.json`, `src-workspace/`, checksum manifests
+  and `finder-duplicates/` (171 quarantined Finder copies). Nothing was deleted or reset.
+- **Media.** One owner portrait (`portrait-b51b352b14a4ac708461518a.webp`, 1127x1311) and 16
+  Vantage captures (WebP derivatives of `1Vantage.jpeg`-`16Vantage.jpeg`) are referenced by the
+  saved Studio draft: 17 references, 17 files, no orphans. All 16 gallery URLs returned HTTP 200.
+- **Résumé PDF withheld.** The supplied PDF contains a personal phone number, a personal email
+  address, Salesforce credential IDs and claims that conflict with the approved professional
+  record. It is retained privately in `content-studio/private/` (gitignored); `resume.pdf` is
+  empty, so no résumé download is published.
+- **Copy rewrite.** Profile, professional record, expertise, project registry, About, Résumé,
+  Experience, AI, Salesforce, Sidebar, mobile and metadata copy were rewritten in a
+  first-person, evidence-first voice. Internal approval/handoff wording, the "Three years"
+  figure and marketing phrasing were removed. Employers, titles, dates, education and
+  certification names are unchanged.
+- **Layout fixes.** Maximised windows now stop above the Dock
+  (`height: calc(100% - 104px)`); AI and Experience window bodies scroll (`overflow-y: auto`);
+  Salesforce uses container queries to move from compact to expanded typography and two-column
+  content without changing the compact window.
+- **Studio sync.** The generated draft and the static content files carry the same wording, so
+  saved Studio overrides no longer restore the old copy.
+- **Test adaptation.** `tests/unit/content.test.ts` covers the Vantage gallery, cover and
+  portrait; `tests/e2e/desktop.spec.ts` gains layout regression cases;
+  `scripts/test-studio-workflow.ts` now asserts baseline-relative media (existing owner media
+  preserved, exactly one synthetic upload appended) instead of assuming an empty folder.
+
+### Validation - 4 November 2026
+
+| Check | Result |
+| --- | --- |
+| `npm run check` | Pass |
+| `npm test` | 87 passed / 8 files |
+| `npm run test:studio` | Pass - browser upload, save, restart, build and static assets |
+| `npm run build` | Pass - 21 HTML routes, 8 project pages, 20 static routes verified |
+| `npm run test:e2e` | 34 passed / 2 projects (desktop 1440x900, mobile 390x844) |
+| Publication gate | 64 reviewed source/assets approved, including the Studio draft and all 17 owner media files |
+| Accessibility | axe checks on home, project pages, résumé and recruiter: no serious or critical violations |
+| Chromium geometry, 1600x1000 | Maximised window bottom 904 vs Dock top 913; 3 windows; no horizontal overflow; no console errors |
+| AI route scroll | Both scrollers reached maximum (467 px); footer visible at a 1000 px viewport |
+| Experience route scroll | Reached bottom; last entry fully visible |
+| Salesforce workspace | 7 tabs switch without clipping; no horizontal overflow at 1600 or 900 |
+| Vantage gallery | Cover alt text present; 16 gallery buttons; 16 of 16 media URLs 200 |
+| Mobile 390x844 | 8 routes, zero horizontal overflow |
+| WebKit | Not run - Chromium only |
+
+### Approval recorded (4 November 2026)
+
+The owner approved publication of the genuine portrait, all 16 Vantage captures, the public
+LinkedIn and GitHub links and the rewritten copy, and explicitly withheld the résumé PDF. The
+approved hashes are recorded in `publication-approved.json`. A redacted résumé PDF and a genuine
+hosted walkthrough recording remain open items.

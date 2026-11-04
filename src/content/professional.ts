@@ -25,15 +25,15 @@ export interface EmploymentEntry {
 const approvedProfessional = {
   name: 'Arjun Subramanya',
   headline:
-    'Salesforce developer and administrator building business systems, analytics, and AI-assisted workflows.',
+    'Salesforce developer and administrator focused on business systems, analytics and AI-assisted delivery.',
   shortPitch:
-    'I build and run business systems on Salesforce — Flow automation, custom data models, permissions, and reporting — and write the Apex and Lightning components when declarative tools run out. I also work in Python, SQL and Swift, and use agentic development workflows with tests and review gates.',
+    'I build and support Salesforce systems for operations teams: Flow automation, custom objects, permissions and reporting, plus Apex and Lightning components when configuration is not enough. I also work in Python, SQL and Swift, and use AI coding tools inside a tested, reviewed workflow.',
   location: 'Whitby, Ontario, Canada',
   availability: 'Open to Salesforce developer, administrator, and business-systems roles across Canada.',
   github: 'https://github.com/arjun2126',
   linkedin: 'https://www.linkedin.com/in/arjunsubra',
   specialization:
-    'Configuration-first Salesforce delivery for program and operations teams, with enough Apex, LWC and testing depth to build the custom parts.',
+    'I work configuration-first on Salesforce delivery for program and operations teams, with enough Apex and LWC depth to build the custom parts.',
   employment: [
     {
       id: 'swr',
@@ -43,13 +43,13 @@ const approvedProfessional = {
       location: 'Waterloo Region, Ontario',
       current: true,
       summary:
-        'Runs the Salesforce platform for a Waterloo Region organization: administration, Flow automation, custom objects, reporting for directors and the executive board, user support and training, plus Apex and LWC work for custom requirements.',
+        'I manage the Salesforce platform for a Waterloo Region organization. The role covers daily administration, Flow automation and custom objects, reporting for program directors and the executive board, user support and training, and Apex and Lightning work where custom behavior is needed.',
       responsibilities: [
-        'Administer Salesforce for staff and volunteers: users, permission sets, organisation-wide defaults and sharing, with changes tracked in Git.',
-        'Automate volunteer intake and program registration with Flow Builder, validation rules and approval-style processes.',
+        'Administer Salesforce for staff and volunteers: users, permission sets, organization-wide defaults and sharing, with changes tracked in Git.',
+        'Automate volunteer intake and program registration with Flow Builder, validation rules and approval workflows.',
         'Configure custom objects, page layouts, formula fields and validation rules for corporate pledges, programs and energy-reduction tracking.',
         'Build reports and operational dashboards for program directors and the executive board.',
-        'Handle platform troubleshooting, user communication and group training; contribute Apex, SOQL and LWC work with unit tests.',
+        'Troubleshoot platform issues, communicate changes to users and lead group training; contribute Apex, SOQL and LWC work with unit tests.',
         'Coordinate change promotion across sandbox, UAT and production, and verify REST integration payloads and data mapping.',
       ],
       technologies: ['Salesforce', 'Flow Builder', 'Apex', 'LWC', 'SOQL', 'Git', 'Data Loader', 'Tableau'],
@@ -61,12 +61,12 @@ const approvedProfessional = {
       period: 'September 2020 – September 2023',
       location: 'Bengaluru, India',
       summary:
-        'Built Apex and REST integrations, migrated and de-duplicated data at volume, and produced Tableau dashboards for executive KPI reporting.',
+        'Built Apex and REST integrations, migrated and de-duplicated large data sets, and produced Tableau dashboards for executive KPI reporting.',
       responsibilities: [
         'Built Apex triggers, Visualforce pages and REST integrations with unit tests, maintaining 85%+ code coverage.',
-        'Led cleanup and migration of 50,000+ student and partner records with standardisation and de-duplication.',
+        'Led cleanup and migration of 50,000+ student and partner records with standardization and de-duplication.',
         'Mapped data flows between internal systems and QuickBooks and HubSpot, verifying mapping accuracy.',
-        'Wrote and optimised SQL and SOQL queries with selective indexing for analytical workloads.',
+        'Wrote and optimized SQL and SOQL queries with selective indexing for analytical workloads.',
         'Designed Tableau dashboards for enrollment, course performance and placement KPIs.',
         'Supported releases, sandbox testing and UAT, and performed monthly system audits.',
       ],
@@ -96,7 +96,7 @@ const approvedProfessional = {
     'Salesforce Certified Agentforce Specialist',
   ],
   note:
-    'Employment, education and certification names are drawn from the approved handoff. Credential IDs, total-years figures and unverified technical claims are not published.',
+    'Employment, education and certification names are drawn from the approved professional record. Credential IDs, total-years figures and unverified technical claims are not published.',
 };
 
 const draft = generatedDraft;
@@ -129,14 +129,14 @@ export const professional = {
 export const aiPositioning = {
   headline: 'AI-assisted software engineering and agentic workflow design',
   summary:
-    'Most of my AI work is about trust boundaries rather than models. I build the written specifications, approval checkpoints and automated verification that let an AI coding agent do real work without inflating what it has done.',
+    'Most of my AI work is about trust boundaries rather than models. I write the specifications, approval checkpoints and automated checks that let an AI coding agent do real work without overstating what it produced.',
   closing:
     'I have not trained or fine-tuned models, and I have not deployed a production LLM system. My work is the engineering around the model: specifications, tools, permissions, verification, and the human approval that keeps it honest.',
   nonClaims: [
     'No foundation-model training or fine-tuning',
     'No production LLM deployment',
     'No LLM application code; the lesson-planner generator is rule-based',
-    'No model selection or token-cost optimisation work',
+    'No model selection or token-cost optimization work',
     'No AI architecture or staff-level AI engineering role',
   ],
 };

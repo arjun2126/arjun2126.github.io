@@ -43,7 +43,7 @@ export const competencies: Competency[] = [
     id: 'ai',
     title: 'AI Engineering',
     icon: 'cpu',
-    blurb: 'Agent harnesses with human review gates.',
+    blurb: 'Coding agents used inside specs, tests and review.',
     items: ['Agentic workflows', 'OpenCode', 'Codex', 'MCP', 'Harnesses'],
     href: '/ai/',
     accent: '#b07cf6',
@@ -52,7 +52,7 @@ export const competencies: Competency[] = [
     id: 'analytics',
     title: 'Data & Analytics',
     icon: 'chart',
-    blurb: 'Pipelines and dashboards built on trust.',
+    blurb: 'Data models, SQL and reporting for program teams.',
     items: ['Python', 'SQL', 'Power BI', 'Tableau', 'Dashboards'],
     href: '/projects/care-operations-analytics/',
     accent: '#f0a35e',
@@ -64,7 +64,7 @@ export const hero = {
   greeting: "Hi, I'm",
   headline: generatedDraft?.profile.headline || 'Salesforce Developer · Software Engineering · AI Automation',
   intro:
-    'I build and run Salesforce systems, analytics and native apps — with Apex and Lightning work when declarative tools run out. Every independent project below is documented in public.',
+    'I build and support Salesforce systems, analytics and native apps, including the Apex and Lightning work that configuration alone cannot cover. Each independent project below is documented publicly.',
   primaryAction: { label: 'Explore the work', href: '/projects/' },
   secondaryAction: { label: 'Recruiter Mode', href: '/recruiter/' },
 };
@@ -96,10 +96,10 @@ export const recruiter = {
   linkedin: professional.linkedin,
   details: savedCareer ? [
     ...professional.employment.map((role) => `${role.title} · ${role.employer} · ${role.period}`),
-    `${professional.certifications.length} reviewed certifications.`,
+    `${professional.certifications.length} Salesforce certifications, including Administrator and Platform Developer I.`,
   ] : [
     'Business Systems Developer & Administrator at SWR, Waterloo Region (April 2025 – present).',
-    'Three years at Uttara Infotech Solutions as a Junior Software Engineer & CRM Analyst.',
+    'Junior Software Engineer & CRM Analyst at Uttara Infotech Solutions, Bengaluru (September 2020 – September 2023).',
     'Four Salesforce certifications, including Administrator, Platform Developer I and Agentforce Specialist.',
   ],
   skills: generatedDraft?.skills.length

@@ -41,39 +41,38 @@ export const profile = {
   availability: 'Open to Salesforce developer, administrator, and business-systems roles across Canada.',
   title: 'Salesforce developer & administrator',
   disciplines: 'Salesforce · business systems · analytics',
-  headline: saved?.headline || 'Business systems, built to hold up.',
+  headline: saved?.headline || 'Salesforce developer and administrator building systems that operations teams rely on.',
   intro: saved?.summary ||
-    'I build and run Salesforce systems — Flow automation, custom data models, permissions and reporting — and write the Apex and Lightning components when declarative tools run out. I also work in Python, SQL and Swift.',
+    'I build and support Salesforce systems for operations teams: Flow automation, custom objects, permissions and reporting, plus Apex and Lightning components when configuration is not enough. I also work in Python, SQL and Swift.',
   shortIntro:
     'Salesforce systems, analytics and native apps — built end to end, with the sources attached.',
   summary:
     saved?.summary ||
-    'Salesforce developer and administrator with experience building business systems, analytics, and AI-assisted workflows. I work across Flow, Apex, Lightning components, permissions and reporting, with a parallel practice in Python, SQL and Swift.',
+    'I am a Salesforce developer and administrator with experience building business systems, analytics and AI-assisted workflows. My work covers Flow, Apex, Lightning Web Components, permissions and reporting, alongside Python, SQL and Swift.',
   approach: [
     {
-      title: 'Evidence over adjectives',
-      body: 'Every featured project links to the public repository it came from. Counts, test results and known limitations are quoted from that source, with the revision recorded.',
+      title: 'Show the source',
+      body: 'Each featured project links to the repository it came from. Test counts, limitations and revision details are quoted from that source rather than estimated for the portfolio.',
     },
     {
-      title: 'The unglamorous parts count',
-      body: 'Guest-safe data transfer, idempotent payments, rollback paths, empty states and 390-pixel layouts are part of the product, not cleanup after it.',
+      title: 'The unglamorous parts matter',
+      body: 'Guest-safe data, idempotent payments, rollback paths, empty states and narrow-screen layouts are part of the product, not cleanup after it.',
     },
     {
-      title: 'Demo is not production',
-      body: 'Fictional data, mock integrations and future features are labelled as such. A portfolio should make the boundary easy to see.',
+      title: 'A demo is not production',
+      body: 'Fictional data, mock integrations and future work are labelled. The line between a demonstration and a live system should be easy to see.',
     },
   ],
   resumeNote: generatedDraft?.resume.pdf
-    ? 'Owner-approved professional experience and credentials, plus a reviewed downloadable résumé PDF. Private contact details and credential IDs are excluded.'
-    :
-    'Employment, education and certification names come from an owner-approved professional handoff reviewed on 2 November 2026. Credential IDs, phone, street address, work-authorization details and total-years figures are deliberately excluded. A redacted, web-safe résumé PDF is still pending approval.',
+    ? 'This web résumé is the public version. It covers the roles, education and certifications approved for publication, plus a downloadable PDF. Private contact details and credential IDs are excluded.'
+    : 'This web résumé is the public version. It covers the roles, education and certifications approved for publication. Phone numbers, email addresses, credential IDs and total-years figures are not included, and a downloadable PDF is not currently published.',
   contactIntro:
-    'I am based in Whitby, Ontario and open to Salesforce developer, administrator and business-systems roles across Canada. GitHub and LinkedIn are the verified public routes.',
+    'I am based in Whitby, Ontario and open to Salesforce developer, administrator and business-systems roles across Canada. LinkedIn and GitHub are the best ways to reach me.',
   contactNote:
     saved?.contactNote ||
-    'No public email or phone number is published. That is deliberate: contact is routed through LinkedIn, GitHub and the site contact page until email publication is approved.',
+    'No public email address or phone number is published. Contact goes through LinkedIn, GitHub or this page until email publication is approved.',
   sourceNote:
-    'Project facts come from public repositories reviewed on 2 November 2026. Professional details come from the owner-approved handoff. Sources and caveats are recorded in docs/SOURCES.md.',
+    'Project facts come from public repositories reviewed in November 2026. Professional details were supplied by Arjun and checked against the public record. Sources and caveats are recorded in docs/SOURCES.md.',
   repoList: [
     { name: 'Northgate Motors', url: 'https://github.com/arjun2126/northgate-motors-demo' },
     { name: 'Vantage', url: 'https://github.com/arjun2126/TennisScore' },
@@ -98,7 +97,7 @@ const approvedSkillGroups: SkillGroup[] = [
     label: 'Salesforce platform',
     short: 'Salesforce',
     description:
-      'Configuration, custom objects and code for real operational workflows — with authorization treated as part of the design.',
+      'Configuration, custom objects and code for operational workflows, with permissions and sharing treated as part of the design.',
     skills: [
       {
         name: 'Apex',
@@ -147,7 +146,7 @@ const approvedSkillGroups: SkillGroup[] = [
     label: 'Apple platforms',
     short: 'Apple',
     description:
-      'Native Swift work that spans the phone, the Watch, widgets and the places where a match becomes a live activity.',
+      'Native Swift work across iPhone, Apple Watch, widgets and Live Activities.',
     skills: [
       {
         name: 'Swift',
@@ -186,7 +185,7 @@ const approvedSkillGroups: SkillGroup[] = [
     label: 'Data & analytics',
     short: 'Analytics',
     description:
-      'Pipelines that earn trust before visualization: validation, an explicit model, and dashboards built around decisions.',
+      'Pipelines that validate data before visualization, with dashboards built around decisions.',
     skills: [
       {
         name: 'Python',
@@ -230,7 +229,7 @@ const approvedSkillGroups: SkillGroup[] = [
     label: 'Backend & tooling',
     short: 'Backend',
     description:
-      'Small services and local tools with clear boundaries: validated inputs, predictable writes and tests that describe behaviour.',
+      'Small services and local tools with validated inputs, predictable writes and tests that describe behavior.',
     skills: [
       {
         name: 'FastAPI',
@@ -269,7 +268,7 @@ const approvedSkillGroups: SkillGroup[] = [
     label: 'Engineering practice',
     short: 'Practice',
     description:
-      'How the work is kept honest: regression contracts, data-quality gates, privacy defaults and documentation that survives handoff.',
+      'Regression contracts, data-quality checks, privacy defaults and documentation another engineer can follow.',
     skills: [
       {
         name: 'Automated regression',

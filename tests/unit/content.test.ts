@@ -73,12 +73,15 @@ describe('content registry', () => {
   });
 
   it('does not substitute invented screenshots for missing captures', () => {
-    const noShotSlugs = ['vantage', 'gotcare-ledger', 'revops-platform', 'tennis-lesson-planner', 'job-search-ops'];
+    const noShotSlugs = ['gotcare-ledger', 'revops-platform', 'tennis-lesson-planner', 'job-search-ops'];
     for (const slug of noShotSlugs) {
       const project = projectBySlug[slug];
       expect(project.cover.kind).toBe('typographic');
       expect(project.gallery).toHaveLength(0);
     }
+    expect(projectBySlug['vantage'].cover.kind).toBe('image');
+    expect(projectBySlug['vantage'].gallery).toHaveLength(16);
+    expect(projectBySlug['vantage'].gallery[0].caption).toMatch(/live match/i);
     expect(projectBySlug['northgate-motors'].gallery.length).toBeGreaterThan(5);
     expect(projectBySlug['nova-grants'].gallery.length).toBeGreaterThan(2);
     expect(projectBySlug['care-operations-analytics'].gallery.length).toBeGreaterThan(3);
@@ -112,8 +115,8 @@ describe('content registry', () => {
 describe('profile and skills', () => {
   it('keeps the profile evidence-first and public', () => {
     expect(profile.github).toBe('https://github.com/arjun2126');
-    expect(profile.resumeNote).toContain('owner-approved professional handoff');
-    expect(profile.resumeNote).toContain('Credential IDs');
+    expect(profile.resumeNote).toContain('web résumé');
+    expect(profile.resumeNote).toContain('credential IDs');
     expect(profile.contactNote).toContain('No public email');
     expect(profile.repoList).toHaveLength(projects.length);
     expect(new Set(profile.repoList.map((repo) => repo.url)).size).toBe(projects.length);

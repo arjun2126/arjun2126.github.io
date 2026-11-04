@@ -4,6 +4,7 @@ import { featuredProjects, projects } from '../content/projects';
 import { profile, resumeCapabilities } from '../content/profile';
 import { professional } from '../content/professional';
 import { AppLink } from '../lib/navigation';
+import { Portrait } from './os/parts';
 
 export function ResumeContent({ mode = 'window' }: { mode?: 'window' | 'document' }) {
   const [view, setView] = useState<'concise' | 'expanded'>('concise');
@@ -18,8 +19,8 @@ export function ResumeContent({ mode = 'window' }: { mode?: 'window' | 'document
             Résumé<span className="accent-dot">.</span>
           </h1>
           <p>
-            A profile built from approved employment and credentials, plus public project evidence.
-            Credential IDs, contact details and unverified claims are deliberately excluded.
+            A profile built from my professional record and public project evidence. Phone numbers,
+            email addresses, credential IDs and unverified claims are not included.
           </p>
         </div>
         <div className="resume-header__actions">
@@ -51,9 +52,7 @@ export function ResumeContent({ mode = 'window' }: { mode?: 'window' | 'document
 
       <div className="resume-body" id="resume-document">
         <aside className="resume-rail" aria-label="Résumé identity and contact">
-          <span className="resume-rail__monogram" aria-hidden="true">
-            A
-          </span>
+          <Portrait size="avatar" />
           <div>
             <h2>{profile.name}</h2>
             <p>{profile.disciplines}</p>
@@ -70,7 +69,7 @@ export function ResumeContent({ mode = 'window' }: { mode?: 'window' | 'document
             </div>
             <div>
               <dt>Reviewed</dt>
-              <dd>2 November 2026</dd>
+              <dd>November 2026</dd>
             </div>
             <div>
               <dt>Contact</dt>
@@ -241,8 +240,8 @@ export function ResumeContent({ mode = 'window' }: { mode?: 'window' | 'document
               <h2 id="resume-contact">Continue the conversation</h2>
             </div>
             <p>
-              The public repositories contain the source, tests and documented limitations. For a
-              conversation about the work, start there.
+              The public repositories contain the source, tests and documented limitations. If you
+              want to talk about the work, LinkedIn is the best place to start.
             </p>
             <div className="resume-contact__links">
               <a className="button button--primary" href={profile.github} target="_blank" rel="noreferrer noopener">
@@ -258,7 +257,7 @@ export function ResumeContent({ mode = 'window' }: { mode?: 'window' | 'document
 
           <footer className="resume-footer">
             <span>{profile.name} · professional profile</span>
-            <span>Sources reviewed 2 November 2026</span>
+            <span>Sources reviewed November 2026</span>
           </footer>
         </div>
       </div>
