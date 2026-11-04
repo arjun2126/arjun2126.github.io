@@ -68,3 +68,20 @@ See docs/CONTENT_UPDATES.md and docs/PROGRESS.md for the current workflow and ev
   directory-index routes, and verify sitemap, local links/assets and custom 404.
 - Validate, independently review, inspect staging, then create one local commit.
 - Stop before any push, main merge, Pages activation or deployment.
+
+## Milestone 8 - Reconciliation and the 4 November release
+
+- Consolidated the two workspaces into `ArjunOS-github-preparation` on
+  `release/arjunos-2026-11`; the original workspace remains a preserved donor.
+- Ported the verified layout fixes (Dock clearance, AI/Experience scrolling, Salesforce
+  container queries) and kept the newer Studio, walkthrough, PDF, validation, Actions and test
+  infrastructure intact.
+- Rewrote the public professional copy and synchronised the saved Studio draft so the new
+  wording is not overridden by older generated text.
+- Integrated the genuine portrait and 16 genuine Vantage captures, withheld the unsuitable
+  résumé PDF and adapted tests without weakening assertions.
+- Passed TypeScript, 87 unit/API tests and the isolated Studio roundtrip; the production build
+  and browser suite remain blocked until the publication gate is satisfied.
+- ✅ Owner approval was recorded on 4 November 2026 for the portrait, the 16 Vantage captures, the
+  LinkedIn and GitHub links and the rewritten copy. The résumé PDF remains private by instruction.
+- ⏳ Deployment to GitHub Pages and verification of the live site.

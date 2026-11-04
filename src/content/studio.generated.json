@@ -1,5 +1,373 @@
 {
   "version": 1,
-  "updatedAt": null,
-  "content": null
+  "updatedAt": "2026-11-04T03:44:16.606Z",
+  "content": {
+    "profile": {
+      "name": "Arjun Subramanya",
+      "headline": "Salesforce developer and administrator building systems that operations teams rely on.",
+      "summary": "I build and support Salesforce systems for operations teams: Flow automation, custom objects, permissions and reporting, plus Apex and Lightning components when configuration is not enough. I also work in Python, SQL and Swift.",
+      "photo": "/media/portrait-b51b352b14a4ac708461518a.webp",
+      "github": "https://github.com/arjun2126",
+      "x": "https://x.com/arjunsubra",
+      "linkedin": "https://www.linkedin.com/in/arjunsubra",
+      "contactNote": ""
+    },
+    "career": {
+      "experience": [
+        {
+          "id": "swr",
+          "period": "April 2025 – Present",
+          "title": "Business Systems Developer & Administrator",
+          "org": "SWR · Waterloo Region, Ontario",
+          "body": "I manage the Salesforce platform for a Waterloo Region organization. The role covers daily administration, Flow automation and custom objects, reporting for program directors and the executive board, user support and training, and Apex and Lightning work where custom behavior is needed."
+        },
+        {
+          "id": "uttara",
+          "period": "September 2020 – September 2023",
+          "title": "Junior Software Engineer & CRM Analyst",
+          "org": "Uttara Infotech Solutions · Bengaluru, India",
+          "body": "Built Apex and REST integrations, migrated and de-duplicated large data sets, and produced Tableau dashboards for executive KPI reporting."
+        }
+      ],
+      "education": [
+        "Post-Graduate Diploma, Sport Business Management — Durham College",
+        "Bachelor of Engineering, Computer Science — MS Ramaiah Institute of Technology"
+      ],
+      "certifications": [
+        "Salesforce Certified Administrator",
+        "Salesforce Certified Platform App Builder",
+        "Salesforce Certified Platform Developer I",
+        "Salesforce Certified Agentforce Specialist"
+      ],
+      "achievements": []
+    },
+    "skills": [
+      {
+        "id": "salesforce",
+        "label": "Salesforce platform",
+        "items": [
+          "Apex",
+          "Lightning Web Components",
+          "Experience Cloud",
+          "Flow",
+          "Custom objects & metadata",
+          "Permissions & sharing",
+          "Reports & dashboards",
+          "Salesforce DX"
+        ]
+      },
+      {
+        "id": "apple",
+        "label": "Apple platforms",
+        "items": [
+          "Swift",
+          "Swift concurrency",
+          "watchOS",
+          "WidgetKit",
+          "ActivityKit",
+          "HealthKit"
+        ]
+      },
+      {
+        "id": "analytics",
+        "label": "Data & analytics",
+        "items": [
+          "Python",
+          "pandas",
+          "scikit-learn",
+          "SQL & PostgreSQL",
+          "Streamlit & Plotly",
+          "Power BI",
+          "Tableau"
+        ]
+      },
+      {
+        "id": "backend",
+        "label": "Backend & tooling",
+        "items": [
+          "FastAPI",
+          "Pydantic",
+          "SQLite",
+          "Docker",
+          "Typer CLI",
+          "pytest"
+        ]
+      },
+      {
+        "id": "practice",
+        "label": "Engineering practice",
+        "items": [
+          "Automated regression",
+          "Metadata validation",
+          "Data-quality gates",
+          "Privacy-aware prototyping",
+          "Technical documentation"
+        ]
+      }
+    ],
+    "projects": [
+      {
+        "slug": "northgate-motors",
+        "name": "Northgate Motors",
+        "tagline": "A fictional dealership, built end to end on Salesforce.",
+        "summary": "A six-page Experience Cloud buyer site with a WebGL concept-car studio, backed by the sales, finance and service operations of a fictional dealership.",
+        "stack": [
+          "Salesforce Platform",
+          "Experience Cloud",
+          "Lightning Web Components",
+          "Apex",
+          "Three.js",
+          "Node 22"
+        ],
+        "repo": "https://github.com/arjun2126/northgate-motors-demo/tree/release/buyer-3-1",
+        "link": "",
+        "linkLabel": ""
+      },
+      {
+        "slug": "vantage",
+        "name": "Vantage",
+        "tagline": "Tennis scoring, tournaments and stats for iPhone and Apple Watch.",
+        "summary": "A native iOS and watchOS app for playing and tracking tennis, with live scoring, knockout and round-robin tournaments, Glicko-2 ratings, Watch workouts and Live Activities.",
+        "stack": [
+          "Swift",
+          "iOS",
+          "watchOS",
+          "WidgetKit",
+          "ActivityKit",
+          "HealthKit",
+          "Glicko-2"
+        ],
+        "repo": "https://github.com/arjun2126/TennisScore",
+        "link": "",
+        "linkLabel": ""
+      },
+      {
+        "slug": "nova-grants",
+        "name": "Nova Grants",
+        "tagline": "Grant intake, claim adjudication and funding oversight in Salesforce.",
+        "summary": "An independent, fictional Salesforce demonstration of the grant lifecycle: applicant intake, eligibility review, verified claims, reimbursement and executive reporting.",
+        "stack": [
+          "Salesforce",
+          "Apex",
+          "Flow",
+          "Custom objects",
+          "Permission sets",
+          "Reports & dashboards",
+          "Metadata API"
+        ],
+        "repo": "https://github.com/arjun2126/nova-scotia-grants-salesforce",
+        "link": "",
+        "linkLabel": ""
+      },
+      {
+        "slug": "care-operations-analytics",
+        "name": "Care Operations Analytics",
+        "tagline": "A funding, operations and risk dashboard for a fictional care provider.",
+        "summary": "A Python analytics pipeline and dashboard built on synthetic Canadian care data, from data-quality checks and a PostgreSQL-ready schema to Streamlit, Power BI and Tableau views.",
+        "stack": [
+          "Python",
+          "pandas",
+          "scikit-learn",
+          "SQL",
+          "PostgreSQL",
+          "Streamlit",
+          "Plotly",
+          "Power BI",
+          "Tableau"
+        ],
+        "repo": "https://github.com/arjun2126/care-operations-analytics",
+        "link": "",
+        "linkLabel": ""
+      },
+      {
+        "slug": "gotcare-ledger",
+        "name": "Gotcare Care Ledger",
+        "tagline": "A Salesforce funding ledger with auditable claim approvals.",
+        "summary": "A prototype for person-directed care funding: care plans, allocations, claims and ledger entries, with atomic Apex approvals and a balance alert that fires when funding crosses a threshold.",
+        "stack": [
+          "Salesforce",
+          "Apex",
+          "Lightning Web Components",
+          "Flow",
+          "Reports & dashboards"
+        ],
+        "repo": "https://github.com/arjun2126/Gotcare-Ledger",
+        "link": "",
+        "linkLabel": ""
+      },
+      {
+        "slug": "revops-platform",
+        "name": "Configurable RevOps Platform",
+        "tagline": "Deal-desk discount intake with metadata-driven pricing rules.",
+        "summary": "A Salesforce prototype for a configurable enterprise deal desk: discount intake, metadata-driven pricing and approval rules, and a queue-owned Deal Review record.",
+        "stack": [
+          "Salesforce",
+          "Screen Flow",
+          "Custom Metadata",
+          "Permission sets",
+          "Validation rules"
+        ],
+        "repo": "https://github.com/arjun2126/salesforce-revops-demo",
+        "link": "",
+        "linkLabel": ""
+      },
+      {
+        "slug": "tennis-lesson-planner",
+        "name": "Tennis Lesson Planner API",
+        "tagline": "A small FastAPI service that turns player goals into structured lesson plans.",
+        "summary": "Rule-based lesson-plan generation with FastAPI, Pydantic validation, SQLite storage and automated API tests, ready to run with Docker.",
+        "stack": [
+          "Python",
+          "FastAPI",
+          "Pydantic",
+          "SQLite",
+          "Docker",
+          "pytest"
+        ],
+        "repo": "https://github.com/arjun2126/ai-engineering-journey",
+        "link": "",
+        "linkLabel": ""
+      },
+      {
+        "slug": "job-search-ops",
+        "name": "Agentic Job Search Workflow",
+        "tagline": "A privacy-first, local-only CLI for a disciplined job search.",
+        "summary": "Lane coverage, local posting checks, document-quality audits and CSV tracking, with dry-run defaults, explicit confirmation and dated backups before any write.",
+        "stack": [
+          "Python",
+          "Typer",
+          "pytest",
+          "YAML",
+          "CSV"
+        ],
+        "repo": "https://github.com/arjun2126/agentic-job-search-workflow",
+        "link": "",
+        "linkLabel": ""
+      }
+    ],
+    "media": [
+      {
+        "id": "3af05e71-495f-4d39-9741-35eefea0a4b9",
+        "projectSlug": "vantage",
+        "caption": "Live match scoring on iPhone, with games, points, a running timer and point controls.",
+        "src": "/media/media-3af05e71-495f-4d39-9741-35eefea0a4b9-e568719f04787c06b21fb69e.webp",
+        "name": "12Vantage.jpeg"
+      },
+      {
+        "id": "7ad0ad89-a4db-4114-b2fc-60942e370e35",
+        "projectSlug": "vantage",
+        "caption": "Home Screen widgets for the next match and the week ahead.",
+        "src": "/media/media-7ad0ad89-a4db-4114-b2fc-60942e370e35-55b5e1ebcef38ce89dd8bf2e.webp",
+        "name": "15Vantage.jpeg"
+      },
+      {
+        "id": "9be622d7-08dd-4486-bea8-18dd2713d263",
+        "projectSlug": "vantage",
+        "caption": "Scoring a match on Apple Watch, with heart rate and point controls.",
+        "src": "/media/media-9be622d7-08dd-4486-bea8-18dd2713d263-7f90b8adeac6e1142f43d57a.webp",
+        "name": "2Vantage.jpeg"
+      },
+      {
+        "id": "366ca420-af5f-4e87-93c5-5ee5b3d1d7c3",
+        "projectSlug": "vantage",
+        "caption": "Live Activity on the Lock Screen during a match.",
+        "src": "/media/media-366ca420-af5f-4e87-93c5-5ee5b3d1d7c3-caf3063f1d2153bc07dbaa0c.webp",
+        "name": "16Vantage.jpeg"
+      },
+      {
+        "id": "11c3ace3-a440-47d5-acaf-86484663fcb8",
+        "projectSlug": "vantage",
+        "caption": "Match setup with players, format, sets and scoring options.",
+        "src": "/media/media-11c3ace3-a440-47d5-acaf-86484663fcb8-d2c8ba9960e626caa2f8f181.webp",
+        "name": "5Vantage.jpeg"
+      },
+      {
+        "id": "882c36cb-f509-4ffa-9f21-9b2004117221",
+        "projectSlug": "vantage",
+        "caption": "Performance view with win rate, aces and break points.",
+        "src": "/media/media-882c36cb-f509-4ffa-9f21-9b2004117221-5db930c82a6d7aab60de260a.webp",
+        "name": "9Vantage.jpeg"
+      },
+      {
+        "id": "3fe889f6-5048-472c-bf59-4e0e3bdc1f3a",
+        "projectSlug": "vantage",
+        "caption": "Rivals list with head-to-head records.",
+        "src": "/media/media-3fe889f6-5048-472c-bf59-4e0e3bdc1f3a-6fc782d81ce2b08fee96cc1f.webp",
+        "name": "7Vantage.jpeg"
+      },
+      {
+        "id": "4a10fd01-3d4c-4f3c-908f-9001bb92eea8",
+        "projectSlug": "vantage",
+        "caption": "Tournaments list with draws and scheduled fixtures.",
+        "src": "/media/media-4a10fd01-3d4c-4f3c-908f-9001bb92eea8-82fa5709ed0a93756880b75d.webp",
+        "name": "8Vantage.jpeg"
+      },
+      {
+        "id": "c5929992-af7b-4483-a455-ea638605b892",
+        "projectSlug": "vantage",
+        "caption": "Player profile with rating, form and head-to-head stats.",
+        "src": "/media/media-c5929992-af7b-4483-a455-ea638605b892-af86a17265f2c4ee50eac627.webp",
+        "name": "13Vantage.jpeg"
+      },
+      {
+        "id": "bfe3b412-fea3-47db-abc7-7b90e10c0255",
+        "projectSlug": "vantage",
+        "caption": "Match detail with score progression and elapsed time.",
+        "src": "/media/media-bfe3b412-fea3-47db-abc7-7b90e10c0255-c25bd25f829df57f86a6721f.webp",
+        "name": "14Vantage.jpeg"
+      },
+      {
+        "id": "7025a8eb-ee43-432c-ae8a-104e909e58cb",
+        "projectSlug": "vantage",
+        "caption": "Ready-to-play state before the first match.",
+        "src": "/media/media-7025a8eb-ee43-432c-ae8a-104e909e58cb-fadf013dfcda0d2beb3a6b23.webp",
+        "name": "3Vantage.jpeg"
+      },
+      {
+        "id": "f064d482-d459-4152-9843-c4e7174ed1ab",
+        "projectSlug": "vantage",
+        "caption": "More menu with events, creator tools and settings.",
+        "src": "/media/media-f064d482-d459-4152-9843-c4e7174ed1ab-554acdf7fe2ef9c8132bb9d5.webp",
+        "name": "10Vantage.jpeg"
+      },
+      {
+        "id": "f1d4025a-346b-4f07-b582-2f38061a0618",
+        "projectSlug": "vantage",
+        "caption": "Settings for scoring, notifications and appearance.",
+        "src": "/media/media-f1d4025a-346b-4f07-b582-2f38061a0618-9343e726bf846ee4be730fdb.webp",
+        "name": "11Vantage.jpeg"
+      },
+      {
+        "id": "8d7103fe-9416-4291-b125-0cb36fe839c7",
+        "projectSlug": "vantage",
+        "caption": "Match setup for a team fixture.",
+        "src": "/media/media-8d7103fe-9416-4291-b125-0cb36fe839c7-82ae088acd4bdba224f92ca6.webp",
+        "name": "4Vantage.jpeg"
+      },
+      {
+        "id": "65c6e124-3dfc-42b7-b3d8-3f880226960f",
+        "projectSlug": "vantage",
+        "caption": "Match setup with an alternate scoring format.",
+        "src": "/media/media-65c6e124-3dfc-42b7-b3d8-3f880226960f-4164e729deed4f7de41737bf.webp",
+        "name": "6Vantage.jpeg"
+      },
+      {
+        "id": "1abc5a93-0bd2-4510-9888-8bb3ea6167b4",
+        "projectSlug": "vantage",
+        "caption": "Widget preview with the current score and an Open on iPhone action.",
+        "src": "/media/media-1abc5a93-0bd2-4510-9888-8bb3ea6167b4-2be8b28fab373ad40440b899.webp",
+        "name": "1Vantage.jpeg"
+      }
+    ],
+    "resume": {
+      "pdf": "",
+      "label": ""
+    },
+    "walkthrough": {
+      "url": "",
+      "title": "",
+      "summary": ""
+    },
+    "sources": []
+  }
 }

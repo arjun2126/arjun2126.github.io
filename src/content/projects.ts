@@ -109,7 +109,7 @@ export const projects: Project[] = baseProjects.map((project) => {
       })),
       ...project.gallery,
     ];
-    merged.galleryNote = 'Owner-supplied screenshots from the local Content Studio.';
+    merged.galleryNote = 'Screenshots supplied from the app by Arjun.';
   }
   return merged;
 });

@@ -53,7 +53,9 @@
   left: 8px !important;
   top: 8px !important;
   width: calc(100% - 16px) !important;
-  height: calc(100% - 16px) !important;
+  /* The stage includes the Dock strip; leave it clear, as restored windows
+     already do, instead of painting underneath the Dock. */
+  height: calc(100% - 104px) !important;
   border-radius: 12px;
 }
 
@@ -243,6 +245,12 @@
 .window--notfound .window__body {
   overflow-y: auto;
   background: var(--paper);
+}
+
+.window--ai .window__body,
+.window--experience .window__body {
+  overflow-y: auto;
+  background: #0e1020;
 }
 
 .window ::-webkit-scrollbar {

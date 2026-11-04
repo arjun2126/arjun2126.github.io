@@ -2,6 +2,7 @@ import { ArrowUpRight, Github } from 'lucide-react';
 import { featuredProjects, projects } from '../content/projects';
 import { profile } from '../content/profile';
 import { AppLink } from '../lib/navigation';
+import { Portrait } from './os/parts';
 import { Monogram } from './Logo';
 
 export function AboutContent({ mode = 'window' }: { mode?: 'window' | 'document' }) {
@@ -11,22 +12,28 @@ export function AboutContent({ mode = 'window' }: { mode?: 'window' | 'document'
         <div className="about-hero__copy">
           <span className="eyebrow">About</span>
           <h1>
-            A portfolio that
+            A record of work,
             <br />
-            <em>shows its work.</em>
+            <em>with the sources attached.</em>
           </h1>
           <p>
             I’m Arjun, a Salesforce developer and administrator based in Whitby, Ontario. I build
-            business systems, analytics tools and native Apple experiences — and I document the work
-            rather than just describing it.
+            business systems, analytics tools and native Apple apps, and I document how each one
+            works.
           </p>
           <p className="about-hero__meta">
             Currently Business Systems Developer &amp; Administrator at SWR, Waterloo Region.
           </p>
         </div>
-        <div className="about-portrait" aria-label="Typographic portrait of Arjun Subramanya">
-          <div className="about-portrait__sun" aria-hidden="true" />
-          <Monogram />
+        <div className={`about-portrait${profile.photo ? ' about-portrait--photo' : ''}`}>
+          {profile.photo ? (
+            <Portrait size="card" />
+          ) : (
+            <>
+              <div className="about-portrait__sun" aria-hidden="true" />
+              <Monogram />
+            </>
+          )}
           <div className="about-portrait__foot">
             <span>Independent software portfolio</span>
             <span>Public sources · 2026</span>
@@ -65,8 +72,8 @@ export function AboutContent({ mode = 'window' }: { mode?: 'window' | 'document'
             <span>selected case studies</span>
           </div>
           <div>
-            <strong>3</strong>
-            <span>platform disciplines</span>
+            <strong>4</strong>
+            <span>disciplines represented</span>
           </div>
           <div>
             <strong>0</strong>
@@ -74,8 +81,8 @@ export function AboutContent({ mode = 'window' }: { mode?: 'window' | 'document'
           </div>
         </div>
         <p className="source-note">
-          Reviewed 2 November 2026. Counts describe this portfolio and its public repositories, not
-          years of experience or commercial outcomes.
+          Reviewed November 2026. These counts describe the portfolio and its public repositories,
+          not years of experience or commercial outcomes.
         </p>
       </section>
 
@@ -86,13 +93,13 @@ export function AboutContent({ mode = 'window' }: { mode?: 'window' | 'document'
         </div>
         <div className="about-prose">
           <p>
-            ArjunOS is a browsing device, not an operating-system emulator. The desktop allows several
-            projects and documents to stay open at once; the mobile layout drops the metaphor entirely
-            and becomes a normal, scrollable document.
+            ArjunOS is a browsing interface, not an operating-system emulator. The desktop keeps
+            several projects and documents open at once; the mobile layout drops the metaphor and
+            becomes a normal, scrollable document.
           </p>
           <p>
             The interface is built with React, TypeScript and Vite, with content separated from
-            presentation. Project pages are pre-rendered with their own metadata so they remain
+            presentation. Project pages are pre-rendered with their own metadata, so they remain
             directly linkable, searchable and readable without the desktop.
           </p>
           <p>
@@ -102,7 +109,7 @@ export function AboutContent({ mode = 'window' }: { mode?: 'window' | 'document'
           </p>
         </div>
         <div className="about-callout">
-          <strong>Publication boundaries</strong>
+          <strong>What I keep private</strong>
           <p>{profile.resumeNote}</p>
         </div>
       </section>

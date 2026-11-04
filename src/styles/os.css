@@ -744,6 +744,10 @@
   overflow: hidden;
 }
 
+.os-portrait--avatar .os-portrait__image {
+  object-position: center 16%;
+}
+
 .os-portrait--avatar .os-portrait__placeholder {
   border-radius: 50%;
   border: 1px solid rgba(20, 24, 40, 0.14);
@@ -767,6 +771,10 @@
   flex: 0 0 92px;
   border-radius: 12px;
   overflow: hidden;
+}
+
+.os-portrait--card .os-portrait__image {
+  object-position: center 14%;
 }
 
 .os-portrait--card .os-portrait__placeholder {
@@ -1865,6 +1873,9 @@
   min-height: 0;
   background: #101220;
   color: #f4f6fc;
+  /* Compact-window sizes below; container queries let the same markup grow
+     when the workspace is maximized or widened. */
+  container-type: inline-size;
 }
 
 .os-sf__header {
@@ -2121,6 +2132,174 @@
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(231, 236, 250, 0.38);
   font-size: 8.2px;
+}
+
+
+@container (min-width: 900px) {
+  .os-sf__header {
+    gap: 14px;
+    padding: 18px 28px 14px;
+  }
+
+  .os-sf__glyph {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+    border-radius: 12px;
+  }
+
+  .os-sf__header h2 {
+    font-size: 20px;
+  }
+
+  .os-sf__header p {
+    margin-top: 2px;
+    font-size: 12px;
+  }
+
+  .os-sf__badge {
+    padding: 4px 9px;
+    font-size: 9px;
+  }
+
+  .os-sf__tabs {
+    gap: 4px;
+    padding: 0 22px;
+  }
+
+  .os-sf__tab {
+    padding: 10px 12px 11px;
+    font-size: 12px;
+  }
+
+  .os-sf__illustration {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    min-height: 224px;
+    padding: 24px 28px 28px;
+  }
+
+  .os-sf__cloud {
+    margin: 0 auto;
+    padding: 8px 18px;
+    font-size: 12px;
+  }
+
+  .os-sf__tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .os-sf__tile {
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 9px;
+    font-size: 12.5px;
+  }
+
+  .os-sf__tile-icon {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
+    border-radius: 7px;
+  }
+
+  .os-sf__content {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
+    column-gap: 56px;
+    row-gap: 14px;
+    align-content: start;
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 30px 32px 38px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .os-sf__content > h2 {
+    grid-column: 1;
+    grid-row: 1;
+    margin-bottom: 0;
+    font-size: 23px;
+  }
+
+  .os-sf__content > p:not(.os-sf__note) {
+    grid-column: 1;
+    grid-row: 2;
+    margin-bottom: 0;
+    max-width: 68ch;
+    color: rgba(231, 236, 250, 0.72);
+  }
+
+  .os-sf__content > ul {
+    grid-column: 1;
+    grid-row: 3;
+    gap: 9px;
+    margin-bottom: 0;
+  }
+
+  .os-sf__content > li {
+    padding-left: 16px;
+  }
+
+  .os-sf__content > ul li::before {
+    top: 9px;
+    left: 3px;
+    width: 4px;
+    height: 4px;
+  }
+
+  .os-sf__content > .os-sf__projects {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-content: start;
+    gap: 8px;
+    margin-bottom: 0;
+  }
+
+  .os-sf__project {
+    flex: 1 1 100%;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 12px;
+    font-size: 12.5px;
+  }
+
+  .os-sf__project span:last-child {
+    font-size: 9.5px;
+  }
+
+  .os-sf__content > .os-sf__note {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: end;
+    padding-top: 14px;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+}
+
+@container (min-width: 1300px) {
+  .os-sf__header h2 {
+    font-size: 22px;
+  }
+
+  .os-sf__illustration {
+    min-height: 256px;
+  }
+
+  .os-sf__content {
+    padding: 36px 40px 46px;
+    font-size: 15px;
+  }
+
+  .os-sf__content > h2 {
+    font-size: 25px;
+  }
 }
 
 /* ---------- AI Engineering ---------- */

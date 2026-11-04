@@ -54,7 +54,7 @@ Screenshots are genuine captures committed to the source repositories. The portf
 - **Northgate Motors** — `docs/screenshots/` in the repository at `release/buyer-3-1`: home, inventory, vehicle detail, 3D studio, about, contact (desktop 1440 and mobile 390 variants where available). Northgate Live reuses these repository-published captures and adds an explicit verification date; it does not fabricate an interactive copy.
 - **Nova Grants** — `docs/screenshots/` on `main`: executive dashboard, application flow, Nova Grants app, claim processing, financial reports. The top 235 px is cropped from the dashboard and app captures to remove an unrelated demo-account email bar.
 - **Care Operations Analytics** — `dashboard/screenshots/` on `main`: corrected Streamlit views, Power BI overview, and Tableau executive pulse.
-- **Vantage, Gotcare Care Ledger, RevOps Platform, Tennis Lesson Planner API, Agentic Job Search Workflow** — no product screenshots are published in the repositories. These use typographic covers and explicitly say no capture exists. No reconstruction is presented as authentic.
+- **Vantage, Gotcare Care Ledger, RevOps Platform, Tennis Lesson Planner API, Agentic Job Search Workflow** — these repositories publish no product screenshots. Gotcare, RevOps, the lesson planner and the job-search CLI keep typographic covers and say no capture exists. Vantage's 16 gallery images are owner-supplied and recorded below; no reconstruction is presented as authentic.
 - **ArjunOS frames** — `docs/screenshots/` are generated from the built application locally with Playwright; they are not product screenshots from other repositories. `public/og/arjunos-cover.png` is a branded typographic social card, not a product capture.
 
 Source downloads are handled by `npm run images` into the ignored `.freebuff/image-sources/` directory and are never committed. The optimization script downloads only from the public repositories above.
@@ -66,7 +66,7 @@ Source downloads are handled by `npm run images` into the ignored `.freebuff/ima
 - Care Operations Analytics uses synthetic data; its model metrics and data-quality counts are quoted from the repository documentation, not re-executed here.
 - Gotcare Care Ledger describes itself as a scratch-org prototype with setup prerequisites that require a Salesforce org.
 - RevOps Platform is in progress: five browser Flow interviews remain pending, and several Setup UI tasks cannot be deployed through metadata.
-- Vantage's public repository provides no product imagery; its documented features and limitations are summarized only where the README supports them.
+- Vantage's public repository provides no product imagery; the page uses 16 owner-supplied captures and summarizes features and limitations only where the README supports them.
 - Tenant/lesson-planner and job-search projects are personal tools; the latter is explicitly not an auto-apply agent.
 
 ## Privacy
@@ -90,3 +90,14 @@ Private email addresses, credentials, tokens, private org identifiers, customer 
 - Image treatment is verified against `scripts/optimize-images.mjs` and shipped
   derivatives, not the superseded asset-table claims. Original downloads remain
   ignored and are not copied into the preparation repository.
+
+## Owner-supplied media (4 November 2026)
+
+| Asset | Detail | Publication state |
+| --- | --- | --- |
+| Portrait | `portrait-b51b352b14a4ac708461518a.webp`, 1127x1311, owner photograph converted locally to WebP | Awaiting recorded approval |
+| Vantage gallery | 16 owner captures (`1Vantage.jpeg`-`16Vantage.jpeg`; WebP derivatives in `public/media/`), ordered scoring, widgets, Watch, Lock Screen, setup, stats, rivals, tournaments, player, match detail, ready, more, settings, team, alternate format, widget preview | Awaiting recorded approval |
+| Résumé PDF | Withheld: personal phone and email, credential IDs, claims conflicting with the approved record | Not published; retained in gitignored `content-studio/private/` |
+
+The Vantage ordering and captions describe only what each capture visibly shows. No capture was
+generated, upscaled into invented UI or attributed to a store listing.

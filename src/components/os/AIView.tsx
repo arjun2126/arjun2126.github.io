@@ -14,7 +14,7 @@ export function AIView({ tone = 'dark' }: { tone?: 'dark' | 'light' }) {
     <div className={`os-app os-ai os-ai--${tone}${tone === 'light' ? ' os-app--light' : ''}`}>
       <header className="os-ai__header">
         <p className="os-ai__eyebrow">AI Engineering</p>
-        <h1>Agentic workflows, with the guardrails visible.</h1>
+        <h1>AI-assisted engineering with visible review gates.</h1>
         <p className="os-ai__lede">
           {aiPositioning.summary}
         </p>
@@ -46,8 +46,8 @@ export function AIView({ tone = 'dark' }: { tone?: 'dark' | 'light' }) {
         <div>
           <ShieldCheck size={17} aria-hidden="true" />
           <p>
-            Human approval gates: agents may draft and validate, but deployment, credentials and
-            destructive changes require explicit owner approval.
+            Agents can draft and validate, but deployment, credential changes and destructive
+            actions still need my approval.
           </p>
         </div>
         <div>

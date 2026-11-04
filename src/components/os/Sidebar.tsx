@@ -109,7 +109,7 @@ export function Sidebar() {
         <span>
           {projects.length} projects · {featuredProjects.length} featured
         </span>
-        <span>Profile reviewed 2 Nov 2026</span>
+        <span>Profile reviewed Nov 2026</span>
         <span className="os-sidebar__version">PORTFOLIO V1.1</span>
       </div>
     </aside>

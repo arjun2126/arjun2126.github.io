@@ -16,7 +16,7 @@ import {
   projects,
   projectBySlug,
 } from '../content/projects';
-import { profile, skillGroups } from '../content/profile';
+import { profile, resumeCapabilities, skillGroups } from '../content/profile';
 import { hero } from '../content/expertise';
 import { useNavigation } from '../lib/navigation';
 import { AppLink } from '../lib/navigation';
@@ -107,8 +107,8 @@ function MobileFooter() {
         </div>
       </div>
       <p>
-        Professional details come from the owner-approved handoff reviewed on 2 November 2026.
-        Project facts are quoted from public repositories. No email or phone number is published.
+        Professional details are reviewed for accuracy. Project facts are quoted from public
+        repositories. No email address or phone number is published.
       </p>
       <div className="m-footer__links">
         <AppLink href="/">Projects</AppLink>
@@ -250,20 +250,20 @@ function MobileHome() {
           <p>{profile.summary}</p>
         </div>
         <ul className="m-capabilities">
-          <li>Apex & LWC</li>
-          <li>Experience Cloud</li>
-          <li>Swift & watchOS</li>
-          <li>Python analytics</li>
-          <li>Streamlit & BI</li>
-          <li>Automated tests</li>
+          {resumeCapabilities
+            .flatMap((group) => group.items)
+            .slice(0, 6)
+            .map((item) => (
+              <li key={item}>{item}</li>
+            ))}
         </ul>
         <AppLink href="/resume/" className="button button--primary">
           Read the full résumé
           <ArrowRight size={16} aria-hidden="true" />
         </AppLink>
         <p className="m-fineprint">
-          Roles, education and certification names come from the approved professional handoff.
-          Credential IDs and proficiency scores are not published.
+          Roles, education and certifications come from my professional record. Credential IDs
+          and proficiency scores are not published.
         </p>
       </section>
 

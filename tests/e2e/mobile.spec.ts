@@ -26,7 +26,7 @@ test.describe('mobile document mode', () => {
       page.getByRole('heading', { level: 1, name: "Hi, I'm Arjun Subramanya." }),
     ).toBeVisible();
     await expect(page.locator('.m-hero__headline')).toHaveText(
-      'Salesforce Developer · Software Engineering · AI Automation',
+      'Salesforce developer and administrator building systems that operations teams rely on.',
     );
   });
 

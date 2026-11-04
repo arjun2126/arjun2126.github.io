@@ -12,9 +12,8 @@ export function ExperienceView({ tone = 'dark' }: { tone?: 'dark' | 'light' }) {
         <p className="os-experience__eyebrow">Experience</p>
         <h1>Business systems, from administration to code.</h1>
         <p className="os-experience__lede">
-          Two professional roles, documented in the approved handoff, plus independent projects kept
-          separate on purpose. No total-years figure, continuous-duration graphic or unverified
-          technical claim is used.
+          Two professional roles, with independent projects kept separate on purpose. The
+          repositories behind the projects publish their tests, limitations and open questions.
         </p>
       </header>
 

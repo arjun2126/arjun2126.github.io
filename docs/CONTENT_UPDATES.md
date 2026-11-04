@@ -51,6 +51,8 @@
 
 ## Missing owner inputs
 
-Genuine portrait; Vantage iPhone/Watch/tournament/scoring/widget screenshots; an approved redacted
-résumé PDF; a genuine hosted walkthrough recording. Existing Northgate, Nova Grants and Care
-Operations screenshots remain available and may be supplemented with reviewed genuine uploads.
+The portrait and 16 Vantage captures are present but still await recorded approval. A genuine
+hosted walkthrough recording remains outstanding. No résumé PDF is published: the supplied file
+contains private contact details and unverified claims, so it stays private until a redacted,
+reviewed version is approved. Existing Northgate, Nova Grants and Care Operations screenshots
+remain available and may be supplemented with reviewed genuine uploads.
