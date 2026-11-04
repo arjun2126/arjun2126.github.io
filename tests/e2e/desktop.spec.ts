@@ -449,7 +449,14 @@ test.describe('layout and owner media regressions', () => {
     await page.goto('/resume/');
     const resume = page.getByRole('dialog', { name: 'Résumé' });
     await expect(resume.getByRole('img', { name: 'Portrait of Arjun Subramanya' })).toBeVisible();
-    await expect(resume.locator('a[download]')).toHaveCount(0);
+    const download = resume.getByRole('link', { name: /Download PDF/i });
+    await expect(download).toBeVisible();
+    await expect(download).toHaveAttribute('href', '/resume/arjun-subramanya-resume.pdf');
+    await expect(download).toHaveAttribute('download', 'Arjun-Subramanya-Resume.pdf');
+    const pdf = await page.request.get('/resume/arjun-subramanya-resume.pdf');
+    expect(pdf.status()).toBe(200);
+    expect(pdf.headers()['content-type']).toContain('application/pdf');
+    expect((await pdf.body()).subarray(0, 5).toString('latin1')).toBe('%PDF-');
   });
 });
 

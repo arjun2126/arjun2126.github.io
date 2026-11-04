@@ -47,7 +47,7 @@ npm run preview
 | `/salesforce/` | Seven-part Salesforce development workspace |
 | `/ai/` | AI engineering practice, labelled applied / experimental, with explicit non-claims |
 | `/experience/` | Two professional roles, independent work, education and certifications |
-| `/resume/` | Professional profile with print / save-PDF support |
+| `/resume/` | Professional profile with a downloadable PDF built from the approved content |
 | `/skills/` | Skills grouped by discipline, each traceable to a project |
 | `/about/` | Approach, scope, and how ArjunOS was built |
 | `/contact/` | Location, LinkedIn and GitHub; no email or phone |
@@ -90,7 +90,7 @@ Employment and education dates that were unknown are shown as “not published�
 
 Saving calls a Vite dev-only endpoint. It writes validated content to `src/content/studio.generated.json`, optimized WebP assets to `public/content-studio/`, the current draft to `content-studio/current.json`, and up to 20 timestamped backups to `content-studio/history/`. The server binds to loopback by default; saves require a loopback socket peer, a loopback Host on the listening port, and an exact matching HTTP Origin. State reads have the same peer/Host gate and reject cross-origin requests. Forwarded headers are not trusted. Then run `npm run build` to rebuild without editing source files. No save endpoint exists in production; the client route is hidden and inert outside loopback. Drafts/history and uploaded assets are Git-ignored; generated content and any intentionally staged uploads need a fresh privacy review.
 
-PDF text extraction is not implemented. DOCX text is extracted locally in the browser; the file is never uploaded. The current print action produces a résumé from the rendered page, but no approved web-safe PDF file is bundled.
+PDF text extraction is not implemented. DOCX text is extracted locally in the browser; the file is never uploaded. `npm run build` renders the approved résumé to `dist/resume/arjun-subramanya-resume.pdf` with a headless Chromium pass over `src/lib/resumeDocument.ts`, so the deployed site serves a static two-page A4 PDF with no browser-side generation and no development server. `npm run resume:pdf` regenerates it on its own; the print action remains available for printing the web page.
 
 ## Authentic visual assets
 
@@ -133,7 +133,7 @@ Project facts come from public repository documentation reviewed on 2 November 2
 
 The attached chat photograph was **not available to this workspace as a file**, so the site still shows the explicit portrait placeholder. Content Studio is ready to accept the original image and write it into the build; no generated likeness is used. Genuine Vantage screenshots remain owner inputs.
 
-No email address or phone number is published. Email publication is still approval-gated. A redacted web-safe résumé PDF is still pending. The live Northgate buyer site sends `X-Frame-Options: SAMEORIGIN` and `frame-ancestors 'self'`, so Northgate Live deliberately uses captures and external links rather than a proxy or a weakened Salesforce setting. True embedding is owner-approval-gated and documented in [docs/NORTHGATE_LIVE.md](docs/NORTHGATE_LIVE.md). The full quality record is in [docs/QUALITY_REPORT.md](docs/QUALITY_REPORT.md).
+No email address or phone number is published. Email publication is still approval-gated. The downloadable résumé PDF is generated at build time from the same approved content as the web page and contains no phone number, email address or credential ID. The live Northgate buyer site sends `X-Frame-Options: SAMEORIGIN` and `frame-ancestors 'self'`, so Northgate Live deliberately uses captures and external links rather than a proxy or a weakened Salesforce setting. True embedding is owner-approval-gated and documented in [docs/NORTHGATE_LIVE.md](docs/NORTHGATE_LIVE.md). The full quality record is in [docs/QUALITY_REPORT.md](docs/QUALITY_REPORT.md).
 
 ## More views
 

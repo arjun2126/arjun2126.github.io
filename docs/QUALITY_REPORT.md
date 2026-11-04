@@ -94,7 +94,7 @@ See [`docs/ASSETS.md`](ASSETS.md) for the source URL and licence.
 1. **The portrait is still an owner input.** No portrait file exists in the workspace; a final search found only the Open Graph cover. Upload the original through Content Studio, save, and rebuild. Until then the explicit placeholder remains.
 2. **Genuine Vantage screenshots are still missing.** The studio applies the first uploaded image for a project as its cover and adds the rest to the gallery.
 3. **Email publication is not approved.** No address or phone is rendered. LinkedIn and GitHub are the public routes.
-4. **No web-safe résumé PDF is bundled.** The print action renders the HTML résumé; PDF text import is unsupported. DOCX import is supported.
+4. **The résumé PDF is generated, not imported.** `npm run build` renders `dist/resume/arjun-subramanya-resume.pdf` (two A4 pages) from approved content in `src/lib/resumeDocument.ts`; PDF text import into Content Studio remains unsupported. DOCX import is supported.
 5. **Save requires `npm run dev`.** The endpoint is intentionally absent from preview and production; a static build cannot write project files. The studio is loopback-only and inert elsewhere.
 6. **Original UI delivery had no independent reviewer.** An independent repository-preparation review was subsequently requested; owner visual/content approval remains an external gate.
 7. **Chromium only.** WebKit, Firefox and physical devices were not run.

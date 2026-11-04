@@ -101,3 +101,12 @@ Private email addresses, credentials, tokens, private org identifiers, customer 
 
 The Vantage ordering and captions describe only what each capture visibly shows. No capture was
 generated, upscaled into invented UI or attributed to a store listing.
+
+## Generated résumé PDF (4 November 2026)
+
+`dist/resume/arjun-subramanya-resume.pdf` is generated during `npm run build` from
+`src/lib/resumeDocument.ts`, which reads the approved profile, employment, education,
+certification and project content modules. It is not the withheld private file in
+`content-studio/private/`. The generator asserts that the document contains no phone number,
+email address, credential ID or private path before writing the file, and the PDF text was
+verified to contain both roles, both institutions, all four certifications and all eight projects.
