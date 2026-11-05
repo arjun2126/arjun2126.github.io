@@ -83,7 +83,7 @@ tr:last-child td{border-bottom:0}
 footer{margin-top:7mm;padding-top:3mm;border-top:.6pt solid var(--rule);font-size:7.6pt;color:var(--muted);display:flex;justify-content:space-between;gap:6mm}
 `;
 
-export function buildResumeHtml(fonts: ResumeFonts = {}, generatedOn = new Date()): string {
+export function buildResumeHtml(fonts: ResumeFonts = {}): string {
   const esc = escapeResumeHtml;
   const employment = professional.employment
     .map(
@@ -132,7 +132,6 @@ export function buildResumeHtml(fonts: ResumeFonts = {}, generatedOn = new Date(
     .map((certification) => `<li>${esc(certification)}</li>`)
     .join('');
 
-  const generated = generatedOn.toISOString().slice(0, 10);
 
   return `<!doctype html>
 <html lang="en">
@@ -187,8 +186,7 @@ export function buildResumeHtml(fonts: ResumeFonts = {}, generatedOn = new Date(
 </section>
 
 <footer>
-  <span>${esc(profile.name)} · arjun2126.github.io/resume · generated ${generated} from the approved public résumé.</span>
-  <span>No phone number, email address or credential ID is published.</span>
+  <span>${esc(profile.name)} · arjun2126.github.io/resume</span>
 </footer>
 </body>
 </html>`;

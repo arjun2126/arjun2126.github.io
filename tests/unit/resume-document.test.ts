@@ -4,7 +4,7 @@ import { profile, resumeCapabilities } from '../../src/content/profile';
 import { professional } from '../../src/content/professional';
 import { projects } from '../../src/content/projects';
 
-const html = buildResumeHtml({}, new Date('2026-11-04T00:00:00Z'));
+const html = buildResumeHtml();
 
 describe('downloadable résumé', () => {
   it('is served from the résumé route under a safe filename', () => {
@@ -36,6 +36,12 @@ describe('downloadable résumé', () => {
     for (const group of resumeCapabilities) expect(html).toContain(escapeResumeHtml(group.label));
     expect(projects).toHaveLength(8);
     for (const project of projects) expect(html).toContain(escapeResumeHtml(project.name));
+  });
+
+  it('shows only résumé content, never build or privacy commentary', () => {
+    expect(html).not.toMatch(/generated \d{4}-\d{2}-\d{2}/i);
+    expect(html).not.toMatch(/no phone number|credential ID is published|approved public/i);
+    expect(html).not.toMatch(/build time|build process|scripts\//i);
   });
 
   it('never carries private contact details or credential IDs', () => {

@@ -210,3 +210,18 @@ PDF in `content-studio/private/` is untouched and unpublished.
 | WebKit download | Same file at 390x844; zero horizontal overflow |
 | PDFKit text check | Both roles, both institutions, all four certifications and all eight projects present; no email, phone or credential ID; pages 596x843 pt |
 | No blank pages | Page 1 2,776 characters, page 2 1,562 characters |
+
+### Résumé PDF footer cleanup (5 November 2026)
+
+Owner review asked that the generated résumé show only résumé content. The PDF footer now carries
+just the name and the public résumé URL; the "generated <date> from the approved public résumé"
+line and the "no phone number, email address or credential ID is published" sentence were removed
+from the visible document. Both privacy gates stay in place and still run before a byte is
+written: `scripts/resume-pdf.ts` asserts the source HTML carries no phone number, email address,
+credential ID or private path, and `tests/unit/resume-document.test.ts` asserts the same while also
+failing if build or privacy commentary reappears in the HTML.
+
+Checks after the change: `npm run check` pass; `npm test` 92 passed / 9 files; `npm run test:studio`
+pass; `npm run build` pass (résumé PDF 2 A4 pages, 180 KB, 64 reviewed source/assets and static
+output); `npm run test:e2e` 35 passed. Extracted PDF text: 2 pages (2,755 / 1,422 characters), zero
+email, phone, credential-ID or build-commentary matches.
