@@ -4,13 +4,17 @@ import { featuredProjects } from '../../content/projects';
 import { hero, recruiter, recruiterTabs, type RecruiterTab } from '../../content/expertise';
 import { professional } from '../../content/professional';
 import { AppLink } from '../../lib/navigation';
+import { RESUME_PDF_FILENAME, RESUME_PDF_PATH } from '../../lib/resumeDocument';
 import { OsMark, Portrait, Wallpaper } from './parts';
 
 function RecruiterActions({ top = false }: { top?: boolean }) {
   return (
     <div className={`os-recruiter__actions${top ? ' os-recruiter__actions--top' : ''}`}>
-      <AppLink className="os-button os-button--blue" href="/resume/">
+      <a className="os-button os-button--blue" href={RESUME_PDF_PATH} download={RESUME_PDF_FILENAME}>
         <FileText size={15} aria-hidden="true" />
+        Download résumé
+      </a>
+      <AppLink className="os-button os-button--outline" href="/resume/">
         View Résumé
       </AppLink>
       <AppLink className="os-button os-button--outline" href="/contact/">

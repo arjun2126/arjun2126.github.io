@@ -65,7 +65,7 @@ export const profile = {
   ],
   resumeNote: generatedDraft?.resume.pdf
     ? 'This web résumé is the public version. It covers the roles, education and certifications approved for publication, plus a downloadable PDF. Private contact details and credential IDs are excluded.'
-    : 'This web résumé is the public version. It covers the roles, education and certifications approved for publication. Phone numbers, email addresses, credential IDs and total-years figures are not included, and a downloadable PDF is not currently published.',
+    : 'This web résumé is the public version. It covers the roles, education and certifications approved for publication. Phone numbers, email addresses, credential IDs and total-years figures are not included. A downloadable PDF is generated from this same approved content at build time.',
   contactIntro:
     'I am based in Whitby, Ontario and open to Salesforce developer, administrator and business-systems roles across Canada. LinkedIn and GitHub are the best ways to reach me.',
   contactNote:

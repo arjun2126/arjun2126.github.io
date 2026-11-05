@@ -75,7 +75,7 @@ ArjunOS is a reference-driven macOS-style portfolio with approved professional c
 - The larger two-column featured grid intentionally leaves its second row below the fold at 1600 × 1000; the main pane scrolls. The compact Recruiter window also scrolls its overview, while `/recruiter/` shows the full summary at 1600 × 1000.
 - Genuine Vantage screenshots still need owner supply; the studio accepts them and applies the first as the project cover.
 - Email publication is not approved; phone and address are excluded.
-- A redacted, web-safe résumé PDF is pending. The current print action renders the page; PDF text import is unsupported.
+- The downloadable résumé PDF is generated at build time (two A4 pages) from approved content; see the 4 November 2026 entry below. PDF text import is unsupported.
 - The save endpoint exists only under `npm run dev`; `vite preview` serves the built content and cannot write files.
 - Content Studio is Chromium-tested; Safari and Firefox were not run.
 - The initial UI delivery had no independent reviewer; repository preparation subsequently received an independent security/correctness review. Owner visual/content review remains an external gate.
@@ -184,3 +184,44 @@ The owner approved publication of the genuine portrait, all 16 Vantage captures,
 LinkedIn and GitHub links and the rewritten copy, and explicitly withheld the résumé PDF. The
 approved hashes are recorded in `publication-approved.json`. A redacted résumé PDF and a genuine
 hosted walkthrough recording remain open items.
+
+### Résumé PDF export repaired (4 November 2026)
+
+Root cause: no PDF asset existed. `profile.resumePdf` was empty because
+`src/content/studio.generated.json` held `"resume": { "pdf": "" }`, so the site rendered no
+download link, every `/resume/*.pdf` URL returned 404, and the only export was `window.print()`
+of the desktop window - a three-page A4 dump of a 1440 px layout, with a 423-character second
+page. The Recruiter Mode "Download résumé" action navigated to `/resume/` instead of downloading.
+
+Fix: `src/lib/resumeDocument.ts` builds a dedicated A4 document from the approved content modules,
+and `scripts/resume-pdf.ts` renders it with headless Chromium during `npm run build` into
+`dist/resume/arjun-subramanya-resume.pdf`. The web résumé and Recruiter Mode both link to it with a
+`download` attribute; a Content Studio upload still takes precedence when one exists. The private
+PDF in `content-studio/private/` is untouched and unpublished.
+
+| Check | Result |
+| --- | --- |
+| `npm run check` | Pass |
+| `npm test` | 91 passed / 9 files, including 4 new résumé-document tests |
+| `npm run test:studio` | Pass |
+| `npm run build` | Pass - PDF two A4 pages, 185 KB; 64 reviewed assets and static output verified |
+| `npm run test:e2e` | 35 passed / 2 projects, including desktop and mobile PDF download assertions |
+| Chromium download | `Arjun-Subramanya-Resume.pdf`, 189,516 bytes, `%PDF-` |
+| WebKit download | Same file at 390x844; zero horizontal overflow |
+| PDFKit text check | Both roles, both institutions, all four certifications and all eight projects present; no email, phone or credential ID; pages 596x843 pt |
+| No blank pages | Page 1 2,776 characters, page 2 1,562 characters |
+
+### Résumé PDF footer cleanup (5 November 2026)
+
+Owner review asked that the generated résumé show only résumé content. The PDF footer now carries
+just the name and the public résumé URL; the "generated <date> from the approved public résumé"
+line and the "no phone number, email address or credential ID is published" sentence were removed
+from the visible document. Both privacy gates stay in place and still run before a byte is
+written: `scripts/resume-pdf.ts` asserts the source HTML carries no phone number, email address,
+credential ID or private path, and `tests/unit/resume-document.test.ts` asserts the same while also
+failing if build or privacy commentary reappears in the HTML.
+
+Checks after the change: `npm run check` pass; `npm test` 92 passed / 9 files; `npm run test:studio`
+pass; `npm run build` pass (résumé PDF 2 A4 pages, 180 KB, 64 reviewed source/assets and static
+output); `npm run test:e2e` 35 passed. Extracted PDF text: 2 pages (2,755 / 1,422 characters), zero
+email, phone, credential-ID or build-commentary matches.

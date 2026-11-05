@@ -30,6 +30,17 @@ test.describe('mobile document mode', () => {
     );
   });
 
+  test('downloads the same résumé PDF in document mode', async ({ page }) => {
+    await page.goto('/resume/');
+    const download = page.getByRole('link', { name: /Download PDF/i });
+    await expect(download).toBeVisible();
+    await expect(download).toHaveAttribute('href', '/resume/arjun-subramanya-resume.pdf');
+    const response = await page.request.get('/resume/arjun-subramanya-resume.pdf');
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toContain('application/pdf');
+    expect((await response.body()).subarray(0, 5).toString('latin1')).toBe('%PDF-');
+  });
+
   test('every route fits the viewport without horizontal overflow', async ({ page }) => {
     for (const path of routes) {
       await page.goto(path);

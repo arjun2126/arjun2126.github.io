@@ -32,6 +32,7 @@ import { northgateLive, northgateLiveHome } from '../src/content/northgateLive';
 import { walkthrough } from '../src/content/walkthrough';
 import { generatedDraft } from '../src/content/generated';
 import { metaForRoute } from '../src/lib/meta';
+import { RESUME_PDF_FILENAME, RESUME_PDF_PATH } from '../src/lib/resumeDocument';
 import type { AppRoute, Route } from '../src/lib/router';
 
 const root = process.cwd();
@@ -260,7 +261,8 @@ ${header()}
     <h1 class="st-page-title">Résumé<em>.</em></h1>
     <p class="st-lede">Approved professional experience, education and certifications alongside independent project work. Private contact details and credential IDs remain excluded.</p>
     <div class="st-actions">
-      <a class="st-button st-button--primary" href="${escapeHtml(profile.github)}" rel="noopener noreferrer">GitHub profile</a>
+      <a class="st-button st-button--primary" href="${RESUME_PDF_PATH}" download="${RESUME_PDF_FILENAME}">Download résumé PDF</a>
+      <a class="st-button" href="${escapeHtml(profile.github)}" rel="noopener noreferrer">GitHub profile</a>
       ${profile.resumePdf ? `<a class="st-button" href="${escapeHtml(profile.resumePdf)}" download="arjunos-resume.pdf">${escapeHtml(profile.resumePdfLabel)}</a>` : ''}
       <a class="st-button" href="/contact/">Contact routes</a>
     </div>
@@ -426,7 +428,8 @@ ${header()}
     <p class="st-page-tagline">${escapeHtml(recruiter.headline)}</p>
     <p class="st-lede">${escapeHtml(recruiter.summary)}</p>
     <div class="st-actions">
-      <a class="st-button st-button--primary" href="/resume/">View résumé</a>
+      <a class="st-button st-button--primary" href="${RESUME_PDF_PATH}" download="${RESUME_PDF_FILENAME}">Download résumé</a>
+      <a class="st-button" href="/resume/">View résumé</a>
       <a class="st-button" href="/contact/">Contact Me</a>
     </div>
   </div>

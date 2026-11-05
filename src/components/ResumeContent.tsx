@@ -1,9 +1,10 @@
-import { ArrowUpRight, Github, Linkedin, Printer } from 'lucide-react';
+import { ArrowUpRight, Download, Github, Linkedin, Printer } from 'lucide-react';
 import { useState } from 'react';
 import { featuredProjects, projects } from '../content/projects';
 import { profile, resumeCapabilities } from '../content/profile';
 import { professional } from '../content/professional';
 import { AppLink } from '../lib/navigation';
+import { RESUME_PDF_FILENAME, RESUME_PDF_PATH } from '../lib/resumeDocument';
 import { Portrait } from './os/parts';
 
 export function ResumeContent({ mode = 'window' }: { mode?: 'window' | 'document' }) {
@@ -24,7 +25,14 @@ export function ResumeContent({ mode = 'window' }: { mode?: 'window' | 'document
           </p>
         </div>
         <div className="resume-header__actions">
-          {profile.resumePdf ? <a className="button button--small" href={profile.resumePdf} download="arjunos-resume.pdf">{profile.resumePdfLabel}</a> : null}
+          <a
+            className="button button--small"
+            href={profile.resumePdf || RESUME_PDF_PATH}
+            download={profile.resumePdf ? 'arjunos-resume.pdf' : RESUME_PDF_FILENAME}
+          >
+            <Download size={15} aria-hidden="true" />
+            {profile.resumePdf ? profile.resumePdfLabel : 'Download PDF'}
+          </a>
           <div className="segmented" role="group" aria-label="Résumé detail level">
             <button
               type="button"
@@ -45,7 +53,7 @@ export function ResumeContent({ mode = 'window' }: { mode?: 'window' | 'document
           </div>
           <button type="button" className="button button--quiet button--small" onClick={() => window.print()}>
             <Printer size={15} aria-hidden="true" />
-            Print / save PDF
+            Print this page
           </button>
         </div>
       </header>
