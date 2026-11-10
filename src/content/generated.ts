@@ -9,6 +9,8 @@ const file = raw as GeneratedContentFile;
  */
 function normalize(content: StudioDraft | null): StudioDraft | null {
   if (!content) return null;
+  // Older Studio saves predate `certifications`; omit the key at runtime so the
+  // registry can distinguish a missing section from an owner-emptied gallery.
   return {
     ...content,
     projects: (content.projects ?? []).map((project) => ({
@@ -18,6 +20,9 @@ function normalize(content: StudioDraft | null): StudioDraft | null {
       link: project.link ?? '',
       linkLabel: project.linkLabel ?? '',
     })),
+    // Do not fabricate an empty gallery for older saves: the certification
+    // registry distinguishes "missing" from "the owner removed everything".
+    ...(Array.isArray(content.certifications) ? { certifications: content.certifications } : {}),
     media: content.media ?? [],
     resume: content.resume ?? { pdf: '', label: '' },
     walkthrough: content.walkthrough ?? { url: '', title: '', summary: '' },

@@ -4,6 +4,7 @@ export type AppRoute =
   | 'salesforce'
   | 'ai'
   | 'experience'
+  | 'certifications'
   | 'live'
   | 'walkthrough'
   | 'resume'
@@ -24,6 +25,7 @@ const appPaths: Record<AppRoute, string> = {
   salesforce: '/salesforce/',
   ai: '/ai/',
   experience: '/experience/',
+  certifications: '/certifications/',
   live: '/northgate-live/',
   walkthrough: '/walkthrough/',
   resume: '/resume/',
@@ -39,6 +41,7 @@ export const appTitles: Record<AppRoute, string> = {
   salesforce: 'Salesforce Workspace',
   ai: 'AI Engineering',
   experience: 'Experience',
+  certifications: 'Certifications',
   live: 'Northgate Live',
   walkthrough: 'Walkthrough',
   resume: 'Résumé',

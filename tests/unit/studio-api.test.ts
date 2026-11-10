@@ -5,16 +5,17 @@ import path from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createServer, type ViteDevServer } from 'vite';
 import { contentStudioPlugin } from '../../server/content-studio-plugin';
+import type { StudioDraft } from '../../src/lib/studioContent';
 import sharp from 'sharp';
 
 describe('Content Studio API integration', () => {
   let root: string;
   let server: ViteDevServer;
   let port: number;
-  const draft = {
+  const draft: StudioDraft = {
     profile: { name: 'Test profile', headline: 'Test', summary: 'Fixture only', photo: '', github: '', linkedin: '', x: '', contactNote: '' },
     career: { experience: [], education: [], certifications: [], achievements: [] },
-    skills: [], projects: [], media: [], sources: [],
+    skills: [], projects: [], certifications: [], media: [], sources: [],
     resume: { pdf: '', label: '' }, walkthrough: { url: '', title: '', summary: '' },
   };
 
@@ -92,6 +93,8 @@ describe('Content Studio API integration', () => {
     { skills: [{ id: 'x', label: 'x', items: [null] }] },
     { projects: [{ slug: 'x', tagline: 'x', summary: 'x', stack: [false] }] },
     { media: [{ id: 'x', src: null }] },
+    { certifications: [{ id: 'x', name: 'x', issuer: 'x', kind: 'image', src: null }] },
+    { certifications: [null] },
     { sources: [null] },
   ])('rejects malformed nested draft data before writing: %j', async (overrides) => {
     const currentPath = path.join(root, 'content-studio/current.json');
@@ -108,6 +111,127 @@ describe('Content Studio API integration', () => {
     expect((await call('GET', 'state')).status).toBe(200);
     expect((await call('GET', 'state', { Origin: 'http://evil.test' })).status).toBe(403);
     expect((await call('GET', 'state', { Host: `localhost:${port + 1}` })).status).toBe(403);
+  });
+
+  it('saves certificate images and PDFs as content-addressed media and preserves visibility', async () => {
+    const image = await sharp({
+      create: { width: 60, height: 40, channels: 3, background: '#d9b45a' },
+    })
+      .jpeg()
+      .withMetadata({ exif: { IFD0: { Artist: 'Private owner note' } } })
+      .toBuffer();
+    const pdf = Buffer.from(
+      '%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Count 0/Kids[]>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF',
+    );
+    const valid = structuredClone(draft);
+    valid.certifications = [
+      {
+        id: 'fixture-image',
+        name: 'Salesforce Certified Fixture',
+        issuer: 'Salesforce',
+        issuedOn: '2024-03-15',
+        expiresOn: '',
+        verificationUrl: 'https://trailhead.salesforce.com/verify',
+        verificationLabel: 'Verify with Salesforce',
+        kind: 'image',
+        src: `data:image/jpeg;base64,${image.toString('base64')}`,
+        privateSrc: '',
+        documentVisible: true,
+        alt: 'Salesforce fixture certificate with identifiers redacted.',
+        redactions: ['Credential ID'],
+        note: '',
+        visible: true,
+      },
+      {
+        id: 'fixture-pdf',
+        name: 'Salesforce Certified PDF Fixture',
+        issuer: 'Salesforce',
+        issuedOn: '',
+        expiresOn: '',
+        verificationUrl: '',
+        verificationLabel: '',
+        kind: 'pdf',
+        src: '',
+        privateSrc: `data:application/pdf;base64,${pdf.toString('base64')}`,
+        documentVisible: false,
+        alt: 'Salesforce PDF fixture with identifiers redacted.',
+        redactions: ['Verification code'],
+        note: '',
+        visible: false,
+      },
+    ];
+
+    const result = await call('POST', 'save', { Origin: `http://127.0.0.1:${port}` }, valid);
+    expect(result.status).toBe(200);
+    const body = JSON.parse(result.body) as { certificateCount: number; content: typeof valid };
+    expect(body.certificateCount).toBe(2);
+    expect(body.content.certifications[0].src).toMatch(/^\/media\/certificate-fixture-image-[a-f0-9]+\.webp$/);
+    expect(body.content.certifications[0].privateSrc).toBe('');
+    expect(body.content.certifications[1].src).toBe('');
+    expect(body.content.certifications[1].privateSrc).toMatch(
+      /^\/__arjunos\/certificate-draft\/certificate-private-fixture-pdf-[a-f0-9]+\.pdf$/,
+    );
+    expect(body.content.certifications[1].visible).toBe(false);
+
+    const imagePath = path.join(root, `public${body.content.certifications[0].src}`);
+    const imageBuffer = await readFile(imagePath);
+    expect((await sharp(imageBuffer).metadata()).exif).toBeUndefined();
+    const privateName = path.basename(body.content.certifications[1].privateSrc);
+    expect(
+      await readFile(path.join(root, 'content-studio/private/certificates', privateName)),
+    ).toEqual(pdf);
+    const persisted = JSON.parse(
+      await readFile(path.join(root, 'src/content/studio.generated.json'), 'utf8'),
+    );
+    expect(persisted.content.certifications[1].privateSrc).toBe('');
+    expect(persisted.content.certifications[1].src).toBe('');
+
+    // A privately saved document can be promoted without re-uploading the file.
+    const promoted = structuredClone(body.content);
+    promoted.certifications[1].documentVisible = true;
+    promoted.certifications[1].src = promoted.certifications[1].privateSrc;
+    promoted.certifications[1].privateSrc = '';
+    const promotedResult = await call('POST', 'save', { Origin: `http://127.0.0.1:${port}` }, promoted);
+    expect(promotedResult.status).toBe(200);
+    const promotedBody = JSON.parse(promotedResult.body) as { content: typeof valid };
+    expect(promotedBody.content.certifications[1].src).toMatch(
+      /^\/media\/certificate-fixture-pdf-[a-f0-9]+\.pdf$/,
+    );
+    expect(promotedBody.content.certifications[1].privateSrc).toBe('');
+    expect(
+      await readFile(path.join(root, `public${promotedBody.content.certifications[1].src}`)),
+    ).toEqual(pdf);
+    // The private PDF must not be copied into the public tree.
+    expect(
+      await readFile(path.join(root, 'public/media', privateName)).catch(() => null),
+    ).toBeNull();
+  });
+
+  it('rejects a certificate PDF with active content', async () => {
+    const active = Buffer.from(
+      '%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R/JavaScript (app.alert(1))>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF',
+    );
+    const invalid = structuredClone(draft);
+    invalid.certifications = [
+      {
+        id: 'active-pdf',
+        name: 'Unsafe fixture',
+        issuer: 'Salesforce',
+        issuedOn: '',
+        expiresOn: '',
+        verificationUrl: '',
+        verificationLabel: '',
+        kind: 'pdf',
+        src: '',
+        privateSrc: `data:application/pdf;base64,${active.toString('base64')}`,
+        documentVisible: false,
+        alt: 'Unsafe PDF fixture.',
+        redactions: [],
+        note: '',
+        visible: true,
+      },
+    ];
+    expect((await call('POST', 'save', { Origin: `http://127.0.0.1:${port}` }, invalid)).status).toBe(500);
   });
 
   it('validates all uploads before modifying saved content or approved media', async () => {

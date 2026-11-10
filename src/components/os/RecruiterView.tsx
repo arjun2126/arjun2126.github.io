@@ -1,5 +1,10 @@
 import { ArrowUpRight, Award, FileText, GraduationCap, Linkedin, Mail, MapPin } from 'lucide-react';
 import { useId, useRef, useState, type KeyboardEvent } from 'react';
+import {
+  certificationStatus,
+  certificationVerification,
+  publicCertifications,
+} from '../../content/certifications';
 import { featuredProjects } from '../../content/projects';
 import { hero, recruiter, recruiterTabs, type RecruiterTab } from '../../content/expertise';
 import { professional } from '../../content/professional';
@@ -114,6 +119,21 @@ export function RecruiterView({ standalone = false }: { standalone?: boolean }) 
                 ))}
               </div>
             </div>
+            <div className="os-recruiter__cert-summary">
+              <h3>Certifications</h3>
+              <ul>
+                {publicCertifications.map((certification) => (
+                  <li key={certification.id}>
+                    <Award size={12} aria-hidden="true" />
+                    <span>{certification.name}</span>
+                  </li>
+                ))}
+              </ul>
+              <AppLink className="os-recruiter__cert-link" href="/certifications/">
+                Credential gallery
+                <ArrowUpRight size={12} aria-hidden="true" />
+              </AppLink>
+            </div>
             <p className="os-recruiter__availability">
               {professional.location} · {professional.availability}
             </p>
@@ -188,12 +208,35 @@ export function RecruiterView({ standalone = false }: { standalone?: boolean }) 
               <h3>
                 <Award size={13} aria-hidden="true" /> Certifications
               </h3>
-              <ul>
-                {professional.certifications.map((certification) => (
-                  <li key={certification}>{certification}</li>
-                ))}
-              </ul>
-              <p className="os-recruiter__meta">Names only; credential IDs are not published.</p>
+              {publicCertifications.map((certification) => {
+                const status = certificationStatus(certification);
+                const verification = certificationVerification(certification);
+                return (
+                  <article key={certification.id}>
+                    <strong>{certification.name}</strong>
+                    <p>
+                      {certification.issuer} · {status.label}
+                    </p>
+                    {verification ? (
+                      <a
+                        className="os-recruiter__verify"
+                        href={verification}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        Official verification
+                        <ArrowUpRight size={10} aria-hidden="true" />
+                      </a>
+                    ) : (
+                      <p className="os-recruiter__meta">Verification link not published</p>
+                    )}
+                  </article>
+                );
+              })}
+              <p className="os-recruiter__meta">
+                Names, issuers and published dates only; credential IDs are not published. An
+                unpublished date does not imply an active credential.
+              </p>
             </section>
           </div>
         ) : null}

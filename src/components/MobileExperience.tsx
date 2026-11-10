@@ -17,6 +17,7 @@ import {
   projectBySlug,
 } from '../content/projects';
 import { profile, resumeCapabilities, skillGroups } from '../content/profile';
+import { certificationStatus, publicCertifications } from '../content/certifications';
 import { hero } from '../content/expertise';
 import { useNavigation } from '../lib/navigation';
 import { AppLink } from '../lib/navigation';
@@ -25,6 +26,7 @@ import { emptyFilters, hasActiveFilters, searchProjects } from '../lib/search';
 import { AboutContent } from './AboutContent';
 import { ContactContent } from './ContactContent';
 import { AIView } from './os/AIView';
+import { CertificationsView } from './os/CertificationsView';
 import { ContentStudio } from './os/ContentStudio';
 import { ExperienceView } from './os/ExperienceView';
 import { NorthgateLive } from './os/NorthgateLive';
@@ -113,6 +115,7 @@ function MobileFooter() {
       <div className="m-footer__links">
         <AppLink href="/">Projects</AppLink>
         <AppLink href="/resume/">Résumé</AppLink>
+        <AppLink href="/certifications/">Certifications</AppLink>
         <AppLink href="/skills/">Skills</AppLink>
         <AppLink href="/about/">About</AppLink>
         <AppLink href="/contact/">Contact</AppLink>
@@ -267,6 +270,39 @@ function MobileHome() {
         </p>
       </section>
 
+      <section className="m-section m-certs-teaser" aria-labelledby="mobile-certs-title">
+        <div className="m-section__head">
+          <span className="eyebrow">Certifications</span>
+          <h2 id="mobile-certs-title">
+            Salesforce <em>certifications.</em>
+          </h2>
+          <p>
+            {publicCertifications.length} approved Salesforce certification
+            {publicCertifications.length === 1 ? '' : 's'} and their issuer. Documents, dates and
+            verification links are not published.
+          </p>
+        </div>
+        <ul className="m-cert-list">
+          {publicCertifications.map((certification) => {
+            const status = certificationStatus(certification);
+            return (
+              <li key={certification.id}>
+                <span>
+                  <strong>{certification.name}</strong>
+                  <span>
+                    {certification.issuer} · {status.label}
+                  </span>
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+        <AppLink href="/certifications/" className="button button--primary">
+          Open the credential gallery
+          <ArrowRight size={16} aria-hidden="true" />
+        </AppLink>
+      </section>
+
       <section className="m-section m-skills-teaser" aria-labelledby="mobile-skills-title">
         <div className="m-section__head">
           <span className="eyebrow">Skills explorer</span>
@@ -359,6 +395,7 @@ export function MobileExperience({ route }: { route: Route }) {
     const osDocument =
       route.app === 'ai' ||
       route.app === 'experience' ||
+      route.app === 'certifications' ||
       route.app === 'salesforce' ||
       route.app === 'live' ||
       route.app === 'content';
@@ -371,6 +408,7 @@ export function MobileExperience({ route }: { route: Route }) {
         {route.app === 'projects' ? <MobileHome /> : null}
         {route.app === 'ai' ? <AIView tone="light" /> : null}
         {route.app === 'experience' ? <ExperienceView tone="light" /> : null}
+        {route.app === 'certifications' ? <CertificationsView tone="light" /> : null}
         {route.app === 'salesforce' ? <SalesforceView tone="light" /> : null}
         {route.app === 'live' ? <NorthgateLive tone="light" /> : null}
         {route.app === 'walkthrough' ? <Walkthrough /> : null}

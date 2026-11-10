@@ -85,3 +85,24 @@ See docs/CONTENT_UPDATES.md and docs/PROGRESS.md for the current workflow and ev
 - ✅ Owner approval was recorded on 4 November 2026 for the portrait, the 16 Vantage captures, the
   LinkedIn and GitHub links and the rewritten copy. The résumé PDF remains private by instruction.
 - ⏳ Deployment to GitHub Pages and verification of the live site.
+
+## Milestone 9 - Certifications and credential gallery (9 November 2026)
+
+- ✅ Added `/certifications/` as a desktop window, sidebar item, Dock app, menu entry and mobile document.
+- ✅ Preserved the four approved Salesforce certification names. Dates, verification URLs and documents
+  were absent, so the UI says they are not published instead of inventing or claiming active status.
+- ✅ Added structured credential records, responsive cards, an enlarged keyboard-accessible image/PDF
+  viewer, official verification links, homepage and Recruiter Mode summaries, prerendered metadata and
+  JSON-LD.
+- ✅ Extended Content Studio with name/issuer/date/URL editing, image or PDF upload, replacement,
+  ordering, credential visibility, a separate document-publication opt-in, an image redaction editor,
+  redaction labels and a live card/viewer preview.
+- ✅ Kept credential IDs and verification codes out of the data model and build; images have metadata
+  stripped, PDFs are size/header/active-content validated, and hidden credentials or private documents
+  never reach the public output.
+- ✅ Passed TypeScript, 110 unit/API tests, the 41-journey desktop/mobile suite, axe scans, the isolated
+  upload/save/restart/build Studio workflow and the 22-route production build.
+- ⏳ Owner review of the certificate metadata and design. The feature branch is local only; no push,
+  merge or deployment has been performed.
+- ⏳ Owner inputs: issue/expiry dates, official verification URLs and redacted certificate images or
+  PDFs. See `docs/CERTIFICATIONS.md`.

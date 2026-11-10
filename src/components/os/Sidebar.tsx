@@ -1,4 +1,5 @@
 import {
+  Award,
   Briefcase,
   Cloud,
   FileText,
@@ -35,6 +36,7 @@ const mainNav: NavItem[] = [
   { key: 'projects', label: 'Projects', href: '/projects/', icon: FolderOpen },
   { key: 'ai', label: 'AI Engineering', href: '/ai/', icon: Sparkles },
   { key: 'experience', label: 'Experience', href: '/experience/', icon: Briefcase },
+  { key: 'certifications', label: 'Certifications', href: '/certifications/', icon: Award },
   { key: 'skills', label: 'Skills', href: '/skills/', icon: Shapes },
   { key: 'content', label: 'Content Studio', href: '/content-studio/', icon: PenTool, locked: true },
 ];

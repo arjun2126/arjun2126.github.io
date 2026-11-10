@@ -74,6 +74,7 @@ export function MenuBar({
       label: 'File',
       items: [
         { label: 'Résumé (print / PDF)', href: '/resume/' },
+        { label: 'Certifications', href: '/certifications/' },
         { label: 'Contact routes', href: '/contact/' },
         { label: 'separator', separator: true },
         { label: 'Content Studio (local)', href: '/content-studio/' },
@@ -95,6 +96,7 @@ export function MenuBar({
         { label: 'Salesforce Workspace', href: '/salesforce/' },
         { label: 'AI Engineering', href: '/ai/' },
         { label: 'Experience', href: '/experience/' },
+        { label: 'Certifications', href: '/certifications/' },
       ],
     },
     {

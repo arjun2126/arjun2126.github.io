@@ -1,7 +1,10 @@
 import {
+  Award,
   ChevronDown,
   ChevronUp,
   Download,
+  Eye,
+  EyeOff,
   ExternalLink,
   FileJson,
   FileText,
@@ -15,6 +18,11 @@ import {
   Upload,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import {
+  certificateDraftDocument,
+  certificationRecords,
+  normalizeCertification,
+} from '../../content/certifications';
 import { profile, skillGroups } from '../../content/profile';
 import { projects } from '../../content/projects';
 import { professional } from '../../content/professional';
@@ -23,19 +31,45 @@ import {
   MAX_IMAGE_BYTES,
   MAX_PDF_BYTES,
   classifyVideoUrl,
+  pdfHasActiveContent,
   validateContentDraft,
   type StudioCareerEntry as CareerEntry,
+  type StudioCertification as Certification,
   type StudioDraft as Draft,
   type StudioMediaItem as MediaItem,
 } from '../../lib/studioContent';
 import { isLocalEnvironment } from '../../lib/local';
+import { CertificationCard, CertificateViewer } from './CertificationsView';
+import { ImageRedactor } from './ImageRedactor';
 
-type Section = 'profile' | 'career' | 'skills' | 'projects' | 'media' | 'resume' | 'walkthrough';
+type Section =
+  | 'profile'
+  | 'career'
+  | 'certifications'
+  | 'skills'
+  | 'projects'
+  | 'media'
+  | 'resume'
+  | 'walkthrough';
 
 const STORAGE_KEY = 'arjunos.content-studio.v1';
 
 function defaultDraft(): Draft {
-  if (savedDraft) return structuredClone(savedDraft);
+  if (savedDraft) {
+    const restored = structuredClone(savedDraft);
+    // Older saves have no structured gallery. Start from the approved records
+    // (including hidden ones) rather than showing an empty editor.
+    restored.certifications = Array.isArray(restored.certifications)
+      ? restored.certifications.map((entry, index) => normalizeCertification(entry, index))
+      : certificationRecords.map((entry) => structuredClone(entry));
+    restored.career = {
+      ...restored.career,
+      certifications: restored.certifications
+        .filter((entry) => entry.visible && entry.name.trim())
+        .map((entry) => entry.name),
+    };
+    return restored;
+  }
   return {
     profile: {
       name: professional.name,
@@ -61,6 +95,7 @@ function defaultDraft(): Draft {
       certifications: [...professional.certifications],
       achievements: [],
     },
+    certifications: certificationRecords.map((entry) => structuredClone(entry)),
     skills: skillGroups.map((group) => ({
       id: group.id,
       label: group.label,
@@ -100,6 +135,9 @@ function loadDraft(): Draft {
             return saved ? { ...project, ...saved } : project;
           })
         : base.projects,
+      certifications: Array.isArray(parsed.certifications)
+        ? parsed.certifications.map((entry, index) => normalizeCertification(entry, index))
+        : base.certifications,
       media: parsed.media ?? base.media,
       resume: { ...base.resume, ...parsed.resume },
       walkthrough: { ...base.walkthrough, ...parsed.walkthrough },
@@ -119,7 +157,12 @@ function readFileText(file: File): Promise<string> {
   });
 }
 
-async function optimizeImage(file: File, maxSize: number, quality = 0.87): Promise<string> {
+async function optimizeImage(
+  file: File,
+  maxSize: number,
+  quality = 0.87,
+  background?: string,
+): Promise<string> {
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, maxSize / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement('canvas');
@@ -127,9 +170,34 @@ async function optimizeImage(file: File, maxSize: number, quality = 0.87): Promi
   canvas.height = Math.max(1, Math.round(bitmap.height * scale));
   const context = canvas.getContext('2d');
   if (!context) throw new Error('Canvas is unavailable.');
+  if (background) {
+    context.fillStyle = background;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  }
   context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
   bitmap.close();
+  // Re-encoding through canvas strips EXIF/GPS metadata from the owner's file.
   return canvas.toDataURL('image/jpeg', quality);
+}
+
+function readPdfFile(file: File): Promise<string> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const buffer = new Uint8Array(await file.arrayBuffer());
+      if (String.fromCharCode(...buffer.slice(0, 5)) !== '%PDF-') {
+        reject(new Error('That file does not contain a valid PDF header.'));
+        return;
+      }
+      let binary = '';
+      const chunkSize = 0x8000;
+      for (let offset = 0; offset < buffer.length; offset += chunkSize) {
+        binary += String.fromCharCode(...buffer.subarray(offset, offset + chunkSize));
+      }
+      resolve(`data:application/pdf;base64,${window.btoa(binary)}`);
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
 
 async function readDocxText(file: File): Promise<string> {
@@ -199,6 +267,38 @@ function parseResume(text: string, source: string): ImportCandidate {
 
 const blankCareer: CareerEntry = { period: '', title: '', org: '', body: '' };
 
+const blankCertification: Certification = {
+  id: '',
+  name: '',
+  issuer: 'Salesforce',
+  issuedOn: '',
+  expiresOn: '',
+  verificationUrl: '',
+  verificationLabel: '',
+  kind: 'none',
+  src: '',
+  privateSrc: '',
+  documentVisible: false,
+  alt: '',
+  redactions: [],
+  note: '',
+  visible: false,
+};
+
+function withCertifications(draft: Draft, certifications: Certification[]): Draft {
+  return {
+    ...draft,
+    certifications,
+    // Keep the legacy name list in step for older import/export consumers.
+    career: {
+      ...draft.career,
+      certifications: certifications
+        .filter((certification) => certification.visible && certification.name.trim())
+        .map((certification) => certification.name),
+    },
+  };
+}
+
 export function ContentStudio() {
   const [draft, setDraft] = useState<Draft>(loadDraft);
   const [section, setSection] = useState<Section>('profile');
@@ -210,6 +310,8 @@ export function ContentStudio() {
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const [historyCount, setHistoryCount] = useState(0);
+  const [certificationPreview, setCertificationPreview] = useState<Certification | null>(null);
+  const [redactor, setRedactor] = useState<{ id: string; src: string; name: string } | null>(null);
   const photoInput = useRef<HTMLInputElement>(null);
   const mediaInput = useRef<HTMLInputElement>(null);
   const pdfInput = useRef<HTMLInputElement>(null);
@@ -336,26 +438,20 @@ export function ContentStudio() {
       );
       return;
     }
-    const buffer = new Uint8Array(await file.arrayBuffer());
-    const header = String.fromCharCode(...buffer.slice(0, 5));
-    if (header !== '%PDF-') {
-      setStatus('That file does not contain a valid PDF header.');
-      return;
+    try {
+      const pdf = await readPdfFile(file);
+      setDraft((current) => ({
+        ...current,
+        resume: {
+          ...current.resume,
+          pdf,
+          label: current.resume.label || 'Résumé — Arjun Subramanya (PDF)',
+        },
+      }));
+      setStatus('PDF added to the draft. Review it for private details, then save to project.');
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : 'That PDF could not be read.');
     }
-    let binary = '';
-    const chunkSize = 0x8000;
-    for (let offset = 0; offset < buffer.length; offset += chunkSize) {
-      binary += String.fromCharCode(...buffer.subarray(offset, offset + chunkSize));
-    }
-    setDraft((current) => ({
-      ...current,
-      resume: {
-        ...current.resume,
-        pdf: `data:application/pdf;base64,${window.btoa(binary)}`,
-        label: current.resume.label || 'Résumé — Arjun Subramanya (PDF)',
-      },
-    }));
-    setStatus('PDF added to the draft. Review it for private details, then save to project.');
   };
 
   const onResume = async (file: File | undefined) => {
@@ -496,9 +592,149 @@ export function ContentStudio() {
       return { ...current, media };
     });
 
+  const updateCertification = (id: string, patch: Partial<Certification>) =>
+    setDraft((current) => {
+      const next = current.certifications.map((certification) =>
+        certification.id === id ? { ...certification, ...patch } : certification,
+      );
+      return withCertifications(current, next);
+    });
+
+  const replaceCertificateDocument = (
+    id: string,
+    kind: 'image' | 'pdf',
+    src: string,
+  ) =>
+    setDraft((current) => {
+      const next = current.certifications.map((certification) => {
+        if (certification.id !== id) return certification;
+        const replacing = Boolean(certification.src || certification.privateSrc);
+        const name = certification.name.trim() || 'Certificate';
+        const issuer = certification.issuer.trim() || 'the issuer';
+        return {
+          ...certification,
+          kind,
+          src: '',
+          privateSrc: src,
+          documentVisible: false,
+          // A replacement must not inherit redaction claims from the old file.
+          redactions: replacing ? [] : certification.redactions,
+          alt:
+            certification.alt ||
+            `${name} certificate${kind === 'pdf' ? ' PDF' : ''} from ${issuer}.`,
+        };
+      });
+      return withCertifications(current, next);
+    });
+
+  const moveCertification = (id: string, direction: -1 | 1) =>
+    setDraft((current) => {
+      const index = current.certifications.findIndex((certification) => certification.id === id);
+      const target = index + direction;
+      if (index < 0 || target < 0 || target >= current.certifications.length) return current;
+      const certifications = [...current.certifications];
+      [certifications[index], certifications[target]] = [certifications[target], certifications[index]];
+      return withCertifications(current, certifications);
+    });
+
+  const addCertification = () => {
+    const id = crypto.randomUUID();
+    setDraft((current) =>
+      withCertifications(current, [
+        ...current.certifications,
+        { ...structuredClone(blankCertification), id },
+      ]),
+    );
+  };
+
+  const removeCertification = (id: string) => {
+    const certification = draft.certifications.find((entry) => entry.id === id);
+    if (!window.confirm(`Remove ${certification?.name || 'this certificate'} from the draft?`)) {
+      return;
+    }
+    setDraft((current) =>
+      withCertifications(
+        current,
+        current.certifications.filter((entry) => entry.id !== id),
+      ),
+    );
+  };
+
+  const onCertificateFile = async (id: string, file: File | undefined) => {
+    if (!file) return;
+    const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+
+    if (isPdf) {
+      if (file.size > MAX_PDF_BYTES) {
+        setStatus(`That PDF is larger than ${Math.round(MAX_PDF_BYTES / 1_000_000)} MB; export a smaller public copy.`);
+        return;
+      }
+      try {
+        const src = await readPdfFile(file);
+        if (pdfHasActiveContent(window.atob(src.split(',')[1] ?? ''))) {
+          setStatus('That PDF contains active content and was not added.');
+          return;
+        }
+        replaceCertificateDocument(id, 'pdf', src);
+        setStatus('Certificate PDF added to the local draft and held privately. Review it, then opt the document into publication.');
+      } catch (error) {
+        setStatus(error instanceof Error ? error.message : 'That PDF could not be read.');
+      }
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      setStatus('Certificate documents must be a PNG, JPEG, WebP or PDF.');
+      return;
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+      setStatus('That image is larger than 8 MB; choose a smaller public copy.');
+      return;
+    }
+    try {
+      const src = await optimizeImage(file, 1600, 0.9, '#ffffff');
+      replaceCertificateDocument(id, 'image', src);
+      setStatus('Certificate image added to the local draft and held privately. Review it, then opt the document into publication.');
+    } catch {
+      setStatus('That image could not be read.');
+    }
+  };
+
+  const toggleDocumentVisibility = (certification: Certification) => {
+    if (certification.documentVisible) {
+      updateCertification(certification.id, {
+        documentVisible: false,
+        privateSrc: certification.src || certification.privateSrc,
+        src: '',
+      });
+      return;
+    }
+    updateCertification(certification.id, {
+      documentVisible: true,
+      src: certification.privateSrc || certification.src,
+      privateSrc: '',
+    });
+  };
+
+  const applyRedaction = (dataUrl: string, count: number) => {
+    if (!redactor) return;
+    updateCertification(redactor.id, {
+      kind: 'image',
+      src: '',
+      privateSrc: dataUrl,
+      documentVisible: false,
+      alt: draft.certifications.find((entry) => entry.id === redactor.id)?.alt || '',
+    });
+    setRedactor(null);
+    setStatus(
+      `Redacted public copy created with ${count} box${count === 1 ? '' : 'es'}. Review it, then opt the document into publication.`,
+    );
+  };
+
   const sections: Array<{ id: Section; label: string; hint: string }> = [
     { id: 'profile', label: 'Professional Profile', hint: 'Name, headline, bio, photo' },
     { id: 'career', label: 'Career', hint: 'Experience, education, awards' },
+    { id: 'certifications', label: 'Certifications', hint: 'Credentials, documents, visibility' },
     { id: 'skills', label: 'Skills', hint: 'Grouped capabilities' },
     { id: 'projects', label: 'Projects', hint: 'Titles, copy, stack, links' },
     { id: 'media', label: 'Media', hint: 'Screenshots and ordering' },
@@ -750,22 +986,11 @@ export function ContentStudio() {
                   }
                 />
               </label>
-              <label>
-                Certifications (one per line)
-                <textarea
-                  rows={3}
-                  value={draft.career.certifications.join('\n')}
-                  onChange={(event) =>
-                    setDraft((current) => ({
-                      ...current,
-                      career: {
-                        ...current.career,
-                        certifications: event.target.value.split('\n'),
-                      },
-                    }))
-                  }
-                />
-              </label>
+              <p className="os-studio__hint">
+                Certifications are managed in the <strong>Certifications</strong> section, where each
+                credential keeps its issuer, dates, document, verification link and public
+                visibility. Public names stay in sync with the résumé and generated PDF.
+              </p>
               <label>
                 Achievements (one per line)
                 <textarea
@@ -782,6 +1007,319 @@ export function ContentStudio() {
                   }
                 />
               </label>
+            </div>
+          ) : null}
+
+          {section === 'certifications' ? (
+            <div className="os-studio__form">
+              <h2>Certifications</h2>
+              <p className="os-studio__hint">
+                Keep the four approved credentials, add only credentials you can verify, and attach
+                a public copy with credential IDs, verification codes and private identifiers
+                removed. Hiding an entry removes it from the homepage, Recruiter Mode, résumé and
+                generated PDF without deleting the draft.
+              </p>
+
+              {draft.certifications.map((certification, index) => (
+                <fieldset key={certification.id} className="os-studio__fieldset">
+                  <legend>
+                    {index + 1}. {certification.name || 'Untitled certificate'}
+                    {certification.visible ? '' : ' · hidden'}
+                  </legend>
+                  <div className="os-studio__cert-actions">
+                    <button
+                      type="button"
+                      onClick={() => moveCertification(certification.id, -1)}
+                      disabled={index === 0}
+                      aria-label={`Move ${certification.name || 'certificate'} earlier`}
+                    >
+                      <ChevronUp size={14} aria-hidden="true" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => moveCertification(certification.id, 1)}
+                      disabled={index === draft.certifications.length - 1}
+                      aria-label={`Move ${certification.name || 'certificate'} later`}
+                    >
+                      <ChevronDown size={14} aria-hidden="true" />
+                    </button>
+                    <label className="os-studio__toggle">
+                      <input
+                        type="checkbox"
+                        checked={certification.visible}
+                        aria-label={`Show ${certification.name || 'certificate'} publicly`}
+                        onChange={(event) =>
+                          updateCertification(certification.id, { visible: event.target.checked })
+                        }
+                      />
+                      {certification.visible ? (
+                        <Eye size={13} aria-hidden="true" />
+                      ) : (
+                        <EyeOff size={13} aria-hidden="true" />
+                      )}
+                      Publicly visible
+                    </label>
+                    <button
+                      type="button"
+                      className="os-studio__text-button"
+                      onClick={() => setCertificationPreview(certification)}
+                    >
+                      <Eye size={13} aria-hidden="true" /> Preview
+                    </button>
+                    <button
+                      type="button"
+                      className="os-studio__text-button"
+                      onClick={() => removeCertification(certification.id)}
+                    >
+                      <Trash2 size={13} aria-hidden="true" /> Remove
+                    </button>
+                  </div>
+
+                  <div className="os-studio__grid">
+                    <label>
+                      Credential name
+                      <input
+                        value={certification.name}
+                        onChange={(event) =>
+                          updateCertification(certification.id, { name: event.target.value })
+                        }
+                      />
+                    </label>
+                    <label>
+                      Issuing organization
+                      <input
+                        value={certification.issuer}
+                        onChange={(event) =>
+                          updateCertification(certification.id, { issuer: event.target.value })
+                        }
+                      />
+                    </label>
+                  </div>
+
+                  <div className="os-studio__grid">
+                    <label>
+                      Issue date (optional)
+                      <input
+                        type="date"
+                        value={certification.issuedOn}
+                        onChange={(event) =>
+                          updateCertification(certification.id, { issuedOn: event.target.value })
+                        }
+                      />
+                    </label>
+                    <label>
+                      Expiry date (optional)
+                      <input
+                        type="date"
+                        value={certification.expiresOn}
+                        onChange={(event) =>
+                          updateCertification(certification.id, { expiresOn: event.target.value })
+                        }
+                      />
+                    </label>
+                  </div>
+
+                  <label>
+                    Official verification URL (optional)
+                    <input
+                      type="url"
+                      inputMode="url"
+                      placeholder="https://"
+                      value={certification.verificationUrl}
+                      onChange={(event) =>
+                        updateCertification(certification.id, {
+                          verificationUrl: event.target.value,
+                        })
+                      }
+                    />
+                    <span className="os-studio__hint">
+                      Link to the issuer's public verification page. Do not paste a URL containing a
+                      credential ID or verification code.
+                    </span>
+                  </label>
+                  <label>
+                    Verification link label (optional)
+                    <input
+                      value={certification.verificationLabel}
+                      placeholder="Verify with Salesforce"
+                      onChange={(event) =>
+                        updateCertification(certification.id, {
+                          verificationLabel: event.target.value,
+                        })
+                      }
+                    />
+                  </label>
+
+                  <label>
+                    Public note (optional)
+                    <textarea
+                      rows={2}
+                      value={certification.note}
+                      placeholder="Describe only what the public record shows."
+                      onChange={(event) =>
+                        updateCertification(certification.id, { note: event.target.value })
+                      }
+                    />
+                  </label>
+                  <label>
+                    Accessible description of the public copy (required with a document)
+                    <textarea
+                      rows={2}
+                      value={certification.alt}
+                      placeholder={`${certification.name || 'Certificate'} from ${certification.issuer || 'the issuer'}.`}
+                      onChange={(event) =>
+                        updateCertification(certification.id, { alt: event.target.value })
+                      }
+                    />
+                  </label>
+                  <label>
+                    Redactions shown on the public copy (comma-separated labels only)
+                    <input
+                      value={certification.redactions.join(', ')}
+                      placeholder="Credential ID, Verification code"
+                      onChange={(event) =>
+                        updateCertification(certification.id, {
+                          redactions: event.target.value
+                            .split(',')
+                            .map((item) => item.trim())
+                            .filter(Boolean),
+                        })
+                      }
+                    />
+                  </label>
+
+                  <div className="os-studio__cert-document">
+                    <div className="os-studio__cert-thumb">
+                      {certification.kind === 'image' &&
+                      certificateDraftDocument(certification) ? (
+                        <img src={certificateDraftDocument(certification)} alt="Draft certificate" />
+                      ) : certification.kind === 'pdf' &&
+                        certificateDraftDocument(certification) ? (
+                        <>
+                          <FileText size={24} aria-hidden="true" />
+                          <span>PDF</span>
+                        </>
+                      ) : (
+                        <>
+                          <Award size={24} aria-hidden="true" />
+                          <span>No document</span>
+                        </>
+                      )}
+                    </div>
+                    <div>
+                      <p>
+                        Use a public copy with credential IDs, verification codes and personal
+                        details removed. Images are resized and re-encoded so EXIF metadata is
+                        stripped; PDFs are stored as supplied, so export a sanitized PDF. Uploading
+                        holds the document privately until you enable “Publish certificate
+                        document” and save.
+                      </p>
+                      <label className="os-studio__upload">
+                        <Upload size={15} aria-hidden="true" />
+                        {certification.kind === 'none' ? 'Upload certificate image or PDF' : 'Replace document'}
+                        <input
+                          type="file"
+                          accept="image/png,image/jpeg,image/webp,application/pdf,.pdf"
+                          aria-label={`Upload certificate document for ${certification.name || 'new certificate'}`}
+                          onChange={(event) => {
+                            void onCertificateFile(certification.id, event.target.files?.[0]);
+                            event.target.value = '';
+                          }}
+                        />
+                      </label>
+                      {certification.kind === 'image' &&
+                      certificateDraftDocument(certification) ? (
+                        <button
+                          type="button"
+                          className="os-button os-button--quiet"
+                          onClick={() =>
+                            setRedactor({
+                              id: certification.id,
+                              src: certificateDraftDocument(certification),
+                              name: certification.name,
+                            })
+                          }
+                        >
+                          <ShieldCheck size={14} aria-hidden="true" /> Redact image
+                        </button>
+                      ) : null}
+                      {certification.kind !== 'none' ? (
+                        <label className="os-studio__toggle">
+                          <input
+                            type="checkbox"
+                            checked={certification.documentVisible}
+                            aria-label={`Publish certificate document for ${certification.name || 'new certificate'}`}
+                            onChange={() => toggleDocumentVisibility(certification)}
+                          />
+                          {certification.documentVisible ? (
+                            <Eye size={13} aria-hidden="true" />
+                          ) : (
+                            <EyeOff size={13} aria-hidden="true" />
+                          )}
+                          Publish certificate document
+                        </label>
+                      ) : null}
+                      {certification.kind !== 'none' ? (
+                        <button
+                          type="button"
+                          className="os-studio__text-button"
+                          onClick={() =>
+                            updateCertification(certification.id, {
+                              kind: 'none',
+                              src: '',
+                              privateSrc: '',
+                              documentVisible: false,
+                              alt: '',
+                            })
+                          }
+                        >
+                          <Trash2 size={13} aria-hidden="true" /> Remove document
+                        </button>
+                      ) : null}
+                      {certification.src.startsWith('/media/') ? (
+                        <p className="os-studio__hint">
+                          Published asset {certification.src} · commit it with the content change.
+                        </p>
+                      ) : null}
+                      {certification.privateSrc.startsWith('/__arjunos/certificate-draft/') ? (
+                        <p className="os-studio__hint">
+                          Held in the local private folder and served only on loopback. It is stripped
+                          from the committed content and the production bundle.
+                        </p>
+                      ) : null}
+                      {certification.privateSrc.startsWith('data:') ? (
+                        <p className="os-studio__hint">
+                          Held in this browser draft only. Save to project to store it in the ignored
+                          private folder.
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+                </fieldset>
+              ))}
+
+              <button type="button" className="os-button os-button--quiet" onClick={addCertification}>
+                <Award size={15} aria-hidden="true" /> Add certificate
+              </button>
+
+              <div className="os-studio__cert-preview">
+                <h3>Preview before publication</h3>
+                <p className="os-studio__hint">
+                  This preview uses the current draft and does not publish anything. Hidden entries
+                  are marked and stay out of the public build.
+                </p>
+                <div className="os-certs__grid os-certs__grid--studio">
+                  {draft.certifications.map((certification) => (
+                    <CertificationCard
+                      key={certification.id}
+                      certification={certification}
+                      hidden={!certification.visible}
+                      previewDocuments
+                      onOpen={setCertificationPreview}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           ) : null}
 
@@ -1168,6 +1706,25 @@ export function ContentStudio() {
           <RotateCcw size={13} aria-hidden="true" /> Reset draft
         </button>
       </footer>
+
+      {certificationPreview ? (
+        <CertificateViewer
+          certification={certificationPreview}
+          index={0}
+          count={1}
+          allowPrivateDocument
+          onClose={() => setCertificationPreview(null)}
+        />
+      ) : null}
+
+      {redactor ? (
+        <ImageRedactor
+          src={redactor.src}
+          name={redactor.name}
+          onCancel={() => setRedactor(null)}
+          onApply={applyRedaction}
+        />
+      ) : null}
     </div>
   );
 }

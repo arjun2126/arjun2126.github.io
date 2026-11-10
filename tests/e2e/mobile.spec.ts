@@ -10,6 +10,7 @@ const routes = [
   '/projects/',
   '/ai/',
   '/experience/',
+  '/certifications/',
   '/salesforce/',
   '/projects/northgate-motors/',
   '/northgate-live/',
@@ -95,6 +96,25 @@ test.describe('mobile document mode', () => {
     }
     await page.getByRole('tab', { name: 'Credentials' }).click();
     await expect(page.getByText('Salesforce Certified Administrator')).toBeVisible();
+  });
+
+  test('opens the certification gallery and reads the credential record', async ({ page }) => {
+    await page.goto('/certifications/');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Certifications');
+    const cardCount = await page.locator('.os-cert-card').count();
+    expect(cardCount).toBeGreaterThan(0);
+    await expect(page.locator('.os-cert-status')).toHaveCount(cardCount);
+    await expect(page.locator('.os-cert-card h3').first()).not.toBeEmpty();
+    await expect(page.getByText(/Credential IDs, verification codes/).first()).toBeVisible();
+    await page
+      .getByRole('navigation', { name: 'Mobile navigation' })
+      .getByRole('link', { name: 'Home' })
+      .click();
+    await expect(page).toHaveURL(/\/$/);
+    expect(await page.locator('.m-cert-list li').count()).toBe(cardCount);
+    await expect(page.locator('#mobile-certs-title')).toHaveText('Salesforce certifications.');
+    await expect(page.locator('.m-certs-teaser')).not.toContainText('with the source');
+    await expect(page.locator('.m-certs-teaser')).toContainText('verification links are not published');
   });
 
   test('mobile project page has no serious automated violations', async ({ page }) => {

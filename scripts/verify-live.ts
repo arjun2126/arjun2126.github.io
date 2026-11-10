@@ -20,14 +20,14 @@ try {
   page.on('response', (response) => {
     if (response.url().startsWith(base) && response.status() >= 400) errors.push(`HTTP ${response.status()} ${new URL(response.url()).pathname}`);
   });
-  const routes = ['/', '/projects/', '/recruiter/', '/resume/', '/salesforce/', '/ai/', '/experience/', '/skills/', '/about/', '/contact/', '/northgate-live/', '/walkthrough/', ...projects.map((project) => `/projects/${project.slug}/`)];
+  const routes = ['/', '/projects/', '/recruiter/', '/resume/', '/salesforce/', '/ai/', '/experience/', '/certifications/', '/skills/', '/about/', '/contact/', '/northgate-live/', '/walkthrough/', ...projects.map((project) => `/projects/${project.slug}/`)];
   for (const route of routes) {
     const response = await page.goto(base + route);
     assert.equal(response?.status(), 200, route);
     await page.locator('body[data-surface]').waitFor();
     assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), `https://arjun2126.github.io${route}`);
     assert(await page.locator('main').count());
-    if (['/', '/recruiter/', '/northgate-live/'].includes(route)) {
+    if (['/', '/recruiter/', '/northgate-live/', '/certifications/'].includes(route)) {
       await page.evaluate(async () => { await document.fonts.ready; await Promise.all(document.getAnimations().map((animation) => animation.finished.catch(() => undefined))); });
       await page.screenshot({ path: `${out}/desktop-${route === '/' ? 'home' : route.split('/')[1]}.png` });
     }

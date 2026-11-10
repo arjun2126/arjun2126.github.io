@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { APPROVED_CERTIFICATION_NAMES } from '../src/content/certifications';
 import { validateContentDraft, type GeneratedContentFile } from '../src/lib/studioContent';
 
 const manifestPath = 'publication-approved.json';
@@ -36,11 +37,34 @@ const generated = JSON.parse(await readFile(generatedPath, 'utf8')) as Generated
 if (generated.content) {
   assert.deepEqual(validateContentDraft(generated.content), [], 'Saved content is invalid');
   const content = generated.content;
+  const certificationNames = new Set(content.certifications.map((item) => item.name));
+  for (const approved of APPROVED_CERTIFICATION_NAMES) {
+    assert(
+      certificationNames.has(approved),
+      `The approved certification was removed from the gallery: ${approved}`,
+    );
+  }
+  for (const certification of content.certifications) {
+    assert(
+      certification.documentVisible || (!certification.src && !certification.privateSrc),
+      'A private certificate document reference entered the committed content file',
+    );
+    assert(
+      !certification.documentVisible || !certification.privateSrc,
+      'A published certificate still carries a private document reference',
+    );
+  }
+  const mediaRefs = [
+    content.profile.photo,
+    content.resume.pdf,
+    ...content.media.map((item) => item.src),
+    ...(content.certifications ?? []).map((item) => item.src),
+  ];
   for (const file of candidates.filter((file) => file.startsWith('public/media/'))) {
     const url = file.replace(/^public/, '');
-    assert([content.profile.photo, content.resume.pdf, ...content.media.map((item) => item.src)].includes(url), `Orphaned media must be moved outside public before building: ${file}`);
+    assert(mediaRefs.includes(url), `Orphaned media must be moved outside public before building: ${file}`);
   }
-  const refs = [content.profile.photo, content.resume.pdf, ...content.media.map((item) => item.src)].filter(Boolean);
+  const refs = mediaRefs.filter(Boolean);
   for (const ref of refs) {
     assert(/^\/media\/[\w.-]+\.(webp|pdf)$/.test(ref), `Unsaved/unsafe media reference: ${ref.slice(0, 80)}`);
     assert(Object.hasOwn(hashes, `public${ref}`), `Missing saved asset: ${ref}`);

@@ -9,6 +9,7 @@
  */
 
 import { generatedDraft } from './generated';
+import { APPROVED_CERTIFICATION_NAMES, certificationNames } from './certifications';
 
 export interface EmploymentEntry {
   id: string;
@@ -89,12 +90,7 @@ const approvedProfessional = {
       dates: 'Dates not published',
     },
   ],
-  certifications: [
-    'Salesforce Certified Administrator',
-    'Salesforce Certified Platform App Builder',
-    'Salesforce Certified Platform Developer I',
-    'Salesforce Certified Agentforce Specialist',
-  ],
+  certifications: [...APPROVED_CERTIFICATION_NAMES],
   note:
     'Employment, education and certification names are drawn from the approved professional record. Credential IDs, total-years figures and unverified technical claims are not published.',
 };
@@ -122,8 +118,10 @@ export const professional = {
       const original = approvedProfessional.education.find((entry) => `${entry.credential} — ${entry.institution}` === line);
       return original ?? { credential: line, institution: '', location: '', focus: '', dates: '' };
     }),
-    certifications: draft.career.certifications.filter(Boolean),
   } : {}),
+  // Public certification names come from the structured gallery, so hiding a
+  // credential removes it from the résumé, PDF and recruiter views too.
+  certifications: certificationNames,
 };
 
 export const aiPositioning = {

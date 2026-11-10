@@ -38,6 +38,10 @@ test.describe('ArjunOS desktop', () => {
     await expect(page.locator('.os-featured .os-project')).toHaveCount(4);
     await expect(page.locator('.os-featured .os-project__category')).toHaveCount(4);
     await expect(page.getByRole('heading', { name: 'Featured Projects' })).toBeVisible();
+    await expect(page.locator('.os-credential')).toHaveCount(4);
+    await expect(
+      page.locator('.os-credentials').getByRole('heading', { name: 'Certifications', exact: true }),
+    ).toBeVisible();
     await expect(page).toHaveTitle('Arjun Subramanya — Salesforce Developer & Software Engineer');
   });
 
@@ -176,7 +180,7 @@ test.describe('window lifecycle', () => {
 });
 
 test.describe('project case studies', () => {
-  test('opens a project from a card and returns to the desktop', async ({ page }) => {
+  test('opens a project from a card and returns to the desktop', async ({ page, baseURL }) => {
     await page.goto('/');
     await page.getByRole('link', { name: /Northgate Motors/ }).first().click();
     await expect(page).toHaveURL(/\/projects\/northgate-motors\/$/);
@@ -193,7 +197,7 @@ test.describe('project case studies', () => {
     await page.goto('/projects/northgate-motors/');
     const reopened = page.getByRole('dialog', { name: 'Northgate Motors' });
     await reopened.getByRole('link', { name: 'All projects' }).click();
-    await expect(page).toHaveURL(/^http:\/\/127\.0\.0\.1:4173\/$/);
+    await expect(page).toHaveURL(new URL('/', baseURL!).href);
     await expect(page.locator('.window')).toHaveCount(3);
     await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName("Hi, I'm Arjun Subramanya.");
   });
@@ -260,6 +264,7 @@ test.describe('project case studies', () => {
       ['/experience/', 'Experience'],
       ['/salesforce/', 'Salesforce Workspace'],
       ['/northgate-live/', 'Northgate Live'],
+      ['/certifications/', 'Certifications'],
       ['/content-studio/', 'Content Studio'],
     ];
     for (const [path, name] of routes) {
@@ -295,6 +300,68 @@ test.describe('project case studies', () => {
     await expect(page.getByText('Salesforce Certified Administrator')).toBeVisible();
     await expect(page.getByRole('link', { name: 'View Résumé' })).toHaveAttribute('href', '/resume/');
     await expect(page.getByRole('link', { name: 'Contact Me' })).toHaveAttribute('href', '/contact/');
+  });
+
+  test('certifications window lists the four approved credentials without inventing details', async ({ page }) => {
+    await page.goto('/certifications/');
+    const gallery = page.getByRole('dialog', { name: 'Certifications' });
+    await expect(gallery).toBeVisible();
+    await expect(gallery.getByRole('heading', { level: 1 })).toContainText('Certifications');
+    await expect(gallery.getByRole('heading', { level: 1 })).toHaveText('Certifications and credentials.');
+    await expect(gallery).not.toContainText('Verified credentials');
+    await expect(gallery).not.toContainText('source attached');
+    await expect(gallery.getByText(/No claim of current validity or independent verification is made/)).toBeVisible();
+    await expect(page.getByText('Salesforce certification names and issuer', { exact: true })).toBeVisible();
+    const cardCount = await gallery.locator('.os-cert-card').count();
+    expect(cardCount).toBeGreaterThan(0);
+    await expect(gallery.locator('.os-cert-status')).toHaveCount(cardCount);
+    const names = await gallery.locator('.os-cert-card h3').allTextContents();
+    expect(names.every((name) => name.trim().length > 0)).toBe(true);
+    expect(new Set(names).size).toBe(names.length);
+    const verificationLinks = await gallery.locator('a.os-cert-card__verify').count();
+    await expect(gallery.getByText('Verification link not published')).toHaveCount(
+      cardCount - verificationLinks,
+    );
+    await expect(page).toHaveTitle('Certifications — Arjun Subramanya');
+    expect(await page.locator('meta[name="description"]').getAttribute('content')).toContain(
+      'Salesforce certifications',
+    );
+    expect(await page.locator('meta[name="description"]').getAttribute('content')).toContain(
+      'documents, dates and verification links are not published',
+    );
+    const schema = JSON.parse(
+      await page.locator('script[type="application/ld+json"]').textContent() ?? '{}',
+    );
+    expect(schema['@type']).toBe('CollectionPage');
+    expect(schema.hasPart).toHaveLength(cardCount);
+    expect(JSON.stringify(schema)).not.toMatch(/credentialId|verificationCode/);
+  });
+
+  test('serves certification content without JavaScript', async ({ browser }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } });
+    const page = await context.newPage();
+    await page.goto('/certifications/');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Certifications');
+    await expect(page.getByText('Salesforce Certified Administrator')).toBeVisible();
+    await expect(page.getByText(/Credential IDs, verification codes/).first()).toBeVisible();
+    await expect(page.getByText(/No claim of current validity or independent verification is made/)).toBeVisible();
+    await expect(page.locator('body')).not.toContainText('Verified credentials');
+    await expect(page.locator('body')).not.toContainText('source attached');
+    expect(await page.locator('meta[name="description"]').getAttribute('content')).toContain(
+      'documents, dates and verification links are not published',
+    );
+    expect(await page.locator('meta[property="og:description"]').getAttribute('content')).toContain(
+      'documents, dates and verification links are not published',
+    );
+    await context.close();
+  });
+
+  test('sidebar and menu reach the certification gallery', async ({ page }) => {
+    await page.goto('/');
+    const sidebar = page.getByRole('navigation', { name: 'ArjunOS applications' });
+    await sidebar.getByRole('link', { name: 'Certifications' }).click();
+    await expect(page).toHaveURL(/\/certifications\/$/);
+    await expect(page.getByRole('dialog', { name: 'Certifications' })).toBeVisible();
   });
 
   test('external links point only at the public profiles', async ({ page }) => {
@@ -383,6 +450,113 @@ test.describe('content studio', () => {
     await expect(reloaded.getByLabel('Name')).toHaveValue('Arjun Subramanya');
     await expect(reloaded.getByRole('img', { name: 'Draft profile' })).toBeVisible();
   });
+
+  test('uploads, previews, hides and persists a certificate draft', async ({ page }) => {
+    await page.goto('/content-studio/');
+    const dialog = page.getByRole('dialog', { name: 'Content Studio' });
+    await dialog.getByRole('button', { name: /^Certifications/ }).click();
+    await expect(dialog.getByRole('heading', { name: 'Certifications' })).toBeVisible();
+    await expect(dialog.locator('.os-studio__fieldset')).toHaveCount(4);
+
+    const first = dialog.locator('.os-studio__fieldset').first();
+    await first.getByLabel('Issue date (optional)').fill('2024-03-15');
+    await first
+      .getByLabel('Official verification URL (optional)')
+      .fill('https://trailhead.salesforce.com/verification');
+    await first.getByLabel('Verification link label (optional)').fill('Verify with Salesforce');
+    await first.getByLabel('Redactions shown on the public copy (comma-separated labels only)').fill(
+      'Credential ID, Verification code',
+    );
+
+    const png = await sharp({
+      create: { width: 90, height: 60, channels: 3, background: { r: 244, g: 238, b: 220 } },
+    })
+      .png()
+      .toBuffer();
+    await first
+      .getByLabel('Upload certificate document for Salesforce Certified Administrator')
+      .setInputFiles({ name: 'administrator.png', mimeType: 'image/png', buffer: png });
+    await expect(first.getByRole('img', { name: 'Draft certificate' })).toBeVisible();
+    await expect(dialog.getByText('Document held privately and not published.').first()).toBeVisible();
+    const unredacted = await first
+      .getByRole('img', { name: 'Draft certificate' })
+      .getAttribute('src');
+
+    await first.getByRole('button', { name: 'Redact image' }).click();
+    const redactor = page.getByRole('dialog', {
+      name: 'Redact Salesforce Certified Administrator image',
+    });
+    await expect(redactor).toBeVisible();
+    await redactor.getByRole('button', { name: 'Add box' }).click();
+    await redactor.getByRole('button', { name: 'Apply redactions' }).click();
+    await expect(redactor).toHaveCount(0);
+    const redacted = await first
+      .getByRole('img', { name: 'Draft certificate' })
+      .getAttribute('src');
+    expect(redacted).not.toBe(unredacted);
+    expect(redacted).toMatch(/^data:image\/jpeg;base64,/);
+    await expect(dialog.getByText('Document held privately and not published.').first()).toBeVisible();
+
+    await first.getByRole('button', { name: 'Preview' }).click();
+    const viewer = page.getByRole('dialog', {
+      name: 'Salesforce Certified Administrator certificate viewer',
+    });
+    await expect(viewer).toBeVisible();
+    await expect(viewer.getByText(/Draft preview only/)).toBeVisible();
+    await expect(viewer.getByRole('link', { name: /Open official verification/ })).toHaveAttribute(
+      'href',
+      'https://trailhead.salesforce.com/verification',
+    );
+    await expect(viewer.getByText(/Redacted from this public copy/)).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(viewer).toHaveCount(0);
+    await expect(first.getByRole('button', { name: 'Preview' })).toBeFocused();
+
+    await first
+      .getByRole('checkbox', { name: 'Publish certificate document for Salesforce Certified Administrator' })
+      .check();
+    await expect(dialog.getByText('Document held privately and not published.')).toHaveCount(0);
+
+    const third = dialog.locator('.os-studio__fieldset').nth(2);
+    const pdf = Buffer.from(
+      '%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Count 0/Kids[]>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF',
+    );
+    await third
+      .getByLabel('Upload certificate document for Salesforce Certified Platform Developer I')
+      .setInputFiles({ name: 'developer.pdf', mimeType: 'application/pdf', buffer: pdf });
+    await expect(third.getByText('PDF', { exact: true })).toBeVisible();
+    await third.getByRole('button', { name: 'Preview' }).click();
+    const pdfViewer = page.getByRole('dialog', {
+      name: 'Salesforce Certified Platform Developer I certificate viewer',
+    });
+    await expect(pdfViewer).toBeVisible();
+    await expect(pdfViewer.locator('iframe')).toHaveAttribute(
+      'title',
+      'Salesforce Certified Platform Developer I PDF certificate',
+    );
+    await expect(pdfViewer.locator('iframe')).toHaveAttribute('src', /^data:application\/pdf;base64,/);
+    await page.keyboard.press('Escape');
+    await expect(pdfViewer).toHaveCount(0);
+
+    const second = dialog.locator('.os-studio__fieldset').nth(1);
+    await second
+      .getByRole('checkbox', { name: 'Show Salesforce Certified Platform App Builder publicly' })
+      .uncheck();
+    await expect(dialog.getByText('Hidden from public').first()).toBeVisible();
+
+    await page.reload();
+    const reloaded = page.getByRole('dialog', { name: 'Content Studio' });
+    await reloaded.getByRole('button', { name: /^Certifications/ }).click();
+    const reloadedFirst = reloaded.locator('.os-studio__fieldset').first();
+    await expect(reloadedFirst.getByLabel('Issue date (optional)')).toHaveValue('2024-03-15');
+    await expect(reloadedFirst.getByRole('img', { name: 'Draft certificate' })).toBeVisible();
+    await expect(
+      reloaded
+        .locator('.os-studio__fieldset')
+        .nth(1)
+        .getByRole('checkbox', { name: 'Show Salesforce Certified Platform App Builder publicly' }),
+    ).not.toBeChecked();
+  });
 });
 
 test.describe('layout and owner media regressions', () => {
@@ -470,6 +644,12 @@ test.describe('accessibility', () => {
     await page.goto('/projects/northgate-motors/');
     await expect(page.getByRole('dialog', { name: 'Northgate Motors' })).toBeVisible();
     await expectNoSeriousA11yViolations(page, 'desktop project');
+  });
+
+  test('certifications gallery has no serious automated violations', async ({ page }) => {
+    await page.goto('/certifications/');
+    await expect(page.getByRole('dialog', { name: 'Certifications' })).toBeVisible();
+    await expectNoSeriousA11yViolations(page, 'certification gallery');
   });
 
   test('résumé has no serious automated violations', async ({ page }) => {

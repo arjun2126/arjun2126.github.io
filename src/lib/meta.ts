@@ -52,6 +52,12 @@ export function metaForRoute(route: Route): PageMeta {
           description:
             'Project-based experience across Salesforce platform builds, native Apple development and analytics engineering.',
         };
+      case 'certifications':
+        return {
+          title: 'Certifications — Arjun Subramanya',
+          description:
+            'Owner-approved Salesforce certifications and their issuer. Certification names only; documents, dates and verification links are not published.',
+        };
       case 'live':
         return {
           title: 'Northgate Live — Arjun Subramanya',
@@ -113,6 +119,7 @@ export function appTitleFromRoute(route: Route): string {
       salesforce: 'Salesforce Workspace',
       ai: 'AI Engineering',
       experience: 'Experience',
+      certifications: 'Certifications',
       live: 'Northgate Live',
       resume: 'Résumé',
       skills: 'Skills',

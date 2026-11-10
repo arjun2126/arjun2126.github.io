@@ -10,6 +10,7 @@ const apps: AppRoute[] = [
   'salesforce',
   'ai',
   'experience',
+  'certifications',
   'live',
   'resume',
   'skills',

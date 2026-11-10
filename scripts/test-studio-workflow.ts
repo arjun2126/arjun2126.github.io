@@ -39,16 +39,53 @@ try {
   await studio.getByRole('button', { name: /^Résumé/ }).click();
   const pdf = Buffer.alloc(5_900_000, 32);
   pdf.write('%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Count 0/Kids[]>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF');
+  const certificatePdf = Buffer.from(
+    '%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Count 0/Kids[]>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF',
+  );
   await studio.getByLabel('Upload downloadable résumé PDF', { exact: true }).setInputFiles({ name: 'synthetic.pdf', mimeType: 'application/pdf', buffer: pdf });
   await studio.getByRole('link', { name: 'Download draft PDF for review' }).waitFor();
   const baselineMedia = JSON.parse(await readFile(path.join(fixture, 'src/content/studio.generated.json'), 'utf8')).content?.media?.length ?? 0;
   await studio.getByRole('button', { name: /^Media/ }).click();
   await studio.getByLabel('Upload project images').setInputFiles({ name: 'synthetic-project.png', mimeType: 'image/png', buffer: png });
   await studio.getByRole('textbox', { name: 'Caption for synthetic-project.png' }).waitFor();
+
+  await studio.getByRole('button', { name: /^Certifications/ }).click();
+  const firstCertificate = studio.locator('.os-studio__fieldset').first();
+  await firstCertificate.getByLabel('Issue date (optional)').fill('2024-03-15');
+  await firstCertificate
+    .getByLabel('Official verification URL (optional)')
+    .fill('https://trailhead.salesforce.com/verification');
+  await firstCertificate
+    .getByLabel('Upload certificate document for Salesforce Certified Administrator')
+    .setInputFiles({ name: 'synthetic-certificate.png', mimeType: 'image/png', buffer: png });
+  await firstCertificate.getByRole('img', { name: 'Draft certificate' }).waitFor();
+  await firstCertificate
+    .getByRole('checkbox', {
+      name: 'Publish certificate document for Salesforce Certified Administrator',
+    })
+    .check();
+  const thirdCertificate = studio.locator('.os-studio__fieldset').nth(2);
+  await thirdCertificate
+    .getByLabel('Upload certificate document for Salesforce Certified Platform Developer I')
+    .setInputFiles({ name: 'private-certificate.pdf', mimeType: 'application/pdf', buffer: certificatePdf });
+  await thirdCertificate.getByText('PDF', { exact: true }).waitFor();
+  await studio
+    .locator('.os-studio__fieldset')
+    .nth(1)
+    .getByRole('checkbox', { name: 'Show Salesforce Certified Platform App Builder publicly' })
+    .uncheck();
+  await firstCertificate.getByRole('button', { name: 'Preview' }).click();
+  await page
+    .getByRole('dialog', { name: 'Salesforce Certified Administrator certificate viewer' })
+    .waitFor();
+  await page.keyboard.press('Escape');
+
   const responsePromise = page.waitForResponse((response) => response.url().endsWith('/__arjunos/content/save') && response.request().method() === 'POST');
   await studio.getByRole('button', { name: 'Save to project', exact: true }).click();
   const response = await responsePromise;
-  assert.equal(response.status(), 200, await response.text());
+  const responseText = await response.text();
+  assert.equal(response.status(), 200, responseText);
+  const editorPayload = JSON.parse(responseText);
   const saved = JSON.parse(await readFile(path.join(fixture, 'src/content/studio.generated.json'), 'utf8'));
   assert.equal(saved.content.profile.name, 'Synthetic workflow fixture');
   assert.match(saved.content.profile.photo, /^\/media\/portrait-[a-f0-9]+\.webp$/);
@@ -62,6 +99,42 @@ try {
   assert.match(saved.content.resume.pdf, /^\/media\/resume-[a-f0-9]+\.pdf$/);
   assert.deepEqual(await readFile(path.join(fixture, `public${saved.content.resume.pdf}`)), pdf);
   await readFile(path.join(fixture, `public${uploaded.src}`));
+  const administrator = saved.content.certifications[0];
+  assert.equal(administrator.name, 'Salesforce Certified Administrator');
+  assert.equal(administrator.issuedOn, '2024-03-15');
+  assert.equal(administrator.verificationUrl, 'https://trailhead.salesforce.com/verification');
+  assert.equal(administrator.documentVisible, true);
+  assert.match(administrator.src, /^\/media\/certificate-salesforce-certified-administrator-[a-f0-9]+\.webp$/);
+  assert.equal(saved.content.certifications[1].visible, false);
+  const developer = saved.content.certifications[2];
+  assert.equal(developer.documentVisible, false);
+  assert.equal(developer.src, '');
+  assert.equal(developer.privateSrc, '');
+  const developerEditor = editorPayload.content.certifications[2];
+  assert.match(
+    developerEditor.privateSrc,
+    /^\/__arjunos\/certificate-draft\/certificate-private-salesforce-certified-platform-developer-i-[a-f0-9]+\.pdf$/,
+  );
+  const privateName = developerEditor.privateSrc.split('/').pop();
+  assert(privateName);
+  assert.deepEqual(
+    await readFile(path.join(fixture, 'content-studio/private/certificates', privateName)),
+    certificatePdf,
+  );
+  assert(
+    !(await readFile(path.join(fixture, 'src/content/studio.generated.json'), 'utf8')).includes(
+      privateName,
+    ),
+    'Private certificate paths must not enter the committed content file',
+  );
+  await readFile(path.join(fixture, `public${administrator.src}`));
+  const privateResponse = await page.request.get(`${url}${developerEditor.privateSrc}`);
+  assert.equal(privateResponse.status(), 200);
+  assert.deepEqual(await privateResponse.body(), certificatePdf);
+  const directPrivate = await page.request.get(
+    `${url}/content-studio/private/certificates/${privateName}`,
+  );
+  assert.notEqual(directPrivate.status(), 200, 'Vite must not expose the private draft folder');
   await page.reload();
   await studio.getByRole('button', { name: 'Professional Profile', exact: false }).click();
   assert.equal(await studio.getByLabel('Name', { exact: true }).inputValue(), 'Synthetic workflow fixture');
@@ -89,8 +162,32 @@ try {
   await portrait.waitFor();
   assert(await portrait.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0));
   assert.equal((await built.request.get(`http://127.0.0.1:${address.port}${uploaded.src}`)).status(), 200);
+  const certificationHtml = await readFile(path.join(fixture, 'dist/certifications/index.html'), 'utf8');
+  assert(certificationHtml.includes('Salesforce Certified Administrator'));
+  assert(certificationHtml.includes(administrator.src));
+  assert(certificationHtml.includes('https://trailhead.salesforce.com/verification'));
+  assert(!certificationHtml.includes('Salesforce Certified Platform App Builder'));
+  assert(!certificationHtml.includes(developerEditor.privateSrc), 'A privately held PDF must not be published');
+  assert(certificationHtml.includes('Certificate document held privately'));
+  const privateProduction = await built.request.get(
+    `http://127.0.0.1:${address.port}${developerEditor.privateSrc}`,
+  );
+  const privateProductionBody = await privateProduction.body();
+  assert.notEqual(privateProduction.headers()['content-type'], 'application/pdf');
+  assert(
+    privateProductionBody.subarray(0, 5).toString('latin1') !== '%PDF-',
+    'The production preview must not serve private certificate bytes',
+  );
+  assert.deepEqual(privateProductionBody.equals(certificatePdf), false);
+  await built.goto(`http://127.0.0.1:${address.port}/certifications/`);
+  await built
+    .getByRole('dialog', { name: 'Certifications' })
+    .getByRole('heading', { level: 1 })
+    .waitFor();
+  assert.equal((await built.request.get(`http://127.0.0.1:${address.port}${administrator.src}`)).status(), 200);
   await built.goto(`http://127.0.0.1:${address.port}/resume/`);
   await built.getByRole('link', { name: 'Résumé — Arjun Subramanya (PDF)' }).waitFor();
+  assert(!(await built.content()).includes('Salesforce Certified Platform App Builder'));
   assert.deepEqual(await (await built.request.get(`http://127.0.0.1:${address.port}${saved.content.resume.pdf}`)).body(), pdf);
   assert.equal((await built.request.post(`http://127.0.0.1:${address.port}/__arjunos/content/save`, { data: {} })).status(), 404);
   console.log('PASS: browser upload → edit → save → generated files → reload → server restart without browser storage → reviewed fixture build → static content/assets. Production write API absent.');
