@@ -34,6 +34,7 @@ const kinds: WindowKind[] = [
   'contact',
   'ai',
   'experience',
+  'certifications',
   'live',
   'content',
   'notfound',
@@ -163,6 +164,9 @@ describe('window manager', () => {
       'projects',
       'live',
     ]);
+    expect(
+      routeWindows({ kind: 'app', app: 'certifications', path: '/certifications/' }).map((win) => win.id),
+    ).toEqual(['projects', 'certifications']);
     expect(routeWindows({ kind: 'notfound', path: '/404/' }).map((win) => win.id)).toEqual(['notfound']);
   });
 });

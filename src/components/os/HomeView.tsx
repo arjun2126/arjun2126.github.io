@@ -1,5 +1,10 @@
-import { ArrowRight, ArrowUpRight, IdCard, Rocket } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Award, IdCard, Rocket, ShieldCheck } from 'lucide-react';
 import type { CSSProperties } from 'react';
+import {
+  certificationStatus,
+  certificationVerification,
+  publicCertifications,
+} from '../../content/certifications';
 import { competencies, hero } from '../../content/expertise';
 import { profile } from '../../content/profile';
 import { featuredProjects } from '../../content/projects';
@@ -68,6 +73,65 @@ export function HomeView() {
             <span className="os-competency__items">{competency.items.join(' · ')}</span>
           </AppLink>
         ))}
+      </section>
+
+      <section className="os-credentials" aria-labelledby="os-credentials-title">
+        <SectionHeading
+          id="os-credentials-title"
+          action={
+            <AppLink className="os-text-link" href="/certifications/">
+              Open credential gallery
+              <ArrowRight size={14} aria-hidden="true" />
+            </AppLink>
+          }
+        >
+          Certifications
+        </SectionHeading>
+        <div className="os-credentials__grid">
+          {publicCertifications.map((certification) => {
+            const status = certificationStatus(certification);
+            const verification = certificationVerification(certification);
+            return (
+              <AppLink
+                key={certification.id}
+                className="os-credential"
+                href="/certifications/"
+                aria-label={`${certification.name}, ${certification.issuer}. ${status.label}. Open the credential gallery.`}
+              >
+                <span className="os-credential__top">
+                  <span className="os-credential__badge" aria-hidden="true">
+                    <Award size={17} strokeWidth={1.7} />
+                  </span>
+                  {verification ? (
+                    <>
+                      <ShieldCheck
+                        className="os-credential__verified"
+                        size={14}
+                        aria-hidden="true"
+                      />
+                      <span className="sr-only">Official verification link published.</span>
+                    </>
+                  ) : (
+                    <ArrowUpRight
+                      className="os-credential__arrow"
+                      size={13}
+                      aria-hidden="true"
+                    />
+                  )}
+                </span>
+                <span className="os-credential__name">{certification.name}</span>
+                <span className="os-credential__meta">
+                  {certification.issuer} · {status.label}
+                </span>
+              </AppLink>
+            );
+          })}
+        </div>
+        <p className="os-credentials__note">
+          {publicCertifications.length} approved Salesforce credential
+          {publicCertifications.length === 1 ? '' : 's'} and their issuer. Documents, dates and
+          verification links are not published; credential IDs are never shown.
+        </p>
       </section>
 
       <section className="os-featured" aria-labelledby="os-featured-title">

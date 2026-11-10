@@ -23,6 +23,12 @@ import {
   skillGroups,
 } from '../src/content/profile';
 import {
+  certificationStatus,
+  certificationVerification,
+  hasPublicDocument,
+  publicCertifications,
+} from '../src/content/certifications';
+import {
   aiCategories,
   experienceEntries,
   recruiter,
@@ -68,6 +74,7 @@ function header(): string {
     <a href="/recruiter/">Recruiter Mode</a>
     <a href="/salesforce/">Salesforce</a>
     <a href="/ai/">AI Engineering</a>
+    <a href="/certifications/">Certifications</a>
     <a href="/resume/">Résumé</a>
     <a href="/skills/">Skills</a>
     <a href="/about/">About</a>
@@ -82,6 +89,7 @@ function footer(): string {
   <p>Project documentation reviewed ${reviewed}. Professional details come from the owner-approved handoff. Private contact details and credential IDs are excluded.</p>
   <div class="st-footer__links">
     <a href="/">Projects</a>
+    <a href="/certifications/">Certifications</a>
     <a href="/resume/">Résumé</a>
     <a href="/skills/">Skills</a>
     <a href="/about/">About</a>
@@ -147,6 +155,21 @@ ${header()}
   <section class="st-section">
     <h2>More public work</h2>
     ${listProjects(extraProjects)}
+  </section>
+  <section class="st-section" id="st-certifications">
+    <h2>Certifications</h2>
+    <div class="st-grid">${publicCertifications.map((certification) => {
+      const status = certificationStatus(certification);
+      const verification = certificationVerification(certification);
+      return `<div class="st-highlight">
+        <p class="st-kicker">${escapeHtml(certification.issuer)}</p>
+        <h3>${escapeHtml(certification.name)}</h3>
+        <p class="st-meta">${escapeHtml(status.label)}</p>
+        ${verification ? `<p><a class="st-link" href="${escapeHtml(verification)}" rel="noopener noreferrer">Official verification</a></p>` : '<p class="st-note">Verification link not published.</p>'}
+      </div>`;
+    }).join('')}</div>
+    <div class="st-actions"><a class="st-button" href="/certifications/">Open the credential gallery</a></div>
+    <p class="st-note">Credential IDs and verification codes are never published. An unpublished date does not imply an active credential.</p>
   </section>
   <section class="st-section">
     <h2>A profile built from evidence</h2>
@@ -537,6 +560,48 @@ ${header()}
 </div>`;
 }
 
+function certificationsPage(): string {
+  return `<div class="st-shell">
+${header()}
+<main class="st-main" id="st-main">
+  <div class="st-page-head">
+    <p class="st-kicker">Salesforce certifications</p>
+    <h1 class="st-page-title">Certifications<br /><em>and credentials.</em></h1>
+    <p class="st-lede">${publicCertifications.length} owner-approved Salesforce certification${publicCertifications.length === 1 ? '' : 's'} and their issuer. Certificate documents, dates and verification links are not published.</p>
+    <div class="st-actions">
+      <a class="st-button st-button--primary" href="/resume/">View the résumé</a>
+      <a class="st-button" href="/recruiter/">Recruiter Mode</a>
+    </div>
+    <p class="st-note">Credential IDs, verification codes and private identifiers are not published. No claim of current validity or independent verification is made.</p>
+  </div>
+  <section class="st-section">
+    <h2>Public credentials</h2>
+    <div class="st-grid">${publicCertifications.length ? publicCertifications.map((certification) => {
+      const status = certificationStatus(certification);
+      const verification = certificationVerification(certification);
+      const document = hasPublicDocument(certification)
+        ? certification.kind === 'image'
+          ? `<img src="${escapeHtml(certification.src)}" alt="${escapeHtml(certification.alt)}" loading="lazy" decoding="async" />`
+          : `<p><a class="st-link" href="${escapeHtml(certification.src)}" rel="noopener noreferrer">Open the PDF certificate</a></p>`
+        : certification.kind !== 'none'
+          ? '<p class="st-note">Certificate document held privately.</p>'
+          : '<p class="st-note">Certificate document not published.</p>';
+      return `<article class="st-highlight">
+        ${document}
+        <p class="st-kicker">${escapeHtml(certification.issuer)}</p>
+        <h3>${escapeHtml(certification.name)}</h3>
+        <p class="st-meta">${escapeHtml(status.label)}</p>
+        ${certification.note ? `<p>${escapeHtml(certification.note)}</p>` : ''}
+        ${certification.redactions.length ? `<p class="st-note">Redacted from this public copy: ${escapeHtml(certification.redactions.join(', '))}.</p>` : ''}
+        ${verification ? `<p><a class="st-link" href="${escapeHtml(verification)}" rel="noopener noreferrer">Official verification</a></p>` : '<p class="st-note">Official verification link not published.</p>'}
+      </article>`;
+    }).join('') : '<p class="st-copy">No certifications are currently public.</p>'}</div>
+  </section>
+  ${footer()}
+</main>
+</div>`;
+}
+
 function northgateLivePage(): string {
   return `<div class="st-shell">
 ${header()}
@@ -773,6 +838,26 @@ const pages: Page[] = [
     },
   },
   {
+    route: appRoute('certifications', '/certifications/'),
+    output: 'certifications/index.html',
+    html: certificationsPage(),
+    title: 'Certifications — Arjun Subramanya',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: 'Certifications — Arjun Subramanya',
+      hasPart: publicCertifications.map((certification) => ({
+        '@type': 'EducationalOccupationalCredential',
+        name: certification.name,
+        credentialCategory: 'certification',
+        recognizedBy: { '@type': 'Organization', name: certification.issuer },
+        ...(certificationVerification(certification)
+          ? { url: certificationVerification(certification) }
+          : {}),
+      })),
+    },
+  },
+  {
     route: { kind: 'notfound', path: '/404/' },
     output: '404.html',
     html: notFoundPage(),
@@ -844,6 +929,7 @@ const protectedRoutes = [
   '/salesforce/',
   '/ai/',
   '/experience/',
+  '/certifications/',
   '/northgate-live/',
   '/walkthrough/',
   '/resume/',

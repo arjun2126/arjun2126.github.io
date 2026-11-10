@@ -1,5 +1,17 @@
 # Verified sources
 
+## Clean release authorization — 10 November 2026
+
+The owner explicitly approved a separate clone/new branch from latest remote main, transfer of the reviewed names-only gallery and security fixes without importing candidate history, full checks and independent review, then PR/squash merge and the existing GitHub Pages workflow if all gates pass. Existing branches/commits must remain unchanged. This authorization does not include original certificate documents, identifiers, private verification URLs, dates, verification or currency claims, or unrelated authoring architecture changes.
+
+## Blocker verification — 10 November 2026
+
+Installed Vite 6 resolved defaults are the filesystem-deny authority, with an automated comparison against the real application configuration. Disposable HTTP fixtures verify denial and legitimate private authoring. Independent read-only history review classified both flagged certification-test literals as synthetic negative tests in the sole unpublished commit; this does not waive the history audit. Public certification facts remain limited to the owner's approved names and issuer, not verification or validity claims.
+
+## Names-only release authorization — 10 November 2026
+
+The owner explicitly approved publishing the four existing Salesforce credential names and issuer only. Original PDFs, credential identifiers, private verification links and unapproved dates remain excluded. This approval does not authorize claiming verified/active status or attaching document evidence. Publication is held pending the security and copy findings recorded in `docs/PROGRESS.md`.
+
 ## Launch verification — 3 November 2026
 
 Read-only Git fetch and authenticated GitHub API confirmed repository identity, unchanged remote
@@ -77,6 +89,24 @@ Private email addresses, credentials, tokens, private org identifiers, customer 
 - `ArjunOS_Profile_Handoff/ARJUNOS_HANDOFF.md` and `portfolio-content.json` — approved professional facts, publication status, exclusions and project metadata. Imported only into the curated `src/content/professional.ts`; private contact fields, credential IDs and application records were not copied.
 - `PRIVACY_AND_VERIFICATION.md` — privacy exclusions and evidence register used to suppress unverified developer claims.
 - `PORTFOLIO_ASSET_INVENTORY.md` — confirmed no portrait, no Vantage screenshots and no hosted demo URLs.
+
+## Certifications (9 November 2026)
+
+The four public names — Salesforce Certified Administrator, Salesforce Certified Platform App
+Builder, Salesforce Certified Platform Developer I and Salesforce Certified Agentforce Specialist —
+come from the approved 2 November professional handoff and were already present in
+`src/content/professional.ts`. No issue date, expiry date, official verification URL, credential ID
+or certificate document was present in the repository or handoff. The structured record in
+`src/content/certifications.ts` therefore leaves those values empty and the public UI labels them as
+not published. No credential is described as active. Certificate documents and verification links
+will only be added after the owner supplies a public copy and an official HTTPS URL.
+
+Privacy controls: credential IDs and verification codes are not modelled; redaction labels never
+contain their values; uploaded documents require a separate explicit publication opt-in and otherwise
+stay in the ignored `content-studio/private/certificates/` folder with no path in the committed
+content; certificate images are re-encoded to remove EXIF; PDFs are header/size screened against a
+conservative active-content list and stored byte-for-byte. The PDF screen is a speed bump, not a
+parser or sandbox. See `docs/CERTIFICATIONS.md`.
 
 ## Wallpaper
 - Wikimedia Commons, “Sunset at Tank Lakes, Alpine Lakes Wilderness”, U.S. Forest Service – Pacific Northwest Region, public domain: https://commons.wikimedia.org/wiki/File:Sunset_at_Tank_Lakes,_Alpine_Lakes_Wilderness.jpg. Local derivative and licence recorded in `docs/ASSETS.md`.

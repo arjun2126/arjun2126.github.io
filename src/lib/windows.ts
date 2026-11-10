@@ -11,6 +11,7 @@ export type WindowKind =
   | 'contact'
   | 'ai'
   | 'experience'
+  | 'certifications'
   | 'live'
   | 'walkthrough'
   | 'content'
@@ -113,6 +114,7 @@ const docWidths: Partial<Record<WindowKind, number>> = {
   contact: 780,
   ai: 1000,
   experience: 940,
+  certifications: 1040,
   live: 1120,
   content: 1120,
 };
@@ -160,6 +162,7 @@ export function createWindowRect(
     case 'contact':
     case 'ai':
     case 'experience':
+    case 'certifications':
     case 'live':
     case 'walkthrough':
     case 'content':

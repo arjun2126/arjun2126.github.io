@@ -4,7 +4,7 @@ import { classifyVideoUrl, isHttpsUrl, validateContentDraft, type StudioDraft } 
 const draft = (): StudioDraft => ({
   profile: { name: 'Synthetic fixture', headline: 'Fixture', summary: 'Test only', photo: '', github: '', x: '', linkedin: '', contactNote: '' },
   career: { experience: [], education: [], certifications: [], achievements: [] },
-  skills: [], projects: [], media: [], sources: [],
+  skills: [], projects: [], certifications: [], media: [], sources: [],
   resume: { pdf: '', label: '' }, walkthrough: { url: '', title: '', summary: '' },
 });
 

@@ -8,19 +8,34 @@
 3. **Media**: choose a project, upload PNG/JPEG/WebP captures (maximum 8 MB each), edit captions
    and reorder with arrows. The first image is the cover; verified source-gallery evidence remains.
    Remove an uploaded item and upload its replacement to replace a previously uploaded image.
-4. **Résumé**: upload an approved web-safe PDF (maximum 6 MB), then download it for review.
+4. **Certifications**: keep the four approved Salesforce credentials, or add another credential only
+   after verifying it. Enter the issuer, optional issue/expiry dates and an official HTTPS
+   verification URL. Upload a PNG/JPEG/WebP or PDF public copy with credential IDs, verification
+   codes and private identifiers removed (maximum 8 MB image / 6 MB PDF), reorder with arrows, and
+   use **Preview** to inspect the enlarged viewer.
+   - **Publicly visible** controls whether the credential appears on the homepage, Recruiter Mode,
+     résumé, generated PDF and `/certifications/`.
+   - **Publish certificate document** is separate and off by default. An uploaded document stays
+     outside `public/` in the ignored `content-studio/private/certificates/` folder, is served only
+     by the loopback dev server, and is stripped from the committed content file until you
+     deliberately enable publication and save. The production build cannot serve private bytes.
+   - Images can be redacted locally before saving: **Redact image** burns opaque boxes into a new
+     JPEG copy. Images are then resized and re-encoded to strip EXIF. PDFs are stored byte-for-byte,
+     so export a sanitized PDF; PDFs containing JavaScript, launch actions or embedded files are
+     rejected.
+5. **Résumé**: upload an approved web-safe PDF (maximum 6 MB), then download it for review.
    The web résumé and print action remain. Document text import is a separate operation.
-5. **Walkthrough**: optionally add a genuine recording's YouTube, Vimeo, Loom or direct HTTPS
+6. **Walkthrough**: optionally add a genuine recording's YouTube, Vimeo, Loom or direct HTTPS
    MP4/WebM URL, title and description. Leave empty until supplied. `/walkthrough/` shows an honest
    placeholder otherwise. External players connect to the video provider only after a click.
-6. Choose **Preview site**, then **Save to project**. The save writes
+7. Choose **Preview site**, then **Save to project**. The save writes
    `src/content/studio.generated.json` and optimized assets under `public/media/`.
    Local JSON snapshots stay ignored under `content-studio/`. Saved changes survive refresh,
    server restart and build. Browser storage has a quota; if full, save to project before closing.
-7. Review the exact text, images and PDF for privacy, accuracy, authenticity and publication rights.
+8. Review the exact text, images and PDF for privacy, accuracy, authenticity and publication rights.
    Remove phone, street address, credential IDs and private details, including PDF metadata.
    File validation is not a guarantee of privacy or malware safety.
-8. **Make an explicit publication decision.** Record approval for exact reviewed files:
+9. **Make an explicit publication decision.** Record approval for exact reviewed files:
 
    ```bash
    npx tsx scripts/validate-publication.ts --approve --owner-reviewed \
@@ -29,11 +44,11 @@
 
    Use the actual filenames shown by `git status --short`. Include the PDF/screenshot paths as
    applicable. Do not approve everything with a wildcard. Builds fail on unreviewed public content.
-9. Run `npm run publish:prepare`: validates, typechecks, runs unit/API tests, isolated upload
-   roundtrip, production build, browser/accessibility checks and reports the diff.
-   `npm run publish:prepare -- --stage` also stages reviewed content/assets and audits the index.
-   Neither command commits or pushes. Review `git diff --cached` and actual media before committing.
-10. Create an update branch, commit only reviewed files, push that branch and open a PR to `main`.
+10. Run `npm run publish:prepare`: validates, typechecks, runs unit/API tests, isolated upload
+    roundtrip, production build, browser/accessibility checks and reports the diff.
+    `npm run publish:prepare -- --stage` also stages reviewed content/assets and audits the index.
+    Neither command commits or pushes. Review `git diff --cached` and actual media before committing.
+11. Create an update branch, commit only reviewed files, push that branch and open a PR to `main`.
     Merge only after independent review and the Actions verify job passes. Approved merges to
     `main` deploy automatically. Check the actual public site after deployment.
 

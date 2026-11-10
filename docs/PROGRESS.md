@@ -1,5 +1,29 @@
 # Persistent progress
 
+## Authorized clean names-only release — 10 November 2026
+
+The owner explicitly approved a separate clean clone and new release branch from latest `origin/main`, transferring only the reviewed gallery and security/copy corrections as new commits. Existing worktrees, refs and commits remain untouched; no force-push or audit-policy exception is authorized. This approval supersedes the historical hold below only for the clean release after every gate and independent review passes.
+
+Clean branch: `release/certifications-gallery-clean`; baseline: `48e2e61c6e417f55afc078dc181283f22856fc0d`. Only aggregate file changes were transferred; the unpublished candidate commit and its problematic fixtures are absent from this clone. Original private PDFs and authoring recovery changes were not copied. Names, Salesforce issuer and existing portfolio integrations are the public scope; document flags remain disabled and document paths, dates and verification URLs empty.
+
+Clean-clone preflight: unchanged staged/history audit passes (11 existing commits, 269 historical blobs, 50 changed paths); TypeScript, 125 unit/API tests, production build/static/publication gates and 41 desktop/mobile browser journeys pass with no retries. Browser checks use an isolated session-only preview configuration, never the owner's existing server. Isolated Studio upload/save/reload/restart/build/private-asset checks pass. Fingerprint comparison of 208 index files, 102 production files and 269 historical blobs with all four original PDFs, extracted identifier candidates and embedded document links finds no sensitive matches. All 63 existing public assets and non-certification saved content are byte-identical to remote main. The production résumé remains a two-page downloadable PDF.
+
+Independent complete-diff review accepts the code and names-only scope. Its evidence correction was addressed by regenerating and visually inspecting desktop/mobile gallery and homepage captures against this clone's build; final independent re-review accepts the complete code, scope and evidence with no remaining review blocker and independently reruns the unchanged history audit successfully. Deployment remains conditional on unchanged post-commit audits, passing PR checks, reviewed changed-file scope and a squash merge through the existing Pages workflow.
+
+## Blocker remediation — 10 November 2026
+
+Working-tree fixes replace the two synthetic audit fixtures while retaining rejection coverage, restore Vite's default filesystem protections plus project restrictions, and make gallery/mobile/desktop/metadata wording strictly names-only. New real-config filesystem tests cover protected resources, legitimate authoring and exact private PDF persistence across restart. The original owner clone and private documents remain untouched. Final verification: TypeScript, 125 unit/API tests, production build, 41 browser journeys with no retries on an isolated preview, and the isolated Studio upload/save/reload/restart/build/privacy workflow pass. Production résumé GET returns HTTP 200, application/pdf and a valid PDF header. Desktop/mobile captures inspected. Independent final review accepts the complete code remediation with no remaining code blockers.
+
+The unchanged staged-file audit passes for all 14 remediation paths. The same audit with history enabled still reports exactly the two original synthetic findings in `91bb13e`; no suppression was added. Fingerprint scanning of 206 tracked files, two new remediation files, 102 production files and 317 historical blobs found no original private PDF payload, extracted credential identifier, private filename or private document verification link. All four public records remain names/issuer only, and existing public assets are unchanged. Fixes are staged in the release worktree only; no new commit, push, merge or deployment occurred. Awaiting owner approval for the clean-branch/clone approach documented below.
+
+History inspection identifies exactly one unpublished commit, `91bb13e`, with two synthetic negative-test literals and no genuine secret in those findings. **No publication may proceed without explicit approval for a clean new release branch/clone that excludes that inherited fixture history.** A descendant fix cannot pass the unchanged all-history audit. Existing local/remote branches, history and audit rules have not been rewritten or bypassed. Scope and exact original locations: `docs/CERTIFICATIONS_REMEDIATION.md`.
+
+## Names-only publication gate — 10 November 2026
+
+Owner authorized only the four certification names and Salesforce issuer, preserving integrations and keeping documents/identifiers/dates/verification claims unpublished. A clean release worktree excludes uncommitted authoring-recovery changes and owner uploads. TypeScript, 110 unit/API tests, production build and all 41 browser tests passed without retries, including production résumé PDF download. Fingerprint scanning of 206 tracked files and 102 production files found no original certificate payloads, extracted credential identifiers, private filenames or embedded document links; existing public assets are unchanged.
+
+**Publication stopped before any push, merge or deployment.** The unchanged security audit flags synthetic credential-bearing URLs in certification tests and their unpublished history. Independent review also found that the custom Vite filesystem deny list drops default protections, plus wording that overstates verification/source availability. These findings require remediation and fresh review; no gate was weakened. Candidate: `91bb13e2aa1f746ac68c79467fa2d222ea97e12d`. No new publication commit was created.
+
 ## Active launch milestone — 3 November 2026
 
 The owner's new launch authorization supersedes historical no-push/no-deployment gates below.
@@ -225,3 +249,48 @@ Checks after the change: `npm run check` pass; `npm test` 92 passed / 9 files; `
 pass; `npm run build` pass (résumé PDF 2 A4 pages, 180 KB, 64 reviewed source/assets and static
 output); `npm run test:e2e` 35 passed. Extracted PDF text: 2 pages (2,755 / 1,422 characters), zero
 email, phone, credential-ID or build-commentary matches.
+
+## Milestone 9 — Certifications and credential gallery (9 November 2026)
+
+- **Feature branch** — `feature/certifications-gallery` on top of `main`; local only. No push, merge,
+  Pages activation or deployment.
+- **Public section** — `/certifications/` with four responsive credential cards, issuer, neutral date
+  status, verification status and document status. The four owner-approved names are unchanged.
+  Dates, verification URLs and documents were not present in the approved record, so each card says
+  they are not published. No credential is described as active.
+- **Viewer** — enlarged image/PDF viewer with Escape close, focus trap, focus restoration and
+  previous/next arrow navigation. Images are lazy-loaded; PDFs render in an iframe with a direct-open
+  fallback.
+- **Integration** — sidebar, Dock, File/View menus, homepage summary, Recruiter Mode overview and
+  Credentials tab, mobile tab-adjacent navigation and footer link, prerendered `/certifications/`,
+  canonical metadata, sitemap entry and `EducationalOccupationalCredential` JSON-LD.
+- **Content Studio** — structured certification editor with add/remove/reorder, name, issuer, issue
+  and expiry dates, official HTTPS verification URL, accessible description, public note, redaction
+  labels, image/PDF upload/replacement, a local image redaction editor that burns opaque boxes into a
+  new JPEG copy, credential visibility, a separate document-publication opt-in (off by default),
+  inline card preview and enlarged viewer preview.
+- **Privacy** — no credential-ID or verification-code field exists; redactions store labels only;
+  uploaded documents stay in the ignored private folder until explicitly opted in and saved; images
+  are re-encoded to strip EXIF; PDFs are size/header screened and stored as supplied; hidden
+  credentials and private documents are absent from public HTML, the committed content, the
+  production bundle and the résumé/PDF. The isolated workflow asserts private bytes are not served
+  by the production preview.
+- **Persistence** — the existing loopback-only Studio save pipeline writes published
+  content-addressed certificate assets under `public/media/`, private drafts under ignored
+  `content-studio/private/certificates/`, retains replaced public files under
+  `content-studio/retired/`, and includes public certificate references in the publication
+  hash/orphan gate.
+- **Evidence** — `docs/CERTIFICATIONS.md` and `docs/screenshots/certifications-*.png`. The synthetic
+  certificate image in the Studio/viewer captures is clearly labelled as a sample and was never saved.
+
+| Check | Result |
+| --- | --- |
+| `npm run check` | Pass |
+| `npm test` | 110 passed / 10 files |
+| `npm run build` | Pass; 22 HTML routes, 21 public routes, 8 project pages, résumé PDF 2 pages |
+| `npm run test:e2e` | 41 passed / 2 projects; no retries |
+| `npm run test:studio` | Pass; upload → save → restart → fixture build → static asset checks |
+| Axe WCAG 2 A/AA + 2.1 A/AA | No serious/critical findings on the certification gallery; existing scans pass |
+| Publication gate | `src/content/studio.generated.json` hash re-approved locally; unreviewed changes still fail |
+| Private-document gate | Private PDF absent from built HTML; credential name still present |
+| Hidden-credential gate | Hidden credential absent from `/certifications/` and résumé |

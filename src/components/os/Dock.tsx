@@ -1,4 +1,5 @@
 import {
+  Award,
   Briefcase,
   Cloud,
   FileText,
@@ -29,6 +30,7 @@ const items: DockItem[] = [
   { app: 'recruiter', label: 'Recruiter Mode', icon: IdCard, tone: 'violet' },
   { app: 'ai', label: 'AI Engineering', icon: Sparkles, tone: 'magenta' },
   { app: 'experience', label: 'Experience', icon: Briefcase, tone: 'indigo' },
+  { app: 'certifications', label: 'Certifications', icon: Award, tone: 'gold' },
   { app: 'skills', label: 'Skills', icon: Shapes, tone: 'orange' },
   { app: 'resume', label: 'Résumé', icon: FileText, tone: 'graphite' },
   { app: 'about', label: 'About', icon: UserRound, tone: 'rose' },

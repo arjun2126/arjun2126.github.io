@@ -47,6 +47,7 @@ npm run preview
 | `/salesforce/` | Seven-part Salesforce development workspace |
 | `/ai/` | AI engineering practice, labelled applied / experimental, with explicit non-claims |
 | `/experience/` | Two professional roles, independent work, education and certifications |
+| `/certifications/` | Credential gallery with issuers, published date status, verification links and an image/PDF viewer |
 | `/resume/` | Professional profile with a downloadable PDF built from the approved content |
 | `/skills/` | Skills grouped by discipline, each traceable to a project |
 | `/about/` | Approach, scope, and how ArjunOS was built |

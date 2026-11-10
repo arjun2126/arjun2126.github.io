@@ -3,6 +3,7 @@ import type { WindowState } from '../lib/windows';
 import { projectBySlug } from '../content/projects';
 import { AboutContent } from './AboutContent';
 import { AIView } from './os/AIView';
+import { CertificationsView } from './os/CertificationsView';
 import { ContentStudio } from './os/ContentStudio';
 import { ExperienceView } from './os/ExperienceView';
 import { MainWindow } from './os/MainWindow';
@@ -26,6 +27,7 @@ const subtitles: Partial<Record<WindowState['kind'], string>> = {
   contact: 'Public contact routes',
   ai: 'Applied practice and experiments',
   experience: 'Project-based record',
+  certifications: 'Salesforce certification names and issuer',
   live: 'Published Salesforce buyer experience',
   content: 'Local authoring tool',
   notfound: 'Route not found',
@@ -42,6 +44,7 @@ export function windowTitle(win: WindowState): string {
   if (win.kind === 'salesforce') return 'Salesforce Workspace';
   if (win.kind === 'ai') return 'AI Engineering';
   if (win.kind === 'experience') return 'Experience';
+  if (win.kind === 'certifications') return 'Certifications';
   if (win.kind === 'live') return 'Northgate Live';
   if (win.kind === 'walkthrough') return 'Walkthrough';
   if (win.kind === 'content') return 'Content Studio';
@@ -72,6 +75,8 @@ export function WindowContent({ win, route }: { win: WindowState; route: Route }
       return <AIView />;
     case 'experience':
       return <ExperienceView />;
+    case 'certifications':
+      return <CertificationsView />;
     case 'live':
       return <NorthgateLive />;
     case 'walkthrough':
