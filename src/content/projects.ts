@@ -1,4 +1,5 @@
 import raw from './projects.json';
+import northgatePlatformGallery from './northgate-platform-gallery.json';
 import { generatedDraft } from './generated';
 
 export type Category = 'Salesforce' | 'Apple' | 'Analytics' | 'Backend';
@@ -19,6 +20,12 @@ export interface Cover {
   srcSmall?: string;
   alt: string;
   caption: string;
+}
+
+export interface ProjectGallerySection {
+  title: string;
+  description: string;
+  images: ProjectImage[];
 }
 
 export interface Highlight {
@@ -61,6 +68,11 @@ export interface Project {
   limitations: string[];
   gallery: ProjectImage[];
   galleryNote: string;
+  platformGallery?: {
+    source: string;
+    note: string;
+    sections: ProjectGallerySection[];
+  };
   seoImage: string;
 }
 
@@ -79,6 +91,7 @@ export const projects: Project[] = baseProjects.map((project) => {
   const media = savedMedia.filter((item) => item.projectSlug === project.slug);
   const merged: Project = {
     ...project,
+    ...(project.slug === 'northgate-motors' ? { platformGallery: northgatePlatformGallery } : {}),
     ...(copy
       ? {
           ...(copy.name?.trim() ? { name: copy.name.trim() } : {}),

@@ -241,6 +241,15 @@ ${header()}
     <p class="st-note">${escapeHtml(project.evidenceNote)}</p>
   </section>
   ${gallery}
+  ${project.platformGallery ? `<section class="st-section">
+    <h2>Salesforce Platform gallery</h2>
+    <p class="st-note">${escapeHtml(project.platformGallery.note)}</p>
+    <a class="st-link" href="${escapeHtml(project.platformGallery.source)}" rel="noopener noreferrer">View the source gallery and privacy notes</a>
+    ${project.platformGallery.sections.map(section => `<section class="st-section" aria-label="${escapeHtml(section.title)}">
+      <h3>${escapeHtml(section.title)}</h3><p class="st-copy">${escapeHtml(section.description)}</p>
+      <div class="st-gallery">${section.images.map(image => `<figure><a href="${escapeHtml(image.src)}"><img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" loading="lazy" decoding="async" /></a><figcaption>${escapeHtml(image.caption)}</figcaption></figure>`).join('')}</div>
+    </section>`).join('')}
+  </section>` : ''}
   <section class="st-section">
     <div class="st-limitations">
       <h2>What this page does not claim</h2>

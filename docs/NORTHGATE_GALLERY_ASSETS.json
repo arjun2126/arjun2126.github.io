@@ -1,0 +1,131 @@
+{
+  "revision": "0023f741222085cb53a214a36472829e1cd7b038",
+  "assets": [
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/sales/lead-path-and-activity.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/sales/lead-path-and-activity.jpg",
+      "sha256": "27d00ca18d9cd88b31c80172af3333c8a03ea113dab2cfaadb289872cafdfcfb",
+      "bytes": 66965
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/sales/account-record-details.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/sales/account-record-details.jpg",
+      "sha256": "426f3c7c36a03aa2f0e37b09a64243e3f51d9322f71e5ee8ba168620e0c866e1",
+      "bytes": 84914
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/sales/test-drive-create.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/sales/test-drive-create.jpg",
+      "sha256": "5dd7dc44d10635ced61898b954db5ffdfd41c144064169aee9634f5c914911a0",
+      "bytes": 110788
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/sales/trade-in-create.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/sales/trade-in-create.jpg",
+      "sha256": "9b1377d4b4127677810f67898df148cad4a49b13ce28eaabe3d1a819b8eaece5",
+      "bytes": 109059
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/sales/trade-in-equity-details.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/sales/trade-in-equity-details.jpg",
+      "sha256": "437d30469ecf341a1a1fcef9b6129793820b84adf76a239a5f51dacd6060a55b",
+      "bytes": 75471
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/sales/delivery-handoff-details.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/sales/delivery-handoff-details.jpg",
+      "sha256": "15a0122dbbde754b894ae95768550f5067286f75fb81304f1b31c68987292500",
+      "bytes": 68725
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/sales/delivery-create.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/sales/delivery-create.jpg",
+      "sha256": "c7bbf862a83fca60508c84564e6a4fca82ae12795073dc17faaebe04e50a9e55",
+      "bytes": 113056
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/inventory/vehicle-list-statuses.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/inventory/vehicle-list-statuses.jpg",
+      "sha256": "49e1f14f5d25c4f5b9d73fb1d724ca39e163fc424a1fe99526a475b8d01a07aa",
+      "bytes": 108337
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/inventory/vehicle-record-details.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/inventory/vehicle-record-details.jpg",
+      "sha256": "21d57a9940b09cca46283bf563b768e2d9576ad43e762ecf3d91c480662cca22",
+      "bytes": 65539
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/inventory/rooftop-record-details.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/inventory/rooftop-record-details.jpg",
+      "sha256": "744c511291d24b19723f546e803139d8e3a8bddbfb423b4a08cec5572c0c6c3d",
+      "bytes": 54971
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/finance/financing-record-details.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/finance/financing-record-details.jpg",
+      "sha256": "8836611c60f2ffe743281e4d703f90c2d3b69f7ba58ab077ea46b29f0375cb1d",
+      "bytes": 42830
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/finance/finance-application-action.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/finance/finance-application-action.jpg",
+      "sha256": "e83220979fc305f8786d0b9bf31fdc1677870711705895ca567bbaffe4477b46",
+      "bytes": 112651
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/finance/financing-submit-for-approval.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/finance/financing-submit-for-approval.jpg",
+      "sha256": "a43e8b66d04906c473420f9d1d21362c71dcf34c77f7c2122a00542afa388b0a",
+      "bytes": 34901
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/service/service-visit-create.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/service/service-visit-create.jpg",
+      "sha256": "a94b3bd581ede0012cde88226cb8c06db4ea116c9ee2ab565efdbff36a5756df",
+      "bytes": 127819
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/service/service-appointment-create.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/service/service-appointment-create.jpg",
+      "sha256": "2273444321c79b3e41c8f539930d8cbe32eef4785785314dc135a6335a4c3c1d",
+      "bytes": 130946
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/loyalty/loyalty-member-details.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/loyalty/loyalty-member-details.jpg",
+      "sha256": "0929bffca53e3cc42db1a21a9185e1b7bf185b04276e66b854d6f48d0e577101",
+      "bytes": 59342
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/loyalty/loyalty-member-create.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/loyalty/loyalty-member-create.jpg",
+      "sha256": "7a662620d5f9cf891613a37aa55e199ec7c41db9b504c3ec706ea568b45fa5f1",
+      "bytes": 95208
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/loyalty/loyalty-transaction-details.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/loyalty/loyalty-transaction-details.jpg",
+      "sha256": "75686ae1c86f115916d79c3f2d31c6e0c14a9b1747e39acd596ac96d994fd9a1",
+      "bytes": 50877
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/analytics/pipeline-by-stage-report.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/analytics/pipeline-by-stage-report.jpg",
+      "sha256": "e6f34e20eb80baf077e66a2bd0b45ee9048046e05ec3ab94fca861f3cc1942e2",
+      "bytes": 156514
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/analytics/executive-operations-dashboard.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/analytics/executive-operations-dashboard.jpg",
+      "sha256": "bdc047c9fdbbc305a75aac2a572d4b4bc031e3b40b44d1719d318ac0f1d57736",
+      "bytes": 59143
+    },
+    {
+      "path": "public/projects/northgate-motors-demo/salesforce-platform/analytics/sales-pipeline-dashboard.jpg",
+      "source": "https://raw.githubusercontent.com/arjun2126/northgate-motors-demo/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/analytics/sales-pipeline-dashboard.jpg",
+      "sha256": "15ffa1d2aadc9f717b0b5e178f92db21944d649524b4921d3f00e17f0805cbe2",
+      "bytes": 145131
+    }
+  ]
+}

@@ -209,6 +209,22 @@ export function ProjectArticle({
             <h2>Inside the work</h2>
           </div>
           <Gallery images={project.gallery} note={project.galleryNote} />
+          {project.platformGallery ? (
+            <>
+              <h3>Salesforce Platform gallery</h3>
+              <p className="source-note">{project.platformGallery.note}</p>
+              <a href={project.platformGallery.source} target="_blank" rel="noopener noreferrer">
+                View the source gallery and privacy notes
+              </a>
+              {project.platformGallery.sections.map((section) => (
+                <section className="article-section" key={section.title} aria-label={section.title}>
+                  <h3>{section.title}</h3>
+                  <p>{section.description}</p>
+                  <Gallery images={section.images} note={`Source: Northgate Motors public repository · ${section.title}.`} />
+                </section>
+              ))}
+            </>
+          ) : null}
         </section>
       ) : (
         <section className="article-section">

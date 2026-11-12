@@ -1,5 +1,15 @@
 # Verified sources
 
+## Northgate Salesforce Platform gallery — 12 November 2026
+
+- Owner source: https://github.com/arjun2126/northgate-motors-demo#salesforce-platform-gallery
+- Verified default branch `release/buyer-3-1`, pinned revision `0023f741222085cb53a214a36472829e1cd7b038`.
+- README categories: Sales and delivery; Inventory and dealership locations; Financing and approvals; Service operations; Loyalty data model; Reporting and dashboards.
+- Inventory: https://github.com/arjun2126/northgate-motors-demo/blob/0023f741222085cb53a214a36472829e1cd7b038/docs/screenshots/salesforce-platform/INVENTORY.md
+- Exactly 21 sanitized public JPEGs; 1,873,187 bytes. Their source-to-local mappings, byte counts and SHA-256 values are recorded in `docs/NORTHGATE_GALLERY_ASSETS.json`. Original uploads and private review evidence are not imported.
+- Descriptions summarize the README/inventory's Lightning UI, custom-object relationships, LWC/Apex estimates, native approvals, reporting configuration and custom service/loyalty modeling. Screenshots illustrate UI/data design, not newly executed tests, completed approval/booking/accrual, current KPIs or licensed Field Service/Loyalty products. Historical dashboard values and source redactions are preserved.
+- This implementation is local-only pending owner review; no push or deployment is authorized.
+
 ## Approved sanitized image publication and accessibility fix — 12 November 2026
 
 The owner approved the exact four WebP hashes and asset mappings in the private publication plan, including preservation of source artwork/title wording. Approval separately includes removal of the redundant homepage link label and a scrolled accessibility regression, but no redesign or unrelated content changes. Only flattened, metadata-free sanitized images may be public; original PDFs, identifiers, dates and private verification links remain excluded. The existing exact-file publication-hash workflow is retained unchanged.
