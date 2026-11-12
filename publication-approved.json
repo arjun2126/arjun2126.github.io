@@ -1,6 +1,6 @@
 {
   "files": {
-    "src/content/studio.generated.json": "37cf6fef712ddd626b6b7ca98a78a111fe5bb8931898b709ed4e49674a458e43",
+    "src/content/studio.generated.json": "a18ee5cef4ddde0105da64c4f581262357c838d3830d09d8a924efda5ce5f3d1",
     "public/.nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "public/favicon.svg": "cabb1a0d892eeb74fa6c56dcc686da5f17c772a6d0fd09fb11ce1685701acd3d",
     "public/og/arjunos-cover.png": "28ae05f37e5a61c9a883638ecc516bece173331523cf0730f53d19335d04e305",
@@ -63,6 +63,10 @@
     "public/media/media-c5929992-af7b-4483-a455-ea638605b892-af86a17265f2c4ee50eac627.webp": "af86a17265f2c4ee50eac627c63b96df9f1ca5d666fd5802e099ac1537f6f054",
     "public/media/media-f064d482-d459-4152-9843-c4e7174ed1ab-554acdf7fe2ef9c8132bb9d5.webp": "554acdf7fe2ef9c8132bb9d5a5738005eb1c4a40d43dd28a399f0ea58ba6e998",
     "public/media/media-f1d4025a-346b-4f07-b582-2f38061a0618-9343e726bf846ee4be730fdb.webp": "9343e726bf846ee4be730fdb65cb53afad96a83836128839366ea76742510c2d",
-    "public/media/portrait-b51b352b14a4ac708461518a.webp": "b51b352b14a4ac708461518aa7c184892645b249015396a60bfc6d3da0109d98"
+    "public/media/portrait-b51b352b14a4ac708461518a.webp": "b51b352b14a4ac708461518aa7c184892645b249015396a60bfc6d3da0109d98",
+    "public/media/certificate-salesforce-certified-administrator-7d1e7be0fb79029106809d99.webp": "7d1e7be0fb79029106809d9910e8b31da7cbba2b995dd79fc03889568c4804ca",
+    "public/media/certificate-salesforce-certified-platform-app-builder-637975170e4dacaa980f311b.webp": "637975170e4dacaa980f311bea7ddca4864195387289b4ea7805ce5dca8a8b0b",
+    "public/media/certificate-salesforce-certified-platform-developer-i-8a607f99ebd0732717bec846.webp": "8a607f99ebd0732717bec846d8aba9424249fe126764ed7e3730674239079c96",
+    "public/media/certificate-salesforce-certified-agentforce-specialist-f30631dab396245371fadc48.webp": "f30631dab396245371fadc486d84b48c40ca5e41b390db9c4a4d6b9851af047c"
   }
 }

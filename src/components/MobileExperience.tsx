@@ -278,8 +278,8 @@ function MobileHome() {
           </h2>
           <p>
             {publicCertifications.length} approved Salesforce certification
-            {publicCertifications.length === 1 ? '' : 's'} and their issuer. Documents, dates and
-            verification links are not published.
+            {publicCertifications.length === 1 ? '' : 's'} and their issuer, with sanitized certificate
+            previews. Dates and verification links are not published.
           </p>
         </div>
         <ul className="m-cert-list">

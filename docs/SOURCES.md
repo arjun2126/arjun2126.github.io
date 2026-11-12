@@ -1,5 +1,13 @@
 # Verified sources
 
+## Approved sanitized image publication and accessibility fix — 12 November 2026
+
+The owner approved the exact four WebP hashes and asset mappings in the private publication plan, including preservation of source artwork/title wording. Approval separately includes removal of the redundant homepage link label and a scrolled accessibility regression, but no redesign or unrelated content changes. Only flattened, metadata-free sanitized images may be public; original PDFs, identifiers, dates and private verification links remain excluded. The existing exact-file publication-hash workflow is retained unchanged.
+
+## Approved image release preflight — 12 November 2026
+
+The owner's explicit approval covers the four sanitized WebP hashes and exact asset mappings in the private publication plan, preserving artwork and original private PDFs. All eight candidate/original integrity comparisons passed before transfer. Live accessibility inspection and independent read-only source review confirmed the pre-existing homepage link-name blocker; no new validity, verification or certification-date claim was introduced and no publication occurred.
+
 ## Clean release authorization — 10 November 2026
 
 The owner explicitly approved a separate clone/new branch from latest remote main, transfer of the reviewed names-only gallery and security fixes without importing candidate history, full checks and independent review, then PR/squash merge and the existing GitHub Pages workflow if all gates pass. Existing branches/commits must remain unchanged. This authorization does not include original certificate documents, identifiers, private verification URLs, dates, verification or currency claims, or unrelated authoring architecture changes.

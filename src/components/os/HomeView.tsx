@@ -96,7 +96,6 @@ export function HomeView() {
                 key={certification.id}
                 className="os-credential"
                 href="/certifications/"
-                aria-label={`${certification.name}, ${certification.issuer}. ${status.label}. Open the credential gallery.`}
               >
                 <span className="os-credential__top">
                   <span className="os-credential__badge" aria-hidden="true">
@@ -129,8 +128,8 @@ export function HomeView() {
         </div>
         <p className="os-credentials__note">
           {publicCertifications.length} approved Salesforce credential
-          {publicCertifications.length === 1 ? '' : 's'} and their issuer. Documents, dates and
-          verification links are not published; credential IDs are never shown.
+          {publicCertifications.length === 1 ? '' : 's'} and their issuer. Sanitized previews are
+          available in the gallery; dates, verification links and credential IDs are not published.
         </p>
       </section>
 

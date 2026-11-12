@@ -1,5 +1,47 @@
 # Persistent progress
 
+## Publication resumed after authentication — 12 November 2026
+
+Owner confirmed local GitHub reauthentication and renewed the existing publication authorization. Authentication now succeeds as `arjun2126`. Fresh fetch confirms the release HEAD and latest `origin/main` both equal `05f8874babe313825fa5cd4bfcc75c5597b3b568`; no merge or history rewrite is needed. All reviewed staged release files remain unchanged; only this progress log has an additional operational note. All four candidate/public/dist SHA-256 values still match the approved plan, and all original PDFs retain their hashes and Git-ignore protection.
+
+Independent final review accepted all 17 release paths, exact assets/privacy and all 16 decoded desktop/mobile card/viewer screenshots. Fresh pre-publication rerun passes 129 unit/API tests, all 44 browser tests with zero retries/failures, production build/type/static/publication checks and résumé download coverage. Dependency audit again reports zero vulnerabilities. No production source or approval policy changed after acceptance. Proceed through the authorized commit, PR and CI gates before squash merge and Pages/live verification.
+
+## Publication authentication hold — 12 November 2026
+
+Final unchanged staged/history security audit passes for 17 paths. Four approved candidate/public/dist SHA-256 comparisons pass; all four original PDF hashes remain unchanged and each original is Git-ignored. No original PDF was copied into release assets. All local release gates recorded below pass; independent final review is in progress.
+
+Stopped before commit/push: `gh repo view` returns HTTP 401 and `gh auth status` confirms the active `arjun2126` GitHub token is invalid. Owner must reauthenticate locally with `gh auth login -h github.com`; never paste credentials into chat. No PR, merge or deployment has been attempted, and no history rewrite or gate bypass occurred.
+
+## Final accessibility remediation authorized and verified — 12 November 2026
+
+Owner explicitly approved the gallery preview accessible-name correction, regression/selectors, exact mobile copy assertion and Studio replacement-test synchronization. Added `Enlarge: ` to the existing preview accessible name only; no visible text, CSS, artwork, navigation or behavior changed. Studio regression now waits for the distinct processed JPEG replacement and its 90 × 60 fixture dimensions, verifies publication is disabled and old redaction claims cleared, then enters fresh labels after redaction. An initial test expectation incorrectly assumed PNG output; corrected it to the existing JPEG conversion rather than changing product behavior.
+
+Final local gates: type checks pass; 129 unit/API tests pass; production build, résumé generation, static routes and 68-file publication validation pass; all 44 browser tests pass with retries disabled and zero failures. Coverage includes both scrolled homepage viewports, each gallery button's visible/accessibility name, desktop/mobile all-four viewers, Studio replacement privacy and desktop/mobile résumé PDF download. The separate disposable Studio workflow integration also passes, preserving original approved content/approvals. Dependency audit reports zero vulnerabilities. Desktop/mobile card and viewer screenshots captured after image decode for final visual review. Security/integrity audit and independent final review are required before commit/push.
+
+## Release stopped at new gallery accessibility gate — 12 November 2026
+
+Type checks, all 129 unit/API tests, production build/static/publication validation and the unchanged staged/history security audit pass. Browser verification with retries disabled reports 40 passed and 3 failed out of 43. Both scrolled homepage accessibility regressions pass at 1440 × 900 and 1600 × 1000, as does desktop coverage opening all four approved previews.
+
+New product blocker: public image preview buttons visibly say “Enlarge” but their accessible names say “Open NAME certificate viewer”; axe reports serious `label-content-name-mismatch`. Independent follow-up review confirms this blocker supersedes its earlier conditional complete-diff approval. The smallest proposed nonvisual correction is prefixing the existing accessible label with `Enlarge: `, updating exact-name selectors and adding a gallery regression. Additional owner approval is required before that correction; no rule suppression or visual change is proposed.
+
+The other two browser failures are independently confirmed test issues: the mobile privacy-copy regex expects uppercase “Credential” while the updated notice uses lowercase; the Studio replacement test waits for an already-present seed image and sets redaction claims before asynchronous upload intentionally clears them. Proposed synchronization must wait for the new image/private replacement state, confirm old claims were cleared, then enter fresh labels, preserving the safety behavior.
+
+Independent asset/privacy review remains accepted: all four candidate/public bytes, metadata, artwork and original PDF integrity checks match. Full release approval remains blocked pending authorization and a passing rerun, including mobile viewers. No commit, push, PR, merge or deployment occurred. Original PDFs remain private and unchanged; no failed gate was bypassed.
+
+## Approved image release and nonvisual accessibility correction — 12 November 2026
+
+The owner explicitly approved removing only the redundant homepage credential-link `aria-label`, preserving its visible text, styles and navigation, and adding a scrolled/settled accessibility regression. That approval resolves the historical scope hold below; no visual redesign is authorized.
+
+Prepared the exact four approved WebPs in a separate release clone on `release/approved-certificate-previews` from main `05f8874`. Bytes and filenames follow the private publication plan; only the four public image records gain image sources/alt/redaction labels and document visibility. Original PDF files and the owner's private authoring state are not copied or changed. Dates and verification fields remain empty; image artwork/titles are not rewritten. Updated names-only descriptions solely to accurately describe the now-approved sanitized previews, without layout/style changes. Used the existing explicit exact-file approval workflow for the generated file and four asset hashes. Full check results and independent review must pass before commit/push/PR/squash merge/Pages deployment.
+
+## Approved certificate image release preflight — 12 November 2026
+
+Owner approved the exact four sanitized WebPs and mappings from the private `publication-plan.json`, with no gallery redesign or unrelated changes. Created an isolated clone and local branch `release/approved-certificate-previews` from current main `05f8874babe313825fa5cd4bfcc75c5597b3b568`. All four candidate SHA-256 values match the approved plan; all original PDF hashes match their pre-task manifest. No original or review artifact was transferred, no public image was copied, and no certificate record, publication flag or approval hash changed.
+
+**Stopped before implementation/publication:** the previously reported live homepage accessibility gate still fails at 1600 × 1000 with credentials scrolled into view after fonts/animations settle. Axe reports serious `label-content-name-mismatch` on all four `.os-credential` links. Independent read-only source/test review confirms the pre-existing redundant `aria-label` in `src/components/os/HomeView.tsx:99` conflicts with the visible issuer/status label. Existing baseline accessibility coverage does not specifically scroll and audit this section.
+
+Minimal proposed remediation is nonvisual: remove the redundant label so link names derive from existing contents, add a settled/scrolled viewport regression, and rerun all release gates. This was not silently included in the asset-only approval; request owner approval before proceeding. No new commit, push, PR, merge, deployment, history rewrite or gate bypass occurred. The full new release suite was not claimed green; preflight failed first. Original authoring worktree and private review host are untouched.
+
 ## Authorized clean names-only release — 10 November 2026
 
 The owner explicitly approved a separate clean clone and new release branch from latest `origin/main`, transferring only the reviewed gallery and security/copy corrections as new commits. Existing worktrees, refs and commits remain untouched; no force-push or audit-policy exception is authorized. This approval supersedes the historical hold below only for the clean release after every gate and independent review passes.
