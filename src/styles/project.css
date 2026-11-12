@@ -373,7 +373,7 @@
   margin: 0;
   padding: 0;
   border: 0;
-  background: transparent;
+  background: rgba(4, 17, 14, 0.91);
   color: var(--paper);
   overflow: hidden;
 }
@@ -384,7 +384,7 @@
 }
 
 .lightbox::backdrop {
-  background: rgba(4, 17, 14, 0.91);
+  background: transparent;
   backdrop-filter: blur(16px) saturate(0.85);
 }
 

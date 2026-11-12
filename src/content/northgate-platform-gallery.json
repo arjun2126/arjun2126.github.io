@@ -1,0 +1,63 @@
+{
+  "source": "https://github.com/arjun2126/northgate-motors-demo/blob/0023f741222085cb53a214a36472829e1cd7b038/README.md#salesforce-platform-gallery",
+  "note": "Public, redacted repository captures from 9 November 2026. Dark blocks hide identifying values. These illustrate UI and data-model design, not fresh functional, security or acceptance tests. Dashboard values are historical cached snapshots, not live KPIs.",
+  "sections": [
+    {
+      "title": "Sales and delivery",
+      "description": "Salesforce development and administration: native Lead Path and activity layouts, custom test-drive and trade-in objects, lookup relationships and delivery checklists support the dealership lifecycle.",
+      "images": [
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/sales/lead-path-and-activity.jpg", "alt": "Salesforce Lead workspace with status path, activity timeline and duplicate panel; identifying values masked.", "caption": "Lead workspace: native status Path, activities and duplicate review." },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/sales/account-record-details.jpg", "alt": "Native Account details and activity workspace for the explicitly named demo test account; audit identities masked.", "caption": "Account details: customer context in a standard Lightning record layout." },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/sales/test-drive-create.jpg", "alt": "Custom Test Drive form with vehicle, contact, scheduling, outcome and feedback fields; owner masked.", "caption": "Test-drive intake: custom relationships, scheduling and feedback fields.", "tall": true },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/sales/trade-in-create.jpg", "alt": "Custom Trade-In form with appraisal, payoff, condition and wholesale fields; owner masked.", "caption": "Trade-in intake: appraisal, payoff and vehicle-condition field design.", "tall": true },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/sales/trade-in-equity-details.jpg", "alt": "Trade-In record showing stored appraisal, payoff and equity fields with personal relationships masked.", "caption": "Trade-in equity: stored financial fields and related-record context." },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/sales/delivery-handoff-details.jpg", "alt": "Custom Delivery record with status and document, inspection, walkthrough and signature checklist; identities masked.", "caption": "Delivery handoff: custom status and operational checklist layout." },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/sales/delivery-create.jpg", "alt": "Custom Delivery creation form with related records, accessories and checklist fields.", "caption": "New delivery: lookup relationships, accessories and handoff requirements.", "tall": true }
+      ]
+    },
+    {
+      "title": "Inventory and dealership locations",
+      "description": "Custom Vehicle and Rooftop objects connect stock, pricing, location and service capacity. The captures highlight field design, lookup modeling and administrative list-view configuration.",
+      "images": [
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/inventory/vehicle-list-statuses.jpg", "alt": "Custom Vehicle list view showing inventory statuses with the VIN column excluded.", "caption": "Vehicle list: inventory status visibility through a custom-object list view." },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/inventory/vehicle-record-details.jpg", "alt": "Custom Vehicle record with model, pricing, stock status and inventory age; VIN masked.", "caption": "Vehicle details: pricing, stock lifecycle and inventory-age fields." },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/inventory/rooftop-record-details.jpg", "alt": "Custom Rooftop record with location type, activity flag and service capacity; address and identities masked.", "caption": "Rooftop details: location hierarchy and workshop-capacity modeling." }
+      ]
+    },
+    {
+      "title": "Financing and approvals",
+      "description": "A custom Financing object, LWC quick action and Apex-backed estimates connect finance requirements with native approval administration. Demo rates are illustrative; the submission dialog does not prove routing or approval completion.",
+      "images": [
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/finance/financing-record-details.jpg", "alt": "Custom Financing record with stored amount, term, interest, payment and rate-source fields; applicant and references masked.", "caption": "Financing details: stored terms, payment estimates and rate-source fields." },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/finance/finance-application-action.jpg", "alt": "Finance Application quick action with demo rate choices, quote-based estimates and an existing draft; identifying values masked.", "caption": "Finance Application: LWC quick action with Apex-backed demo estimates.", "tall": true },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/finance/financing-submit-for-approval.jpg", "alt": "Native Salesforce Submit for Approval comments dialog on a Financing record.", "caption": "Approval submission: native comments dialog, not proof of a completed approval." }
+      ]
+    },
+    {
+      "title": "Service operations",
+      "description": "Custom Service Visit and standard Service Appointment forms demonstrate object selection, required fields and related-record design for workshop intake and scheduling. They do not establish a licensed Field Service implementation or a completed booking.",
+      "images": [
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/service/service-visit-create.jpg", "alt": "Custom Service Visit form with vehicle, contact, staff, labour, parts and work fields; owner masked.", "caption": "Service Visit: custom workshop intake, assignments and cost fields.", "tall": true },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/service/service-appointment-create.jpg", "alt": "Standard Service Appointment form with parent record, scheduling window, address and status fields.", "caption": "Service Appointment: standard scheduling fields and parent-record relationships.", "tall": true }
+      ]
+    },
+    {
+      "title": "Loyalty data model",
+      "description": "Custom member and transaction objects model rewards tiers, balances and points history through relational and audit-oriented field design. This is not Salesforce Loyalty Management, and the captures do not verify accrual or ledger correctness.",
+      "images": [
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/loyalty/loyalty-member-details.jpg", "alt": "Custom Loyalty Member record showing tier, balance and lifetime activity; contact and member number masked.", "caption": "Loyalty Member: custom tier, balance and lifetime-activity model." },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/loyalty/loyalty-member-create.jpg", "alt": "Custom Loyalty Member creation form with enrollment, tier and lifetime fields.", "caption": "Member enrollment: custom membership lifecycle and tier fields.", "tall": true },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/loyalty/loyalty-transaction-details.jpg", "alt": "Custom Loyalty Transaction record with points, type, reason, expiry and related records; audit names masked.", "caption": "Loyalty Transaction: points-history relationships and audit-oriented fields." }
+      ]
+    },
+    {
+      "title": "Reporting and dashboards",
+      "description": "Native matrix reports and dashboard components demonstrate report groupings, aggregate measures and stakeholder reporting configuration. Historical cached tiles are not reconciled live metrics or evidence of persona-specific access.",
+      "images": [
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/analytics/pipeline-by-stage-report.jpg", "alt": "Native pipeline matrix report grouped by stage and sales staff with sums and counts; staff names masked and detail rows excluded.", "caption": "Pipeline by Stage: native matrix groupings, sums and record counts." },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/analytics/executive-operations-dashboard.jpg", "alt": "Executive dashboard with historical pipeline, inventory, service and loyalty tiles; viewing identity masked.", "caption": "Executive operations: historical cached dashboard tiles, not live KPIs." },
+        { "src": "/projects/northgate-motors-demo/salesforce-platform/analytics/sales-pipeline-dashboard.jpg", "alt": "Sales dashboard with stage chart, opportunity count and lead-source conversion; viewing identity masked.", "caption": "Sales pipeline: native dashboard components using historical snapshot data." }
+      ]
+    }
+  ]
+}
