@@ -134,19 +134,54 @@ test.describe('window lifecycle', () => {
 
   test('refits open windows when the browser narrows', async ({ page }) => {
     await page.goto('/projects/northgate-motors/');
+    await expect(page.locator('.window')).toHaveCount(2);
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+      await Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => undefined)));
+    });
     await page.setViewportSize({ width: 960, height: 760 });
-    await page.waitForTimeout(700);
-    const boxes = await page.locator('.window').evaluateAll((elements) =>
-      elements.map((element) => {
+    // Poll the complete snapshot while resize transitions settle; do not
+    // relax bounds to accept an off-screen window or an empty collection.
+    await expect(async () => {
+      const boxes = await page.locator('.window').evaluateAll((elements) =>
+        elements.map((element) => {
+          const rect = element.getBoundingClientRect();
+          return { left: rect.left, right: rect.right, bottom: rect.bottom };
+        }),
+      );
+      expect(boxes).toHaveLength(2);
+      for (const box of boxes) {
+        expect(box.left).toBeGreaterThanOrEqual(0);
+        expect(box.right).toBeLessThanOrEqual(960);
+        expect(box.bottom).toBeLessThanOrEqual(760);
+      }
+    }).toPass({ timeout: 5000 });
+  });
+
+  test('refits when the viewport changes before the resize listener attaches', async ({ page }) => {
+    await page.setViewportSize({ width: 960, height: 760 });
+    await page.addInitScript(() => {
+      // Emulate an initial render measuring the old viewport, followed by a
+      // resize before React's passive effect installs its event listener.
+      for (const [property, previous] of [['innerWidth', 1440], ['innerHeight', 900]] as const) {
+        const descriptor = Object.getOwnPropertyDescriptor(window, property)!;
+        Object.defineProperty(window, property, {
+          configurable: true,
+          get() {
+            Object.defineProperty(window, property, descriptor);
+            return previous;
+          },
+        });
+      }
+    });
+    await page.goto('/projects/northgate-motors/');
+    await expect(page.locator('.window')).toHaveCount(2);
+    await expect.poll(() => page.locator('.window').evaluateAll(elements =>
+      elements.length === 2 && elements.every(element => {
         const rect = element.getBoundingClientRect();
-        return { left: rect.left, right: rect.right, bottom: rect.bottom };
+        return rect.left >= 0 && rect.right <= 960 && rect.bottom <= 760;
       }),
-    );
-    for (const box of boxes) {
-      expect(box.left).toBeGreaterThanOrEqual(0);
-      expect(box.right).toBeLessThanOrEqual(960);
-      expect(box.bottom).toBeLessThanOrEqual(760);
-    }
+    )).toBe(true);
   });
 
   test('dragging a title bar updates window geometry', async ({ page }) => {

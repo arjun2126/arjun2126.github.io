@@ -43,6 +43,9 @@ export function DesktopExperience({ route }: { route: Route }) {
       setWindows((current) => resizeWindows(current, viewportRef.current));
     };
     window.addEventListener('resize', onResize);
+    // A resize between the initial render and this effect is not replayed.
+    // Refit once subscribed so those windows cannot retain the old viewport.
+    onResize();
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
