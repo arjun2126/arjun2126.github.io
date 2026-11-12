@@ -327,7 +327,7 @@ test.describe('project case studies', () => {
       'Salesforce certifications',
     );
     expect(await page.locator('meta[name="description"]').getAttribute('content')).toContain(
-      'documents, dates and verification links are not published',
+      'Dates and verification links are not published',
     );
     const schema = JSON.parse(
       await page.locator('script[type="application/ld+json"]').textContent() ?? '{}',
@@ -335,6 +335,22 @@ test.describe('project case studies', () => {
     expect(schema['@type']).toBe('CollectionPage');
     expect(schema.hasPart).toHaveLength(cardCount);
     expect(JSON.stringify(schema)).not.toMatch(/credentialId|verificationCode/);
+    await expect(gallery.locator('.os-cert-card img')).toHaveCount(4);
+    for (const name of names) {
+      const card = gallery.locator('.os-cert-card').filter({ has: page.getByRole('heading', { name, exact: true }) });
+      const thumbnail = card.locator('img');
+      await thumbnail.scrollIntoViewIfNeeded();
+      await expect.poll(() => thumbnail.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth === 3840)).toBe(true);
+      const src = await thumbnail.getAttribute('src');
+      expect(src).toMatch(/^\/media\/certificate-[\w-]+\.webp$/);
+      await card.getByRole('button', { name: `Enlarge: Open ${name} certificate viewer`, exact: true }).click();
+      const viewer = page.getByRole('dialog', { name: `${name} certificate viewer`, exact: true });
+      await expect(viewer).toBeVisible();
+      await expect(viewer.locator('.os-cert-viewer__stage img')).toHaveAttribute('src', src!);
+      await expect(viewer.locator('iframe')).toHaveCount(0);
+      await page.keyboard.press('Escape');
+      await expect(viewer).toHaveCount(0);
+    }
   });
 
   test('serves certification content without JavaScript', async ({ browser }) => {
@@ -348,10 +364,10 @@ test.describe('project case studies', () => {
     await expect(page.locator('body')).not.toContainText('Verified credentials');
     await expect(page.locator('body')).not.toContainText('source attached');
     expect(await page.locator('meta[name="description"]').getAttribute('content')).toContain(
-      'documents, dates and verification links are not published',
+      'Dates and verification links are not published',
     );
     expect(await page.locator('meta[property="og:description"]').getAttribute('content')).toContain(
-      'documents, dates and verification links are not published',
+      'Dates and verification links are not published',
     );
     await context.close();
   });
@@ -467,6 +483,7 @@ test.describe('content studio', () => {
     await first.getByLabel('Redactions shown on the public copy (comma-separated labels only)').fill(
       'Credential ID, Verification code',
     );
+    const originalSource = await first.getByRole('img', { name: 'Draft certificate' }).getAttribute('src');
 
     const png = await sharp({
       create: { width: 90, height: 60, channels: 3, background: { r: 244, g: 238, b: 220 } },
@@ -477,7 +494,12 @@ test.describe('content studio', () => {
       .getByLabel('Upload certificate document for Salesforce Certified Administrator')
       .setInputFiles({ name: 'administrator.png', mimeType: 'image/png', buffer: png });
     await expect(first.getByRole('img', { name: 'Draft certificate' })).toBeVisible();
+    await expect(first.getByRole('img', { name: 'Draft certificate' })).not.toHaveAttribute('src', originalSource!);
+    await expect(first.getByRole('img', { name: 'Draft certificate' })).toHaveAttribute('src', /^data:image\/jpeg;base64,/);
+    await expect.poll(() => first.getByRole('img', { name: 'Draft certificate' }).evaluate((image: HTMLImageElement) => [image.naturalWidth, image.naturalHeight])).toEqual([90, 60]);
     await expect(dialog.getByText('Document held privately and not published.').first()).toBeVisible();
+    await expect(first.getByRole('checkbox', { name: 'Publish certificate document for Salesforce Certified Administrator' })).not.toBeChecked();
+    await expect(first.getByLabel('Redactions shown on the public copy (comma-separated labels only)')).toHaveValue('');
     const unredacted = await first
       .getByRole('img', { name: 'Draft certificate' })
       .getAttribute('src');
@@ -496,6 +518,9 @@ test.describe('content studio', () => {
     expect(redacted).not.toBe(unredacted);
     expect(redacted).toMatch(/^data:image\/jpeg;base64,/);
     await expect(dialog.getByText('Document held privately and not published.').first()).toBeVisible();
+    await first.getByLabel('Redactions shown on the public copy (comma-separated labels only)').fill(
+      'Credential ID, Verification code',
+    );
 
     await first.getByRole('button', { name: 'Preview' }).click();
     const viewer = page.getByRole('dialog', {
@@ -635,6 +660,33 @@ test.describe('layout and owner media regressions', () => {
 });
 
 test.describe('accessibility', () => {
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 1600, height: 1000 }]) {
+    test(`scrolled homepage certification links preserve visible accessible names at ${viewport.width}`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      await page.goto('/');
+      const section = page.locator('.os-credentials');
+      await section.scrollIntoViewIfNeeded();
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+        await Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => undefined)));
+      });
+      const links = section.locator('a.os-credential');
+      await expect(links).toHaveCount(4);
+      for (const link of await links.all()) {
+        const name = await link.locator('.os-credential__name').innerText();
+        expect(await link.getAttribute('aria-label')).toBeNull();
+        await expect(link).toHaveAccessibleName(`${name} Salesforce · Date not published`);
+        await expect(link).toHaveAttribute('href', '/certifications/');
+      }
+      const scan = await new AxeBuilder({ page }).include('.os-credentials')
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+      expect(scan.violations.filter(issue => ['serious', 'critical'].includes(issue.impact ?? ''))).toEqual([]);
+      expect(scan.violations.filter(issue => issue.id === 'label-content-name-mismatch')).toEqual([]);
+      await links.first().click();
+      await expect(page).toHaveURL(/\/certifications\/$/);
+    });
+  }
+
   test('home has no serious automated violations', async ({ page }) => {
     await page.goto('/');
     await expectNoSeriousA11yViolations(page, 'desktop home');
@@ -650,6 +702,23 @@ test.describe('accessibility', () => {
     await page.goto('/certifications/');
     await expect(page.getByRole('dialog', { name: 'Certifications' })).toBeVisible();
     await expectNoSeriousA11yViolations(page, 'certification gallery');
+  });
+
+  test('every certificate preview includes its visible Enlarge label in its accessible name', async ({ page }) => {
+    await page.goto('/certifications/');
+    const cards = page.locator('.os-cert-card');
+    await expect(cards).toHaveCount(4);
+    for (const card of await cards.all()) {
+      await card.scrollIntoViewIfNeeded();
+      const name = await card.locator('h3').innerText();
+      const button = card.getByRole('button', { name: `Enlarge: Open ${name} certificate viewer`, exact: true });
+      await expect(button).toBeVisible();
+      await expect(button.locator('.os-cert-card__zoom')).toHaveText('Enlarge');
+      const scan = await new AxeBuilder({ page }).include('.os-certs')
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+      expect(scan.violations.filter(issue => ['serious', 'critical'].includes(issue.impact ?? ''))).toEqual([]);
+      expect(scan.violations.filter(issue => issue.id === 'label-content-name-mismatch')).toEqual([]);
+    }
   });
 
   test('résumé has no serious automated violations', async ({ page }) => {

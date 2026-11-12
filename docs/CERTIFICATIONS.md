@@ -1,11 +1,11 @@
 # Certifications & Credentials gallery
 
-## Names-only release — owner-approved 10 November 2026
+## Sanitized preview release — owner-approved 12 November 2026
 
-- Clean release branch: `release/certifications-gallery-clean`
+- Release branch: `release/approved-certificate-previews`
 - Base: `main`
 - Publication uses the reviewed PR, squash merge and existing GitHub Pages workflow after all verification gates pass.
-- Approval covers the four certification names and Salesforce issuer only. Original documents, identifiers, dates and private verification links remain unpublished; document-publication flags are disabled.
+- Approval covers the four names, Salesforce issuer and exact four sanitized WebP copies. Only those image records enable document visibility. Original PDFs, identifiers, dates and verification links remain unpublished.
 
 The gallery is available locally at `/certifications/` and from the sidebar, Dock, File and View menus, Recruiter Mode and the homepage certification summary.
 
@@ -21,14 +21,14 @@ The gallery is available locally at `/certifications/` and from the sidebar, Doc
 
 ## Certifications ready for publication
 
-These four names are already approved for publication and remain unchanged. No issue date, expiry date, verification URL, credential ID or certificate document was present in the repository or the approved handoff, so those fields are explicitly unpublished rather than invented.
+These four names remain unchanged. The owner has now approved four exact sanitized WebP copies; issue/expiry dates, verification URLs and credential IDs remain unpublished. The original PDFs stay private and are not release inputs. Image artwork preserves the source titles “Platform Administrator” and “Platform Developer” without adding or rewriting text.
 
 | # | Credential | Issuer | Published dates | Verification link | Document | Public |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Salesforce Certified Administrator | Salesforce | Not published | Not published | Not published | Yes |
-| 2 | Salesforce Certified Platform App Builder | Salesforce | Not published | Not published | Not published | Yes |
-| 3 | Salesforce Certified Platform Developer I | Salesforce | Not published | Not published | Not published | Yes |
-| 4 | Salesforce Certified Agentforce Specialist | Salesforce | Not published | Not published | Not published | Yes |
+| 1 | Salesforce Certified Administrator | Salesforce | Not published | Not published | Approved sanitized WebP | Yes |
+| 2 | Salesforce Certified Platform App Builder | Salesforce | Not published | Not published | Approved sanitized WebP | Yes |
+| 3 | Salesforce Certified Platform Developer I | Salesforce | Not published | Not published | Approved sanitized WebP | Yes |
+| 4 | Salesforce Certified Agentforce Specialist | Salesforce | Not published | Not published | Approved sanitized WebP | Yes |
 
 The public record never calls these credentials active, current or verified. An unpublished date is displayed as “Date not published”; an elapsed expiry date is displayed as “Expired”.
 
@@ -96,7 +96,7 @@ Screenshots (in `docs/screenshots/`):
 ## Known limitations / owner inputs
 
 - The four approved names have **no published dates or official verification URLs**; the gallery says so. Add them only from the owner's own Salesforce verification records.
-- **No genuine certificate image or PDF is published.** Upload a redacted public copy through Content Studio, then explicitly opt the document in.
+- **Only the four exact owner-reviewed sanitized images are approved.** Original PDFs must never replace them in public assets. Candidate bytes are copied without re-encoding and validated by dedicated hash/metadata regressions.
 - PDF metadata is not rewritten. The Studio requires the owner to supply a sanitized copy and the save rejects active content, but this is not a substitute for reviewing the document.
 - Browser storage is not a publication archive. Save to project and commit the reviewed assets.
 - The original feature branch and its history remain untouched. Clean-release checks and authorization are recorded in `docs/PROGRESS.md`.

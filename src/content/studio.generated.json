@@ -50,12 +50,16 @@
         "expiresOn": "",
         "verificationUrl": "",
         "verificationLabel": "",
-        "kind": "none",
-        "src": "",
+        "kind": "image",
+        "src": "/media/certificate-salesforce-certified-administrator-7d1e7be0fb79029106809d99.webp",
         "privateSrc": "",
-        "documentVisible": false,
-        "alt": "",
-        "redactions": [],
+        "documentVisible": true,
+        "alt": "Salesforce certificate presented to Arjun Subramanya for Platform Administrator. Private credential details removed.",
+        "redactions": [
+          "Credential ID",
+          "Verification link",
+          "Issue date"
+        ],
         "note": "",
         "visible": true
       },
@@ -67,12 +71,16 @@
         "expiresOn": "",
         "verificationUrl": "",
         "verificationLabel": "",
-        "kind": "none",
-        "src": "",
+        "kind": "image",
+        "src": "/media/certificate-salesforce-certified-platform-app-builder-637975170e4dacaa980f311b.webp",
         "privateSrc": "",
-        "documentVisible": false,
-        "alt": "",
-        "redactions": [],
+        "documentVisible": true,
+        "alt": "Salesforce certificate presented to Arjun Subramanya for Platform App Builder. Private credential details removed.",
+        "redactions": [
+          "Credential ID",
+          "Verification link",
+          "Issue date"
+        ],
         "note": "",
         "visible": true
       },
@@ -84,12 +92,16 @@
         "expiresOn": "",
         "verificationUrl": "",
         "verificationLabel": "",
-        "kind": "none",
-        "src": "",
+        "kind": "image",
+        "src": "/media/certificate-salesforce-certified-platform-developer-i-8a607f99ebd0732717bec846.webp",
         "privateSrc": "",
-        "documentVisible": false,
-        "alt": "",
-        "redactions": [],
+        "documentVisible": true,
+        "alt": "Salesforce certificate presented to Arjun Subramanya for Platform Developer. Private credential details removed.",
+        "redactions": [
+          "Credential ID",
+          "Verification link",
+          "Issue date"
+        ],
         "note": "",
         "visible": true
       },
@@ -101,12 +113,16 @@
         "expiresOn": "",
         "verificationUrl": "",
         "verificationLabel": "",
-        "kind": "none",
-        "src": "",
+        "kind": "image",
+        "src": "/media/certificate-salesforce-certified-agentforce-specialist-f30631dab396245371fadc48.webp",
         "privateSrc": "",
-        "documentVisible": false,
-        "alt": "",
-        "redactions": [],
+        "documentVisible": true,
+        "alt": "Salesforce certificate presented to Arjun Subramanya for Agentforce Specialist. Private credential details removed.",
+        "redactions": [
+          "Credential ID",
+          "Verification link",
+          "Issue date"
+        ],
         "note": "",
         "visible": true
       }

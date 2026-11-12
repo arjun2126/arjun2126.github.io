@@ -567,7 +567,7 @@ ${header()}
   <div class="st-page-head">
     <p class="st-kicker">Salesforce certifications</p>
     <h1 class="st-page-title">Certifications<br /><em>and credentials.</em></h1>
-    <p class="st-lede">${publicCertifications.length} owner-approved Salesforce certification${publicCertifications.length === 1 ? '' : 's'} and their issuer. Certificate documents, dates and verification links are not published.</p>
+    <p class="st-lede">${publicCertifications.length} owner-approved Salesforce certification${publicCertifications.length === 1 ? '' : 's'}, their issuer and sanitized certificate previews. Dates and verification links are not published.</p>
     <div class="st-actions">
       <a class="st-button st-button--primary" href="/resume/">View the résumé</a>
       <a class="st-button" href="/recruiter/">Recruiter Mode</a>

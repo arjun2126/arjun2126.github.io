@@ -105,7 +105,23 @@ test.describe('mobile document mode', () => {
     expect(cardCount).toBeGreaterThan(0);
     await expect(page.locator('.os-cert-status')).toHaveCount(cardCount);
     await expect(page.locator('.os-cert-card h3').first()).not.toBeEmpty();
-    await expect(page.getByText(/Credential IDs, verification codes/).first()).toBeVisible();
+    await expect(page.getByText('Only approved sanitized previews are shown. Original PDFs, credential IDs, verification codes and private identifiers are not published. No claim of current validity or independent verification is made.', { exact: true })).toBeVisible();
+    const names = await page.locator('.os-cert-card h3').allTextContents();
+    await expect(page.locator('.os-cert-card img')).toHaveCount(4);
+    for (const name of names) {
+      const card = page.locator('.os-cert-card').filter({ has: page.getByRole('heading', { name, exact: true }) });
+      await card.getByRole('button', { name: `Enlarge: Open ${name} certificate viewer`, exact: true }).click();
+      const viewer = page.getByRole('dialog', { name: `${name} certificate viewer`, exact: true });
+      const image = viewer.locator('.os-cert-viewer__stage img');
+      await expect(image).toBeVisible();
+      await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth === 3840)).toBe(true);
+      const box = await image.boundingBox();
+      expect(box!.x).toBeGreaterThanOrEqual(0);
+      expect(box!.x + box!.width).toBeLessThanOrEqual(390);
+      await expect(viewer.getByRole('link', { name: 'Open the document in a new tab', exact: false })).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(viewer).toHaveCount(0);
+    }
     await page
       .getByRole('navigation', { name: 'Mobile navigation' })
       .getByRole('link', { name: 'Home' })
@@ -114,7 +130,7 @@ test.describe('mobile document mode', () => {
     expect(await page.locator('.m-cert-list li').count()).toBe(cardCount);
     await expect(page.locator('#mobile-certs-title')).toHaveText('Salesforce certifications.');
     await expect(page.locator('.m-certs-teaser')).not.toContainText('with the source');
-    await expect(page.locator('.m-certs-teaser')).toContainText('verification links are not published');
+    await expect(page.locator('.m-certs-teaser')).toContainText('Dates and verification links are not published');
   });
 
   test('mobile project page has no serious automated violations', async ({ page }) => {

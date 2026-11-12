@@ -123,7 +123,7 @@ export function CertificationCard({
           <button
             type="button"
             className="os-cert-card__preview"
-            aria-label={`Open ${certification.name} certificate viewer`}
+            aria-label={`Enlarge: Open ${certification.name} certificate viewer`}
             onClick={() => onOpen?.(certification)}
           >
             {preview}
@@ -433,8 +433,8 @@ export function CertificationsView({
           </p>
           <h1>Certifications and credentials.</h1>
           <p className="os-certs__lede">
-            Owner-approved Salesforce certification names and their issuer. Certificate
-            documents, dates and verification links are not published.
+            Owner-approved Salesforce certification names, their issuer and sanitized certificate
+            previews. Dates and verification links are not published.
           </p>
         </div>
         <div className="os-certs__actions">
@@ -451,7 +451,7 @@ export function CertificationsView({
       <div className="os-certs__notice" role="note">
         <ShieldCheck size={16} aria-hidden="true" />
         <p>
-          This gallery lists certification names and issuers only. Credential IDs, verification
+          Only approved sanitized previews are shown. Original PDFs, credential IDs, verification
           codes and private identifiers are not published. No claim of current validity or
           independent verification is made.
         </p>

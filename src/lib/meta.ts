@@ -56,7 +56,7 @@ export function metaForRoute(route: Route): PageMeta {
         return {
           title: 'Certifications — Arjun Subramanya',
           description:
-            'Owner-approved Salesforce certifications and their issuer. Certification names only; documents, dates and verification links are not published.',
+            'Owner-approved Salesforce certifications, their issuer and sanitized certificate previews. Dates and verification links are not published; original PDFs remain private.',
         };
       case 'live':
         return {
